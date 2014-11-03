@@ -113,4 +113,4 @@ Repeated invocations toggle between the two most recently open buffers."
  '(region ((((class color) (min-colors 8) (background light)) (:background "#03c" :foreground "black"))))
  '(secondary-selection ((((class color) (min-colors 8) (background light)) (:background "yellow1" :foreground "black")))))
 
-(load "peter_module_dependent_config.el")
+(load "dauphin-config-packages.el")
