@@ -2,7 +2,12 @@
 (load "better-defaults.el")
 (require 'header2)
 
+;; remove annoying prompt http://shreevatsa.wordpress.com/2007/01/06/using-emacsclient/
+;; (server-start)
+;; (remove-hook 'kill-buffer-query-functions 'server-kill-buffer-query-function)
+
 ;; ask emacs to save settings in a special file:
+;; from http://tychoish.com/rhizome//useful-emacs-and-orgmode-hacks/
 (setq dauphin-emacs-dir (file-name-directory load-file-name))
 (setq dauphin-emacs-config-file load-file-name) ;; save for later use
 (setq custom-file (concat dauphin-emacs-dir "custom.el"))
@@ -78,7 +83,12 @@ Repeated invocations toggle between the two most recently open buffers."
 (defun notes ()
   "Switch to my work dir."
   (interactive)
-  (find-file "~/notes"))
+  (find-file "~/org/notes"))
+;; http://members.optusnet.com.au/~charles57/GTD/orgmode.html#sec-2
+(defun gtd ()
+  "Open my GTD file"
+  (interactive)
+  (find-file "~/org/gtd.org"))
 
 ;; LOAD OTHER FILES WITH CUSTOM FUNCTIONS
 (load "smarter_move_beginning_of_line")
@@ -103,5 +113,9 @@ Repeated invocations toggle between the two most recently open buffers."
 (setq next-screen-context-lines 5) ; 2 lines isn't enough context on pgdown
 (setq scroll-preserve-screen-position t) ; this is a beautiful thing
 (setq tab-stop-list (number-sequence 4 120 4))
+
+(require 'package)
+(add-to-list 'package-archives
+             '("melpa" . "http://melpa.milkbox.net/packages/") t)
 
 (load (concat dauphin-emacs-dir "dauphin-config-packages.el"))
