@@ -50,7 +50,7 @@
   (find-file "~/.emacs"))
 (defun open-lclcfg ()
   (interactive)
-  (find-file "~/.emacs.d/local_config/peter_config.el"))
+  (find-file "~/.emacs.d/dauphin-emacs/dauphin-config.el"))
 (defun switch-to-previous-buffer ()
   "Switch to previously open buffer.
 Repeated invocations toggle between the two most recently open buffers."
