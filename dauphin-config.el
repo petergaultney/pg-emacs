@@ -1,7 +1,10 @@
+;;; dauphin-config.el --- 
 (load "better-defaults.el")
+(require 'header2)
 
 ;; ask emacs to save settings in a special file:
 (setq dauphin-emacs-dir (file-name-directory load-file-name))
+(setq dauphin-emacs-config-file load-file-name) ;; save for later use
 (setq custom-file (concat dauphin-emacs-dir "custom.el"))
 ;; load that custom file
 (load custom-file 'noerror)
@@ -46,14 +49,16 @@
 (define-key global-map (kbd "C-c d") 'delete-region)
 (define-key global-map (kbd "M-g") 'goto-line)
 (define-key global-map (kbd "C-x s") 'save-buffer)
+(global-set-key (kbd "C-c o a") 'org-agenda-list)
+(global-set-key (kbd "C-c o t") 'org-todo-list)
 
 (defun insert-org-timestamp-now ()
   "Does what it says."
   (interactive)
   (org-insert-time-stamp (org-current-time org-clock-rounding-minutes) 'with-hm))
-(define-key global-map (kbd "C-c t") 'insert-org-timestamp-now)
-(eval-after-load "org-mode"
-  '(define-key org-mode-map (kbd "C-c t") 'org-time-stamp))
+(define-key global-map (kbd "C-c o n") 'insert-org-timestamp-now)
+;; (eval-after-load "org-mode"
+;;   '(define-key org-mode-map (kbd "C-c o n") 'org-time-stamp))
 
 ;; CUSTOM FUNCTIONS
 (defun reload-dotemacs ()
@@ -64,12 +69,16 @@
   (find-file "~/.emacs"))
 (defun open-lclcfg ()
   (interactive)
-  (find-file load-file-name))
+  (find-file dauphin-emacs-config-file))
 (defun switch-to-previous-buffer ()
   "Switch to previously open buffer.
 Repeated invocations toggle between the two most recently open buffers."
   (interactive)
   (switch-to-buffer (other-buffer (current-buffer) 1)))
+(defun notes ()
+  "Switch to my work dir."
+  (interactive)
+  (find-file "~/notes"))
 
 ;; LOAD OTHER FILES WITH CUSTOM FUNCTIONS
 (load "smarter_move_beginning_of_line")

@@ -12,7 +12,9 @@
      (awk-mode . "awk")
      (other . "k&r"))))
  '(ido-mode (quote both) nil (ido))
+ '(org-agenda-files (quote ("~/workspace/work.org")))
  '(org-hide-leading-stars t)
+ '(org-return-follows-link t)
  '(org-startup-indented t)
  '(org-todo-keywords (quote ((sequence "TODO" "DONE" "CANCELED"))))
  '(safe-local-variable-values
