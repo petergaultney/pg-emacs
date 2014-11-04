@@ -11,7 +11,7 @@
 
 ;;
 ;; ace jump mode major function
-;; 
+;;
 (autoload
   'ace-jump-mode
   "ace-jump-mode"
@@ -19,6 +19,12 @@
   t)
 ;; you can select the key you prefer to
 (define-key global-map (kbd "M-s") 'ace-jump-mode)
+
+;; this seems necessary for it to work in dired. not sure why...
+(eval-after-load "dired"
+  '(progn
+     (define-key dired-mode-map (kbd "s") 'ace-jump-mode)))       
+  
 
 ;; 
 ;; enable a more powerful jump back function from ace jump mode
