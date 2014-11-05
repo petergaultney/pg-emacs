@@ -1,3 +1,6 @@
+(require 'header2)
+(require 'multiple-cursors)
+
 (require 'key-chord)
 (autoload 'key-chord-mode "key-chord-mode")
 (key-chord-define-global ",b" 'switch-to-previous-buffer)
