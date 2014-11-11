@@ -73,17 +73,29 @@
 (defun open-lclcfg ()
   (interactive)
   (find-file dauphin-emacs-config-file))
-(defun switch-to-previous-buffer ()
-  "Switch to previously open buffer.
-Repeated invocations toggle between the two most recently open buffers."
+;; (defun switch-to-previous-buffer ()
+;;   "Switch to previously open buffer.
+;; Repeated invocations toggle between the two most recently open buffers."
+;;   (interactive)
+;;   (switch-to-buffer (other-buffer (current-buffer) 1)))
+(defun org ()
+  "Switch to my org dir."
   (interactive)
-  (switch-to-buffer (other-buffer (current-buffer) 1)))
+  (find-file "~/org"))
 (defun notes ()
-  "Switch to my work dir."
+  "Switch to my notes dir."
   (interactive)
   (find-file "~/org/notes"))
 ;; http://members.optusnet.com.au/~charles57/GTD/orgmode.html#sec-2
 (defun gtd ()
+  "Open my GTD file"
+  (interactive)
+  (find-file "~/org/gtd.org"))
+(defun work-notes ()
+  "Switch to my work dir."
+  (interactive)
+  (find-file "~/workspace/org"))
+(defun pork ()
   "Open my GTD file"
   (interactive)
   (find-file "~/org/gtd.org"))
@@ -95,7 +107,7 @@ Repeated invocations toggle between the two most recently open buffers."
 (define-key global-map (kbd "C-c e") 'open-dotemacs)
 (define-key global-map (kbd "C-c p") 'open-lclcfg)
 (define-key global-map (kbd "C-c C-e") 'reload-dotemacs)
-(define-key global-map (kbd "C-c b") 'switch-to-previous-buffer)
+(define-key global-map (kbd "C-c b") 'switch-to-prev-buffer)
 
 ; join line from top line
 (global-set-key (kbd "M-j") (lambda () (interactive) (join-line -1)))
@@ -112,8 +124,8 @@ Repeated invocations toggle between the two most recently open buffers."
 (setq scroll-preserve-screen-position t) ; this is a beautiful thing
 (setq tab-stop-list (number-sequence 4 120 4))
 
-(require 'package)
-(add-to-list 'package-archives
-             '("melpa" . "http://melpa.milkbox.net/packages/") t)
+(windmove-default-keybindings)
 
+;; then, finally, load my package-dependent things
 (load (concat dauphin-emacs-dir "dauphin-config-packages.el"))
+
