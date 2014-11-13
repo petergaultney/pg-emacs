@@ -12,6 +12,9 @@
      (awk-mode . "awk")
      (other . "k&r"))))
  '(ido-mode (quote both) nil (ido))
+ '(minibuffer-prompt-properties
+   (quote
+    (read-only t point-entered minibuffer-avoid-prompt face minibuffer-prompt)))
  '(org-agenda-files (quote ("~/workspace/work.org")))
  '(org-hide-leading-stars t)
  '(org-replace-disputed-keys t)

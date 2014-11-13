@@ -28,7 +28,6 @@
   '(progn
      (define-key dired-mode-map (kbd "s") 'ace-jump-mode)))       
   
-
 ;; 
 ;; enable a more powerful jump back function from ace jump mode
 ;;

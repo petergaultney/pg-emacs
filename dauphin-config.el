@@ -127,5 +127,14 @@
 (windmove-default-keybindings)
 
 ;; then, finally, load my package-dependent things
-(load (concat dauphin-emacs-dir "dauphin-config-packages.el"))
+(condition-case nil
+    (load (concat dauphin-emacs-dir "dauphin-config-packages.el"))
+  (error
+   (message "Could not find a package. Attempting to download all packages.")
+   (condition-case nil
+       (load (concat dauphin-emacs-dir "autopackaging.el"))
+     (error nil)
+     )
+   )
+  )
 
