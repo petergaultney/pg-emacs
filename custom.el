@@ -132,5 +132,6 @@
  '(hi-pink ((t (:background "pink" :foreground "black"))))
  '(highlight ((((class color) (min-colors 8) (background light)) (:background "#080"))))
  '(org-hide ((nil (:foreground "black"))))
+ '(org-table ((t (:foreground "Blue"))))
  '(region ((((class color) (min-colors 8) (background light)) (:background "#03c" :foreground "black"))))
  '(secondary-selection ((((class color) (min-colors 8) (background light)) (:background "yellow1" :foreground "black")))))
