@@ -3,4 +3,4 @@ clone this repository into a directory within your .emacs.d, e.g., "~/.emacs.d/d
 then add the following to your .emacs:
 
 (add-to-list 'load-path "~/.emacs.d/dauphin-emacs")
-(load "peter_config.el")
+(load "dauphin_config.el")
