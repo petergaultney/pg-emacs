@@ -13,6 +13,8 @@
 ;; load that custom file
 (load custom-file 'noerror)
 
+(add-to-list 'auto-mode-alist '("\\.ino\\'" . c-mode))
+
 (menu-bar-mode 0)
 (global-font-lock-mode t) 
 (show-paren-mode 1) 
@@ -113,6 +115,9 @@
 (define-key global-map (kbd "C-c p") 'open-lclcfg)
 (define-key global-map (kbd "C-c C-e") 'reload-dotemacs)
 (define-key global-map (kbd "C-c b") 'switch-to-prev-buffer)
+
+(define-key global-map (kbd "C-c w") 'work-notes)
+
 
 ; join line from top line
 (global-set-key (kbd "M-j") (lambda () (interactive) (join-line -1)))
