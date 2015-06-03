@@ -10,6 +10,8 @@
 (package-initialize)
 ;; (setq abg-required-packages
 ;;       (list 'xml-rpc 'magit 'gh))
+(setq abg-required-packages
+      (list 'smart-tabs-mode))
 (dolist (package abg-required-packages)
   (when (not (package-installed-p package))
     (package-refresh-contents)

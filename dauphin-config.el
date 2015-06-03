@@ -1,5 +1,6 @@
 ;;; dauphin-config.el --- 
 (load "better-defaults.el")
+(load "window-half-scroll.el")
 ;; remove annoying prompt http://shreevatsa.wordpress.com/2007/01/06/using-emacsclient/
 ;; (server-start)
 ;; (remove-hook 'kill-buffer-query-functions 'server-kill-buffer-query-function)
@@ -131,6 +132,7 @@
 (setq set-mark-command-repeat-pop 1) ; C-u C-SPC uses mark ring. now C-SPC simply continues.
 (setq next-screen-context-lines 5) ; 2 lines isn't enough context on pgdown
 (setq scroll-preserve-screen-position t) ; this is a beautiful thing
+
 (setq tab-stop-list (number-sequence 4 120 4))
 (setq tramp-default-method "ssh")
 
