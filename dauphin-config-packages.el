@@ -15,8 +15,17 @@
 (my-global-key-chord-mode 1)
 
 ;;
-;; ace jump mode major function
+;; indenting things
+(setq-default indent-tabs-mode nil)
+(smart-tabs-add-language-support c++ c++-mode-hook
+  ((c-indent-line . c-basic-offset)
+   (c-indent-region . c-basic-offset)))
+(smart-tabs-insinuate 'c 'c++ 'javascript 'python)
+(add-hook 'c-mode-common-hook
+          (lambda () (setq indent-tabs-mode t)))
+
 ;;
+;; ace jump mode major function
 (autoload
   'ace-jump-mode
   "ace-jump-mode"

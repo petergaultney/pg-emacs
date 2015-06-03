@@ -131,6 +131,7 @@
 (setq set-mark-command-repeat-pop 1) ; C-u C-SPC uses mark ring. now C-SPC simply continues.
 (setq next-screen-context-lines 5) ; 2 lines isn't enough context on pgdown
 (setq scroll-preserve-screen-position t) ; this is a beautiful thing
+
 (setq tab-stop-list (number-sequence 4 120 4))
 
 (windmove-default-keybindings)
