@@ -132,6 +132,7 @@
 (setq next-screen-context-lines 5) ; 2 lines isn't enough context on pgdown
 (setq scroll-preserve-screen-position t) ; this is a beautiful thing
 (setq tab-stop-list (number-sequence 4 120 4))
+(setq tramp-default-method "ssh")
 
 (windmove-default-keybindings)
 
