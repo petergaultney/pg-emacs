@@ -1,6 +1,7 @@
 ;;; dauphin-config.el --- 
 (load "better-defaults.el")
 (load "window-half-scroll.el")
+(load "compile-window-placement.el")
 ;; remove annoying prompt http://shreevatsa.wordpress.com/2007/01/06/using-emacsclient/
 ;; (server-start)
 ;; (remove-hook 'kill-buffer-query-functions 'server-kill-buffer-query-function)
@@ -14,6 +15,9 @@
 (load custom-file 'noerror)
 
 (add-to-list 'auto-mode-alist '("\\.ino\\'" . c-mode))
+
+(font-lock-add-keywords 'c-mode
+                        '(("nullptr" . font-lock-keyword-face)))
 
 (menu-bar-mode 0)
 (global-font-lock-mode t) 
