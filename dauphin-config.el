@@ -16,7 +16,7 @@
 
 (add-to-list 'auto-mode-alist '("\\.ino\\'" . c-mode))
 
-(font-lock-add-keywords 'c-mode
+(font-lock-add-keywords 'c++-mode
                         '(("nullptr" . font-lock-keyword-face)))
 
 (menu-bar-mode 0)
