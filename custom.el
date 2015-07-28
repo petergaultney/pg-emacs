@@ -8,14 +8,17 @@
  '(ido-mode (quote both) nil (ido))
  '(minibuffer-prompt-properties
    (quote
-    (read-only t point-entered minibuffer-avoid-prompt face minibuffer-prompt)))
+	(read-only t point-entered minibuffer-avoid-prompt face minibuffer-prompt)))
  '(org-agenda-files (quote ("~/workspace/work.org")))
  '(org-hide-leading-stars t)
  '(org-replace-disputed-keys t)
  '(org-return-follows-link t)
  '(org-startup-indented t)
  '(org-todo-keywords (quote ((sequence "TODO" "DONE" "CANCELED"))))
- )
+ '(safe-local-variable-values
+   (quote
+	((indent-tabs-mode . 1)
+	 (header-auto-update-enabled)))))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
