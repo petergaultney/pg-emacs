@@ -14,10 +14,9 @@
 ;; load that custom file
 (load custom-file 'noerror)
 
-(add-to-list 'auto-mode-alist '("\\.ino\\'" . c-mode))
+(load "coding-standards.el")
 
-(font-lock-add-keywords 'c++-mode
-                        '(("nullptr" . font-lock-keyword-face)))
+(add-to-list 'auto-mode-alist '("\\.ino\\'" . c-mode))
 
 (menu-bar-mode 0)
 (global-font-lock-mode t) 
