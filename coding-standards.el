@@ -70,7 +70,7 @@
                           (knr-argdecl . 0)
                           (func-decl-cont . +)
                           (inline-close . 0)
-                          (inline-open . +)
+                          (inline-open . 0)
                           (class-close . 0)
                           (class-open . 0)
                           (defun-block-intro . +)
