@@ -141,6 +141,7 @@
 
 (windmove-default-keybindings)
 
+(load (concat dauphin-emacs-dir "dauphin-config-packages.el"))
 ;; then, finally, load my package-dependent things
 (condition-case nil
     (load (concat dauphin-emacs-dir "dauphin-config-packages.el"))

@@ -1,5 +1,5 @@
 (require 'header2)
-(require 'multiple-cursors)
+;;(require 'multiple-cursors)
 
 (require 'markdown-mode)
 
@@ -16,14 +16,15 @@
 
 ;;
 ;; indenting things
-(setq-default indent-tabs-mode nil)
-(smart-tabs-add-language-support c++ c++-mode-hook
-  ((c-indent-line . c-basic-offset)
-   (c-indent-region . c-basic-offset)))
-(smart-tabs-insinuate 'c 'c++ 'javascript 'python)
-(add-hook 'c-mode-common-hook
-          (lambda () (setq indent-tabs-mode t)))
+;; (setq-default indent-tabs-mode nil)
+;; (smart-tabs-add-language-support c++ c++-mode-hook
+;;   ((c-indent-line . c-basic-offset)
+;;    (c-indent-region . c-basic-offset)))
+;; (smart-tabs-insinuate 'c 'c++ 'javascript 'python)
+;; (add-hook 'c-mode-common-hook
+;;           (lambda () (setq indent-tabs-mode t)))
 
+(require 'ace-jump-mode)
 ;;
 ;; ace jump mode major function
 (autoload
@@ -39,17 +40,17 @@
   '(progn
      (define-key dired-mode-map (kbd "s") 'ace-jump-mode)))       
   
-;; 
+
 ;; enable a more powerful jump back function from ace jump mode
-;;
-;; (autoload
-;;   'ace-jump-mode-pop-mark
-;;   "ace-jump-mode"
-;;   "Ace jump back:-)"
-;;   t)
-;; (eval-after-load "ace-jump-mode"
-;;   '(ace-jump-mode-enable-mark-sync))
-;; (define-key global-map (kbd "C-x SPC") 'ace-jump-mode-pop-mark)
+
+(autoload
+  'ace-jump-mode-pop-mark
+  "ace-jump-mode"
+  "Ace jump back:-)"
+  t)
+(eval-after-load "ace-jump-mode"
+  '(ace-jump-mode-enable-mark-sync))
+(define-key global-map (kbd "C-x SPC") 'ace-jump-mode-pop-mark)
 
 ; (add-to-list 'custom-theme-load-path "~/.emacs.d/local_config/themes/")
 ; (load-theme 'zenburn t)
