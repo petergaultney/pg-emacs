@@ -3,16 +3,16 @@
 
 (require 'markdown-mode)
 
-(require 'key-chord)
-(autoload 'key-chord-mode "key-chord-mode")
-(key-chord-define-global ",b" 'switch-to-previous-buffer)
-(key-chord-define-global "fk" 'scroll-down)
-(key-chord-define-global "fj" 'scroll-up)
+;; (require 'key-chord)
+;; (autoload 'key-chord-mode "key-chord-mode")
+;; (key-chord-define-global ",b" 'switch-to-previous-buffer)
+;; (key-chord-define-global "fk" 'scroll-down)
+;; (key-chord-define-global "fj" 'scroll-up)
 
-(define-globalized-minor-mode my-global-key-chord-mode key-chord-mode
-  (lambda () (key-chord-mode 1)))
+;; (define-globalized-minor-mode my-global-key-chord-mode key-chord-mode
+;;  (lambda () (key-chord-mode 1)))
 
-(my-global-key-chord-mode 1)
+;; (my-global-key-chord-mode 1)
 
 ;;
 ;; indenting things
