@@ -15,6 +15,7 @@
 (load custom-file 'noerror)
 
 (load "coding-standards.el")
+(load "unfill-paragraph.el")
 
 (add-to-list 'auto-mode-alist '("\\.ino\\'" . c-mode))
 
