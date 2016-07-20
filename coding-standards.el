@@ -113,3 +113,4 @@
                           ("override" . font-lock-keyword-face)
                           )
                         )
+(add-hook 'before-save-hook 'delete-trailing-whitespace)
