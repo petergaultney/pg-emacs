@@ -1,4 +1,4 @@
-;;; dauphin-config.el --- 
+;;; dauphin-config.el ---
 (load "better-defaults.el")
 (load "window-half-scroll.el")
 (load "compile-window-placement.el")
@@ -20,15 +20,15 @@
 (add-to-list 'auto-mode-alist '("\\.ino\\'" . c-mode))
 
 (menu-bar-mode 0)
-(global-font-lock-mode t) 
-(show-paren-mode 1) 
+(global-font-lock-mode t)
+(show-paren-mode 1)
 (column-number-mode t)
 
 ;; MOUSE SCROLL (I know this means I'm weak)
 (unless window-system
   (require 'mouse)
   (xterm-mouse-mode 1)
-  (defun track-mouse (e)) 
+  (defun track-mouse (e))
   (setq mouse-sel-mode t)
 
   (global-set-key [mouse-4] '(lambda ()
@@ -59,20 +59,6 @@
 (define-key global-map (kbd "C-c d") 'delete-region)
 (define-key global-map (kbd "M-g") 'goto-line)
 (define-key global-map (kbd "C-x s") 'save-buffer)
-(global-set-key (kbd "C-c o a") 'org-agenda-list)
-(global-set-key (kbd "C-c o t") 'org-todo-list)
-
-(require 'org)
-(require 'org-install)
-
-(defun insert-org-timestamp-now ()
-  "Does what it says."
-  (interactive)
-  (require 'org-clock)
-  (org-insert-time-stamp (org-current-time org-clock-rounding-minutes) 'with-hm))
-(define-key global-map (kbd "C-c o n") 'insert-org-timestamp-now)
-;; (eval-after-load "org-mode"
-;;   '(define-key org-mode-map (kbd "C-c o n") 'org-time-stamp))
 
 ;; CUSTOM FUNCTIONS
 (defun reload-dotemacs ()
@@ -89,27 +75,6 @@
 ;; Repeated invocations toggle between the two most recently open buffers."
 ;;   (interactive)
 ;;   (switch-to-buffer (other-buffer (current-buffer) 1)))
-(defun org ()
-  "Switch to my org dir."
-  (interactive)
-  (find-file "~/org"))
-(defun notes ()
-  "Switch to my notes dir."
-  (interactive)
-  (find-file "~/org/notes"))
-;; http://members.optusnet.com.au/~charles57/GTD/orgmode.html#sec-2
-(defun gtd ()
-  "Open my GTD file"
-  (interactive)
-  (find-file "~/org/gtd.org"))
-(defun work-notes ()
-  "Switch to my work dir."
-  (interactive)
-  (find-file "~/workspace/org"))
-(defun pork ()
-  "Open my GTD file"
-  (interactive)
-  (find-file "~/org/gtd.org"))
 
 ;; LOAD OTHER FILES WITH CUSTOM FUNCTIONS
 (load "smarter_move_beginning_of_line")
@@ -120,14 +85,12 @@
 (define-key global-map (kbd "C-c C-e") 'reload-dotemacs)
 (define-key global-map (kbd "C-c b") 'switch-to-prev-buffer)
 
-(define-key global-map (kbd "C-c w") 'work-notes)
-
 
 ; join line from top line
 (global-set-key (kbd "M-j") (lambda () (interactive) (join-line -1)))
 
 ;; SET A BUNCH OF VARIABLES
-(setq truncate-partial-width-windows nil) 
+(setq truncate-partial-width-windows nil)
 (setq default-truncate-lines t)  ; i hate wrapping lines
 (setq inhibit-startup-message t) ; startup screen is useless
 (setq inhibit-splash-screen t)
@@ -163,3 +126,4 @@
 
 (define-key global-map "\M-Q" 'unfill-paragraph)
 
+(load "org-custom")

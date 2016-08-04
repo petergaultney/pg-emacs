@@ -1,3 +1,18 @@
+;; the package manager
+(require 'package)
+(setq
+ use-package-always-ensure t
+ package-archives '(("gnu" . "http://elpa.gnu.org/packages/")
+					("org" . "http://orgmode.org/elpa/")
+					("melpa" . "http://melpa.org/packages/")
+					("melpa-stable" . "http://stable.melpa.org/packages/")))
+
+(package-initialize)
+(when (not package-archive-contents)
+  (package-refresh-contents)
+  (package-install 'use-package))
+(require 'use-package)
+
 (require 'header2)
 ;;(require 'multiple-cursors)
 
@@ -38,8 +53,8 @@
 ;; this seems necessary for it to work in dired. not sure why...
 (eval-after-load "dired"
   '(progn
-     (define-key dired-mode-map (kbd "s") 'ace-jump-mode)))       
-  
+     (define-key dired-mode-map (kbd "s") 'ace-jump-mode)))
+
 
 ;; enable a more powerful jump back function from ace jump mode
 
@@ -57,3 +72,11 @@
 
 ; (add-to-list 'load-path "~/.emacs.d/local_config/helm")
 ; (require 'helm-config) ;; still not sure how much i'll use this
+
+(use-package scala-mode
+			 :interpreter
+			 ("scala" . scala-mode))
+
+(load "Highlight-Indentation-for-Emacs/highlight-indentation.el")
+(set-face-background 'highlight-indentation-face "#333333")
+(set-face-background 'highlight-indentation-current-column-face "#222222")

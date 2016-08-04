@@ -12,3 +12,27 @@
 (define-key global-map (kbd "C-c o n") 'insert-org-timestamp-now)
 ;; (eval-after-load "org-mode"
 ;;   '(define-key org-mode-map (kbd "C-c o n") 'org-time-stamp))
+
+(defun org ()
+  "Switch to my org dir."
+  (interactive)
+  (find-file "~/org"))
+(defun notes ()
+  "Switch to my notes dir."
+  (interactive)
+  (find-file "~/org/notes"))
+;; http://members.optusnet.com.au/~charles57/GTD/orgmode.html#sec-2
+(defun gtd ()
+  "Open my GTD file"
+  (interactive)
+  (find-file "~/org/gtd.org"))
+(defun work-notes ()
+  "Switch to my work dir."
+  (interactive)
+  (find-file "~/org/eventbrite.org"))
+(defun pork ()
+  "Open my GTD file"
+  (interactive)
+  (find-file "~/org/gtd.org"))
+
+(define-key global-map (kbd "C-c w") 'work-notes)
