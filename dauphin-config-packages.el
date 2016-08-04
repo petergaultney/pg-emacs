@@ -76,7 +76,3 @@
 (use-package scala-mode
 			 :interpreter
 			 ("scala" . scala-mode))
-
-(load "Highlight-Indentation-for-Emacs/highlight-indentation.el")
-(set-face-background 'highlight-indentation-face "#333333")
-(set-face-background 'highlight-indentation-current-column-face "#222222")
