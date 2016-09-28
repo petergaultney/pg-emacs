@@ -9,17 +9,6 @@
 (load custom-file 'noerror)
 
 (load (concat dauphin-emacs-dir "dauphin-config-packages.el")) ;; manual hack to see if packages are working
-;; then, finally, load my package-dependent things
-;; (condition-case nil
-;;     (load "dauphin-config-packages.el")
-;;   (error
-;;    (message "Could not find a package. Attempting to download all packages.")
-;;    (condition-case nil
-;;        (load "autopackaging.el")
-;;      (error nil)
-;;      )
-;;    )
-;;   )
 
 (load "better-defaults.el")
 (load "window-half-scroll.el")
