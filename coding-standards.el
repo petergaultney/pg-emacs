@@ -5,7 +5,7 @@
 (customize-set-variable 'standard-indent 4)
 (customize-set-variable 'tab-width 4)
 (customize-set-variable 'c-basic-offset 4)
-(customize-set-variable 'indent-tabs-mode 1)
+(customize-set-variable 'indent-tabs-mode 0)
 (customize-set-variable 'header-auto-update-enabled t)
 
 (customize-set-variable 'c-offsets-alist

@@ -1,10 +1,4 @@
 ;;; dauphin-config.el ---
-(load "better-defaults.el")
-(load "window-half-scroll.el")
-(load "compile-window-placement.el")
-;; remove annoying prompt http://shreevatsa.wordpress.com/2007/01/06/using-emacsclient/
-;; (server-start)
-;; (remove-hook 'kill-buffer-query-functions 'server-kill-buffer-query-function)
 
 ;; ask emacs to save settings in a special file:
 ;; from http://tychoish.com/rhizome//useful-emacs-and-orgmode-hacks/
@@ -13,6 +7,26 @@
 (setq custom-file (concat dauphin-emacs-dir "custom.el"))
 ;; load that custom file
 (load custom-file 'noerror)
+
+(load (concat dauphin-emacs-dir "dauphin-config-packages.el")) ;; manual hack to see if packages are working
+;; then, finally, load my package-dependent things
+;; (condition-case nil
+;;     (load "dauphin-config-packages.el")
+;;   (error
+;;    (message "Could not find a package. Attempting to download all packages.")
+;;    (condition-case nil
+;;        (load "autopackaging.el")
+;;      (error nil)
+;;      )
+;;    )
+;;   )
+
+(load "better-defaults.el")
+(load "window-half-scroll.el")
+(load "compile-window-placement.el")
+;; remove annoying prompt http://shreevatsa.wordpress.com/2007/01/06/using-emacsclient/
+;; (server-start)
+;; (remove-hook 'kill-buffer-query-functions 'server-kill-buffer-query-function)
 
 (load "coding-standards.el")
 (load "unfill-paragraph.el")
@@ -104,19 +118,6 @@
 (setq tramp-default-method "ssh")
 
 (windmove-default-keybindings)
-
-;; (load (concat dauphin-emacs-dir "dauphin-config-packages.el")) ;; manual hack to see if packages are working
-;; then, finally, load my package-dependent things
-(condition-case nil
-    (load (concat dauphin-emacs-dir "dauphin-config-packages.el"))
-  (error
-   (message "Could not find a package. Attempting to download all packages.")
-   (condition-case nil
-       (load (concat dauphin-emacs-dir "autopackaging.el"))
-     (error nil)
-     )
-   )
-  )
 
 (defun unfill-paragraph (&optional region)
   "Takes a multi-line paragraph and makes it into a single line of text."

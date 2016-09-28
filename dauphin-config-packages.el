@@ -1,62 +1,40 @@
 ;; the package manager
 (require 'package)
-(setq
- use-package-always-ensure t
- package-archives '(("gnu" . "http://elpa.gnu.org/packages/")
-					("org" . "http://orgmode.org/elpa/")
-					("melpa" . "http://melpa.org/packages/")
-					("melpa-stable" . "http://stable.melpa.org/packages/")))
-
+(setq package-enable-at-startup nil)
+(add-to-list 'package-archives '("melpa" . "http://melpa.org/packages/"))
+(add-to-list 'package-archives '("org" . "http://orgmode.org/elpa/"))
+(add-to-list 'package-archives '("marmalade" . "http://marmalade-repo.org/packages/"))
+(add-to-list 'package-archives '("gnu" . "http://elpa.gnu.org/packages/"))
 (package-initialize)
-(when (not package-archive-contents)
+
+(unless (package-installed-p 'use-package)
   (package-refresh-contents)
   (package-install 'use-package))
-(require 'use-package)
+
+(eval-when-compile
+  (require 'use-package))
+(require 'diminish)
+(require 'bind-key)
+;; end use-package init
 
 (require 'header2)
-;;(require 'multiple-cursors)
 
-(require 'markdown-mode)
+(use-package multiple-cursors
+  :ensure t
+  :bind (("C-S-l" . mc/edit-lines)
+		 ("C-* n" . mc/mark-next-like-this)
+		 ("C-* p" . mc/mark-previous-like-this)
+		 ("C-* C-*" . mc/mark-all-like-this)
+		 ("C-c C-* C-*" . mc/mark-more-like-this)
 
-;; (require 'key-chord)
-;; (autoload 'key-chord-mode "key-chord-mode")
-;; (key-chord-define-global ",b" 'switch-to-previous-buffer)
-;; (key-chord-define-global "fk" 'scroll-down)
-;; (key-chord-define-global "fj" 'scroll-up)
-
-;; (define-globalized-minor-mode my-global-key-chord-mode key-chord-mode
-;;  (lambda () (key-chord-mode 1)))
-
-;; (my-global-key-chord-mode 1)
-
-;;
-;; indenting things
-;; (setq-default indent-tabs-mode nil)
-;; (smart-tabs-add-language-support c++ c++-mode-hook
-;;   ((c-indent-line . c-basic-offset)
-;;    (c-indent-region . c-basic-offset)))
-;; (smart-tabs-insinuate 'c 'c++ 'javascript 'python)
-;; (add-hook 'c-mode-common-hook
-;;           (lambda () (setq indent-tabs-mode t)))
-
-(require 'ace-jump-mode)
-;;
-;; ace jump mode major function
-(autoload
-  'ace-jump-mode
-  "ace-jump-mode"
-  "Emacs quick move minor mode"
-  t)
-;; you can select the key you prefer to
-(define-key global-map (kbd "M-s") 'ace-jump-mode)
-
-;; this seems necessary for it to work in dired. not sure why...
-(eval-after-load "dired"
-  '(progn
-     (define-key dired-mode-map (kbd "s") 'ace-jump-mode)))
-
-
-;; enable a more powerful jump back function from ace jump mode
+		 ("C-* i" . mc/insert-numbers)
+		 ("C-* s" . mc/sort-regions)
+		 ("C-* r" . mc/reverse-regions)
+		 ("M-<mouse-1>" . mc/add-cursor-on-click))
+  :init
+  (global-unset-key (kbd "M-<down-mouse-1>"))
+  :config
+    (require 'mc-extras))
 
 (autoload
   'ace-jump-mode-pop-mark
@@ -74,5 +52,7 @@
 ; (require 'helm-config) ;; still not sure how much i'll use this
 
 (use-package scala-mode
-			 :interpreter
-			 ("scala" . scala-mode))
+  :interpreter ("scala" . scala-mode))
+
+(use-package lua-mode
+  :interpreter ("lua" . lua-mode))
