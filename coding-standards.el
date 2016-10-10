@@ -114,3 +114,11 @@
                           )
                         )
 (add-hook 'before-save-hook 'delete-trailing-whitespace)
+
+;; Lua custom stuff
+(defun my-lua-setup ()
+    "Cconfigures indentation the way
+I want it. Makes sure spaces are used for indentation, not tabs."
+	(setq indent-tabs-mode nil)
+	(setq lua-indent-level 4))
+(add-hook 'lua-mode-hook 'my-lua-setup)
