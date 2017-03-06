@@ -19,6 +19,7 @@
 
 (load "coding-standards.el")
 (load "unfill-paragraph.el")
+(load "god-mode-config.el")
 
 (add-to-list 'auto-mode-alist '("\\.ino\\'" . c-mode))
 
