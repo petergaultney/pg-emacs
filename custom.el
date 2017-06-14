@@ -24,7 +24,9 @@
 	 ("marmalade" . "http://marmalade-repo.org/packages/")
 	 ("Tromey" . "http://tromey.com/elpa/")
 	 ("melpa" . "https://melpa.org/packages/"))))
- '(package-selected-packages (quote (god-mode groovy-mode multiple-cursors use-package)))
+ '(package-selected-packages
+   (quote
+	(magit god-mode groovy-mode multiple-cursors use-package)))
  '(safe-local-variable-values
    (quote
 	((c-offsets-alist

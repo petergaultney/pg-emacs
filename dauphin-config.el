@@ -20,6 +20,7 @@
 (load "coding-standards.el")
 (load "unfill-paragraph.el")
 (load "god-mode-config.el")
+(load "indentation.el")
 
 (add-to-list 'auto-mode-alist '("\\.ino\\'" . c-mode))
 
@@ -92,6 +93,7 @@
 
 ; join line from top line
 (global-set-key (kbd "M-j") (lambda () (interactive) (join-line -1)))
+(global-set-key (kbd "C-x g") 'magit-status)
 
 ;; SET A BUNCH OF VARIABLES
 (setq truncate-partial-width-windows nil)
