@@ -13,6 +13,7 @@
 (load "better-defaults.el")
 (load "window-half-scroll.el")
 (load "compile-window-placement.el")
+
 ;; remove annoying prompt http://shreevatsa.wordpress.com/2007/01/06/using-emacsclient/
 ;; (server-start)
 ;; (remove-hook 'kill-buffer-query-functions 'server-kill-buffer-query-function)
