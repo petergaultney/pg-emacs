@@ -30,6 +30,12 @@
 (show-paren-mode 1)
 (column-number-mode t)
 
+(windmove-default-keybindings)
+(global-set-key (kbd "C-c <left>")  'windmove-left)
+(global-set-key (kbd "C-c <right>") 'windmove-right)
+(global-set-key (kbd "C-c <up>")    'windmove-up)
+(global-set-key (kbd "C-c <down>")  'windmove-down)
+
 ;; MOUSE SCROLL (I know this means I'm weak)
 (unless window-system
   (require 'mouse)

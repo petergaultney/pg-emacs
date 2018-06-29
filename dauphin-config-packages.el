@@ -31,6 +31,8 @@
 
 (require 'header2)
 
+(elpy-enable)
+
 (use-package multiple-cursors
   :ensure t
   :bind (("C-S-l" . mc/edit-lines)

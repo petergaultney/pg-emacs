@@ -26,7 +26,7 @@
 	 ("melpa" . "https://melpa.org/packages/"))))
  '(package-selected-packages
    (quote
-	(cl-lib-highlight magit god-mode groovy-mode multiple-cursors use-package)))
+	(elpy cl-lib-highlight magit god-mode groovy-mode multiple-cursors use-package)))
  '(safe-local-variable-values
    (quote
 	((c-offsets-alist
