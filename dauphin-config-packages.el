@@ -33,6 +33,10 @@
 
 (elpy-enable)
 
+(use-package flycheck
+  :ensure t
+  :init (global-flycheck-mode))
+
 (use-package multiple-cursors
   :ensure t
   :bind (("C-S-l" . mc/edit-lines)
@@ -70,6 +74,7 @@
 
 (use-package lua-mode
   :interpreter ("lua" . lua-mode))
+
 
 (require 'yaml-mode)
 (add-to-list 'auto-mode-alist  '("\\.yml\\'" . yaml-mode))

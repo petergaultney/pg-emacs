@@ -29,10 +29,26 @@
 (defun work-notes ()
   "Switch to my work dir."
   (interactive)
-  (find-file "~/org/eventbrite.org"))
+  (find-file "~/org/xoi.org"))
 (defun pork ()
   "Open my GTD file"
   (interactive)
   (find-file "~/org/gtd.org"))
 
 (define-key global-map (kbd "C-c w") 'work-notes)
+
+(require 'org-bullets)
+(add-hook 'org-mode-hook (lambda () (org-bullets-mode 1)))
+
+(use-package org-fancy-priorities
+  :ensure t
+  :hook
+  (org-mode . org-fancy-priorities-mode)
+  :config
+  (setq org-fancy-priorities-list '("⚡" "⬆" "⬇" "☕")))
+
+;; Make windmove work in org-mode:
+(add-hook 'org-shiftup-final-hook 'windmove-up)
+(add-hook 'org-shiftleft-final-hook 'windmove-left)
+(add-hook 'org-shiftdown-final-hook 'windmove-down)
+(add-hook 'org-shiftright-final-hook 'windmove-right)

@@ -12,12 +12,17 @@
  '(minibuffer-prompt-properties
    (quote
 	(read-only t point-entered minibuffer-avoid-prompt face minibuffer-prompt)))
- '(org-agenda-files nil)
+ '(org-agenda-files (quote ("~/org/xoi.org")))
+ '(org-default-priority 68)
  '(org-hide-leading-stars t)
- '(org-replace-disputed-keys t)
+ '(org-highest-priority 65)
+ '(org-lowest-priority 68)
+ '(org-replace-disputed-keys nil)
  '(org-return-follows-link t)
  '(org-startup-indented t)
- '(org-todo-keywords (quote ((sequence "TODO" "PROG" "DONE" "CANCELED"))))
+ '(org-todo-keywords
+   (quote
+	((sequence "TODO(t)" "PROG(p)" "WAIT(w)" "|" "DONE(d)" "CANCELED(c)"))))
  '(package-archives
    (quote
 	(("gnu" . "http://elpa.gnu.org/packages/")
@@ -26,7 +31,7 @@
 	 ("melpa" . "https://melpa.org/packages/"))))
  '(package-selected-packages
    (quote
-	(elpy cl-lib-highlight magit god-mode groovy-mode multiple-cursors use-package)))
+	(graphql-mode flycheck elpygen org-fancy-priorities elpy cl-lib-highlight magit god-mode groovy-mode multiple-cursors use-package)))
  '(safe-local-variable-values
    (quote
 	((c-offsets-alist
@@ -133,14 +138,19 @@
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
- '(flymake-errline ((((class color) (background light)) (:background "#500"))))
+ '(flymake-errline ((((class color) (background light)) (:background "#500"))) t)
+ '(flymake-error ((((class color) (background light)) (:background "#500"))))
  '(flymake-infoline ((((class color) (background light)) (:background "DarkGreen" :foreground "White"))))
  '(font-lock-comment-face ((nil (:foreground "red"))))
+ '(font-lock-string-face ((t (:foreground "green"))))
+ '(font-lock-variable-name-face ((t (:foreground "cyan"))))
  '(hi-pink ((t (:background "pink" :foreground "black"))))
  '(highlight ((((class color) (min-colors 8) (background light)) (:background "#080"))))
  '(highlight-indentation-current-column-face ((t (:background "#222222"))))
  '(highlight-indentation-face ((t (:background "#111111"))))
- '(org-hide ((nil (:foreground "black"))))
+ '(org-hide ((nil (:foreground "black" :background "black"))))
  '(org-table ((t (:foreground "Blue"))))
+ '(outline-2 ((t (:foreground "green" :weight bold))))
+ '(outline-3 ((t (:foreground "yellow" :weight bold))))
  '(region ((t (:background "#0000ff" :foreground "white"))))
  '(secondary-selection ((((class color) (min-colors 8) (background light)) (:background "yellow1" :foreground "black")))))

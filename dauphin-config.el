@@ -30,11 +30,12 @@
 (show-paren-mode 1)
 (column-number-mode t)
 
-(windmove-default-keybindings)
 (global-set-key (kbd "C-c <left>")  'windmove-left)
 (global-set-key (kbd "C-c <right>") 'windmove-right)
 (global-set-key (kbd "C-c <up>")    'windmove-up)
 (global-set-key (kbd "C-c <down>")  'windmove-down)
+
+(global-set-key (kbd "C-c a") 'org-agenda)
 
 ;; MOUSE SCROLL (I know this means I'm weak)
 (unless window-system
@@ -63,6 +64,8 @@
       (concat user-temporary-file-directory ".auto-saves-"))
 (setq auto-save-file-name-transforms
       `((".*" ,user-temporary-file-directory t)))
+
+(setq frame-title-format "%b")
 ;; END TEMP FILES
 
 ;; DEFINE MY PERSONAL SHORTCUTS (that don't depend on other stuff)
@@ -116,8 +119,6 @@
 (setq tab-stop-list (number-sequence 4 120 4))
 (setq tramp-default-method "ssh")
 
-(windmove-default-keybindings)
-
 (defun unfill-paragraph (&optional region)
   "Takes a multi-line paragraph and makes it into a single line of text."
   (interactive (progn (barf-if-buffer-read-only) '(t)))
@@ -128,3 +129,5 @@
 
 (load "org-custom")
 (load "Highlight-Indentation-for-Emacs/highlight-indentation.el")
+
+(load "vtl")
