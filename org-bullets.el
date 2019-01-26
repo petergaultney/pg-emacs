@@ -42,8 +42,8 @@
 (defcustom org-bullets-bullet-list
   '(;;; Large
     "◉"
-    "○"
     "✸"
+    "○"
     "✿"
     ;; ♥ ● ◇ ✚ ✜ ☯ ◆ ♠ ♣ ♦ ☢ ❀ ◆ ◖ ▶
     ;;; Small

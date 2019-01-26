@@ -37,6 +37,19 @@
   :ensure t
   :init (global-flycheck-mode))
 
+(flycheck-define-checker
+    python-mypy ""
+    :command ("mypy"
+              "--ignore-missing-imports"
+              "--python-version" "3.7"
+              source-original)
+    :error-patterns
+    ((error line-start (file-name) ":" line ": error:" (message) line-end))
+    :modes python-mode)
+
+(add-to-list 'flycheck-checkers 'python-mypy t)
+(flycheck-add-next-checker 'python-pylint 'python-mypy t)
+
 (use-package multiple-cursors
   :ensure t
   :bind (("C-S-l" . mc/edit-lines)
@@ -61,7 +74,9 @@
   t)
 (eval-after-load "ace-jump-mode"
   '(ace-jump-mode-enable-mark-sync))
-(define-key global-map (kbd "C-x SPC") 'ace-jump-mode-pop-mark)
+(define-key global-map (kbd "C-d") 'ace-jump-mode-pop-mark)
+(define-key global-map (kbd "C-j") 'ace-jump-mode)
+(define-key global-map (kbd "C-t") 'ace-jump-char-mode)
 
 ; (add-to-list 'custom-theme-load-path "~/.emacs.d/local_config/themes/")
 ; (load-theme 'zenburn t)

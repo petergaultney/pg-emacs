@@ -7,6 +7,7 @@
  '(backup-directory-alist (quote ((".*" . "~/.emacs.d/backups/"))))
  '(ido-mode (quote both) nil (ido))
  '(indent-tabs-mode nil)
+ '(js-indent-level 2)
  '(lua-indent-level 4)
  '(lua-prefix-key "C-c")
  '(minibuffer-prompt-properties
