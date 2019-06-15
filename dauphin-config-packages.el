@@ -25,7 +25,7 @@
 
 (eval-when-compile
   (require 'use-package))
-(require 'diminish)
+;; (require 'diminish)
 (require 'bind-key)
 ;; end use-package init
 
@@ -66,6 +66,8 @@
   (global-unset-key (kbd "M-<down-mouse-1>"))
   :config
     (require 'mc-extras))
+
+(require 'ace-jump-mode)
 
 (autoload
   'ace-jump-mode-pop-mark

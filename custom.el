@@ -32,7 +32,7 @@
 	 ("melpa" . "https://melpa.org/packages/"))))
  '(package-selected-packages
    (quote
-	(graphql-mode flycheck elpygen org-fancy-priorities elpy cl-lib-highlight magit god-mode groovy-mode multiple-cursors use-package)))
+	(prettier-js web-mode graphql-mode flycheck elpygen org-fancy-priorities elpy cl-lib-highlight magit god-mode groovy-mode multiple-cursors use-package)))
  '(safe-local-variable-values
    (quote
 	((c-offsets-alist
@@ -133,7 +133,10 @@
 	 (c-basic-offset\. 4)
 	 (c-tab-always-indent . t)
 	 (header-auto-update-enabled))))
- '(standard-indent 4))
+ '(smerge-command-prefix "^C ^V")
+ '(standard-indent 4)
+ '(web-mode-code-indent-offset 2)
+ '(web-mode-markup-indent-offset 2))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.

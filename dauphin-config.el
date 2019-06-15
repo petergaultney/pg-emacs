@@ -22,6 +22,7 @@
 (load "unfill-paragraph.el")
 (load "god-mode-config.el")
 (load "indentation.el")
+(load "javascript.el")
 
 (add-to-list 'auto-mode-alist '("\\.ino\\'" . c-mode))
 
