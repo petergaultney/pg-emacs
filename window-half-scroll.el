@@ -1,5 +1,5 @@
 (defun window-half-height ()
-  (max 1 (/ (1- (window-height (selected-window))) 2)))
+  (max 1 (/ (1- (window-height (selected-window))) 4)))
 
 (defun scroll-up-half ()
   (interactive)

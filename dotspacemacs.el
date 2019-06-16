@@ -330,7 +330,7 @@ you should place your code here."
 
   (with-eval-after-load 'evil-maps
     ;; make NOIR my arrow keys
-    (unset-evil-keys '("n" "o" "i" "r" "a" "e" ";" "f" "b" ))
+    (unset-evil-keys '("n" "o" "i" "r" "a" "e" ";" "f" "b" "d"))
 
     (set-evil-key "n" 'backward-char)
     (set-evil-key "o" 'forward-char)
@@ -341,31 +341,31 @@ you should place your code here."
     (set-evil-key "a" 'mwim-beginning-of-code-or-line)
     (set-evil-key "e" 'end-of-line)
 
-   ;; cool new stuff
+    ;; half-page scroll in all non-insert modes
+    (set-evil-key "-" 'scroll-down-half)
+    (set-evil-key "=" 'scroll-up-half)
+
+    ;; cool new stuff
     (set-evil-key "f" 'forward-whitespace)
     (set-evil-key "b" 'backward-whitespace)
+    (set-evil-key "t" 'avy-goto-char-timer)
+    (set-evil-key "s" 'isearch-forward)
 
     ;; visual state stuff partially inherited from my Ergodox config
     (define-key evil-visual-state-map "w" 'kill-region)
     (define-key evil-visual-state-map "q" 'kill-ring-save)
-    (define-key evil-visual-state-map "d" 'delete-region)
     (define-key evil-visual-state-map ";" 'comment-dwim)
 
     ;; stuff that seems obvious to me
     (define-key evil-normal-state-map [tab] 'evil-indent)
 
-    ;; half-page scroll in all non-insert modes
-    (set-evil-key "-" 'scroll-down-half)
-    (set-evil-key "=" 'scroll-up-half)
-
-    ;; my personal keybindings from Emacs
-    (define-key evil-normal-state-map "s" 'isearch-forward)
+   ;; my personal keybindings from Emacs
     ;; (define-key evil-normal-state-map "t" 'evil-insert)
     (define-key evil-normal-state-map "h" 'evil-insert-state)
     (define-key evil-normal-state-map (kbd "DEL") 'enter-insert-and-backward-delete-one)
     (define-key evil-normal-state-map (kbd "RET") 'evil-open-below)
     (define-key evil-normal-state-map "k" 'kill-line)
-    (define-key evil-normal-state-map "t" 'avy-goto-char-timer)
+    (define-key evil-normal-state-map "d" 'delete-line)
     (define-key evil-normal-state-map "y" 'yank)
     (define-key evil-normal-state-map "p" 'evil-paste-pop)
     (define-key evil-normal-state-map "/" 'undo)
@@ -375,12 +375,19 @@ you should place your code here."
     ;; motion-specific things
     (define-key evil-motion-state-map "h" 'evil-normal-state))
 
+  (with-eval-after-load 'magit-mode
+    (print "loaded magit mode map" debugbuff)
+    (define-key magit-mode-map "r" 'previous-line))
+
   ;; in ivy minibuffers, it's nice to be able to use my 'standard' movement keys
   ;; rather than the default C-n and C-p
   (with-eval-after-load 'counsel
     (print "loading after ivy minibuffer map" debugbuff)
+    (define-key ivy-minibuffer-map (kbd "C-g") 'minibuffer-keyboard-quit))
     (define-key ivy-minibuffer-map (kbd "M-i") 'ivy-next-line)
-    (define-key ivy-minibuffer-map (kbd "C-r") 'ivy-previous-line))
+    (define-key ivy-minibuffer-map (kbd "C-r") 'ivy-previous-line)
+    (define-key ivy-minibuffer-map (kbd "M-r") 'ivy-previous-line))
+
 
   ;; SPC i
   (spacemacs/declare-prefix "i" "my stuff")
@@ -388,6 +395,7 @@ you should place your code here."
   (spacemacs/set-leader-keys "io" 'evil-window-right)
   (spacemacs/set-leader-keys "i." 'end-of-buffer)
   (spacemacs/set-leader-keys "i," 'beginning-of-buffer)
+  (spacemacs/set-leader-keys "im" 'evil-motion-state)
   ;; SPC c
   (spacemacs/declare-prefix "c" "Ctrl-C stuff")
   (spacemacs/set-leader-keys "c." 'increase-left-margin)
@@ -397,23 +405,36 @@ you should place your code here."
   (spacemacs/set-leader-keys "ci" 'windmove-down)
   (spacemacs/set-leader-keys "cr" 'windmove-up)
 
+  (setq-default evil-escape-key-sequence "gt")
+
   ;; evil-normal-state is preferred, so revert when idle
   (run-with-idle-timer 20 t 'evil-normal-state)
 
-  (setq global-hl-line-mode nil)
-  (setq evil-move-beyond-eol "t")
+  ;; (setq evil-move-beyond-eol "t")
+  (spacemacs/toggle-highlight-current-line-globally-off)
   (setq powerline-default-separator "utf-8")
 
   ;; more consistency in movement
   (global-set-key (kbd "C-n") 'backward-char)
   (global-set-key (kbd "C-o") 'forward-char)
-  (global-set-key (kbd "M-i") 'next-line) ;; this relies on an iTerm2 mapping from Ctrl-I to Esc+-I
-  (global-set-key [tab] 'evil-indent)
   (global-set-key (kbd "C-r") 'previous-line)
+  (global-set-key (kbd "M-n") 'backward-char)
+  (global-set-key (kbd "M-o") 'forward-char)
+  (global-set-key (kbd "M-i") 'next-line) ;; this relies on an iTerm2 mapping from Ctrl-I to Esc+-I
+  (global-set-key (kbd "M-r") 'previous-line)
+  (global-set-key [tab] 'evil-indent)
 
   ;; better avy keys
   (setq avy-keys '(?a ?s ?e ?t ?g ?y ?n ?i ?o ?h))
 
+  (setq
+   evil-normal-state-tag (propertize " <N> " 'face '((:background "red" :foreground "black")))
+   evil-emacs-state-tag (propertize "  EMACS  " 'face '((:background "turquoise" :foreground "black")))
+   evil-hybrid-state-tag (propertize " <H> " 'face '((:background "green" :foreground "black")))
+   evil-replace-state-tag (propertize " REPLACE " 'face '((:background "dark orange" :foreground "black")))
+   evil-motion-state-tag (propertize " <M> " 'face '((:background "khaki" :foreground "black")))
+   evil-visual-state-tag (propertize " <V> " 'face '((:background "blue" :foreground "black")))
+   evil-operator-state-tag (propertize " OPERATE " 'face '((:background "sandy brown" :foreground "black"))))
 )
   ;; (define-key evil-motion-state-map "s" 'swiper)
 

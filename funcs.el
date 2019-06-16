@@ -8,3 +8,8 @@
   (backward-delete-char 1))
 
 (setq debugbuff (get-buffer-create "*PETER-LISP-DEBUG*"))
+
+(defun delete-line ()
+  (interactive)
+  (kill-line)
+  (setq kill-ring (cdr kill-ring)))

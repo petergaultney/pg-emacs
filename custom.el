@@ -5,12 +5,12 @@
  ;; If there is more than one, they won't work right.
  '(auto-save-file-name-transforms (quote ((".*" "~/.emacs.d/autosaves/\\1" t))))
  '(backup-directory-alist (quote ((".*" . "~/.emacs.d/backups/"))))
- '(c-basic-offset 4)
+ '(c-basic-offset 4 t)
  '(c-default-style
    (quote
     ((java-mode . "java")
      (awk-mode . "awk")
-     (other . "linux"))))
+     (other . "linux"))) t)
  '(c-offsets-alist
    (quote
     ((inexpr-class . +)
@@ -107,9 +107,14 @@
       (statement-case-open after)
       (substatement after))
      (c-comment-only-line-offset . 0)
-     (c-tab-always-indent . t))))
+     (c-tab-always-indent . t))) t)
+ '(custom-safe-themes
+   (quote
+    ("3c83b3676d796422704082049fc38b6966bcad960f896669dfc21a7a37a748fa" default)))
+ '(evil-move-beyond-eol t)
  '(evil-want-Y-yank-to-eol nil)
  '(flycheck-javascript-flow-args nil)
+ '(global-hl-line-mode nil)
  '(header-auto-update-enabled t t)
  '(ido-mode (quote both) nil (ido))
  '(indent-tabs-mode 0)
@@ -138,7 +143,7 @@
      ("melpa" . "https://melpa.org/packages/"))))
  '(package-selected-packages
    (quote
-    (paredit orgit org-projectile org-category-capture org-present yapfify which-key wgrep use-package unfill smex smeargle pytest pyenv-mode py-isort pip-requirements pcre2el org-pomodoro org-mime org-fancy-priorities org-download mwim multiple-cursors mmm-mode markdown-toc magit-gitflow macrostep live-py-mode ivy-hydra hy-mode htmlize helm-make gnuplot gitignore-mode gitconfig-mode gitattributes-mode git-timemachine git-messenger git-link gh-md fuzzy flycheck-flow flx exec-path-from-shell evil-visualstar evil-magit evil-escape elpy elisp-slime-nav diminish cython-mode counsel-projectile company-statistics company-anaconda bind-map auto-yasnippet auto-compile ace-window ac-ispell)))
+    (smart-mode-line orgit org-projectile org-category-capture org-present yapfify which-key wgrep use-package unfill smex smeargle pytest pyenv-mode py-isort pip-requirements pcre2el org-pomodoro org-mime org-fancy-priorities org-download mwim multiple-cursors mmm-mode markdown-toc magit-gitflow macrostep live-py-mode ivy-hydra hy-mode htmlize helm-make gnuplot gitignore-mode gitconfig-mode gitattributes-mode git-timemachine git-messenger git-link gh-md fuzzy flycheck-flow flx exec-path-from-shell evil-visualstar evil-magit evil-escape elpy elisp-slime-nav diminish cython-mode counsel-projectile company-statistics company-anaconda bind-map auto-yasnippet auto-compile ace-window ac-ispell)))
  '(safe-local-variable-values
    (quote
     ((c-offsets-alist
