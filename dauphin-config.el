@@ -20,7 +20,7 @@
 
 (load "coding-standards.el")
 (load "unfill-paragraph.el")
-(load "god-mode-config.el")
+;; (load "god-mode-config.el")
 (load "indentation.el")
 (load "javascript.el")
 
@@ -132,3 +132,5 @@
 (load "Highlight-Indentation-for-Emacs/highlight-indentation.el")
 
 (load "vtl")
+
+(load "funcs.el")
