@@ -383,11 +383,10 @@ you should place your code here."
   ;; rather than the default C-n and C-p
   (with-eval-after-load 'counsel
     (print "loading after ivy minibuffer map" debugbuff)
-    (define-key ivy-minibuffer-map (kbd "C-g") 'minibuffer-keyboard-quit))
+    (define-key ivy-minibuffer-map (kbd "C-g") 'minibuffer-keyboard-quit)
     (define-key ivy-minibuffer-map (kbd "M-i") 'ivy-next-line)
     (define-key ivy-minibuffer-map (kbd "C-r") 'ivy-previous-line)
     (define-key ivy-minibuffer-map (kbd "M-r") 'ivy-previous-line))
-
 
   ;; SPC i
   (spacemacs/declare-prefix "i" "my stuff")
@@ -436,7 +435,6 @@ you should place your code here."
    evil-visual-state-tag (propertize " <V> " 'face '((:background "blue" :foreground "black")))
    evil-operator-state-tag (propertize " OPERATE " 'face '((:background "sandy brown" :foreground "black"))))
 )
-  ;; (define-key evil-motion-state-map "s" 'swiper)
 
 ;; Do not write anything past this comment. This is where Emacs will
 ;; auto-generate custom variable definitions.
