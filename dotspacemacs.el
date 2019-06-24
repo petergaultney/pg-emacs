@@ -31,6 +31,8 @@ values."
    ;; List of configuration layers to load.
    dotspacemacs-configuration-layers
    '(
+     shell-scripts
+     yaml
      javascript
      python
      ;; ----------------------------------------------------------------
@@ -305,6 +307,11 @@ before packages are loaded. If you are unsure, you should try in setting them in
 
   )
 
+(defun evil-peter-enter ()
+  (interactive)
+  (evil-hybrid-state)
+  (newline 1))
+
 (defun unset-evil-keys (keys)
   (interactive)
   (dolist (key keys)
@@ -318,6 +325,17 @@ before packages are loaded. If you are unsure, you should try in setting them in
   (define-key evil-normal-state-map key func)
   (define-key evil-motion-state-map key func)
   (define-key evil-visual-state-map key func))
+
+(defun turn-buffer-modeline-green ()
+  (interactive)
+  (face-remap-add-relative
+   'mode-line '((:foreground: "black" :background: "green") mode-line)))
+  ;;(set-face-foreground 'mode-line "#00ff00"))
+
+(defun turn-buffer-modeline-white ()
+  (interactive)
+  (set-face-foreground 'mode-line "#ffffff"))
+
 
 (defun dotspacemacs/user-config ()
   "Configuration function for user code.
@@ -342,8 +360,8 @@ you should place your code here."
     (set-evil-key "e" 'end-of-line)
 
     ;; half-page scroll in all non-insert modes
-    (set-evil-key "-" 'scroll-down-half)
-    (set-evil-key "=" 'scroll-up-half)
+    (set-evil-key "u" 'scroll-down-half)
+    (set-evil-key "l" 'scroll-up-half)
 
     ;; cool new stuff
     (set-evil-key "f" 'forward-whitespace)
@@ -363,7 +381,7 @@ you should place your code here."
     ;; (define-key evil-normal-state-map "t" 'evil-insert)
     (define-key evil-normal-state-map "h" 'evil-insert-state)
     (define-key evil-normal-state-map (kbd "DEL") 'enter-insert-and-backward-delete-one)
-    (define-key evil-normal-state-map (kbd "RET") 'evil-open-below)
+    (define-key evil-normal-state-map (kbd "RET") 'evil-peter-enter)
     (define-key evil-normal-state-map "k" 'kill-line)
     (define-key evil-normal-state-map "d" 'delete-line)
     (define-key evil-normal-state-map "y" 'yank)
@@ -371,6 +389,8 @@ you should place your code here."
     (define-key evil-normal-state-map "/" 'undo)
     (define-key evil-normal-state-map ";" 'comment-dwim)
     (define-key evil-motion-state-map "6" 'delete-indentation)
+
+    (evil-define-key 'normal evil-org-mode-map "o" nil)
 
     ;; motion-specific things
     (define-key evil-motion-state-map "h" 'evil-normal-state))
@@ -427,13 +447,16 @@ you should place your code here."
   (setq avy-keys '(?a ?s ?e ?t ?g ?y ?n ?i ?o ?h))
 
   (setq
-   evil-normal-state-tag (propertize " <N> " 'face '((:background "red" :foreground "black")))
-   evil-emacs-state-tag (propertize "  EMACS  " 'face '((:background "turquoise" :foreground "black")))
-   evil-hybrid-state-tag (propertize " <H> " 'face '((:background "green" :foreground "black")))
-   evil-replace-state-tag (propertize " REPLACE " 'face '((:background "dark orange" :foreground "black")))
-   evil-motion-state-tag (propertize " <M> " 'face '((:background "khaki" :foreground "black")))
-   evil-visual-state-tag (propertize " <V> " 'face '((:background "blue" :foreground "black")))
-   evil-operator-state-tag (propertize " OPERATE " 'face '((:background "sandy brown" :foreground "black"))))
+   evil-normal-state-tag (propertize "  <N>  " 'face '((:foreground "red" :background "black")))
+   evil-emacs-state-tag (propertize "  EMACS  " 'face '((:foreground "turquoise" :background "black")))
+   evil-hybrid-state-tag (propertize "  <H>  " 'face '((:foreground "green" :background "black")))
+   evil-replace-state-tag (propertize " REPLACE " 'face '((:foreground "dark orange" :background "black")))
+   evil-motion-state-tag (propertize "  <M>  " 'face '((:foreground "khaki" :background "black")))
+   evil-visual-state-tag (propertize "  <V>  " 'face '((:foreground "blue" :background "black")))
+   evil-operator-state-tag (propertize " OPERATE " 'face '((:background "sandy brown" :background "black"))))
+
+  (add-hook 'evil-hybrid-state-entry-hook 'turn-buffer-modeline-green)
+  (add-hook 'evil-hybrid-state-exit-hook 'turn-buffer-modeline-white)
 )
 
 ;; Do not write anything past this comment. This is where Emacs will
