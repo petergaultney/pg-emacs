@@ -328,14 +328,38 @@ before packages are loaded. If you are unsure, you should try in setting them in
 
 (defun turn-buffer-modeline-green ()
   (interactive)
-  (face-remap-add-relative
-   'mode-line '((:foreground: "black" :background: "green") mode-line)))
-  ;;(set-face-foreground 'mode-line "#00ff00"))
+  (set-face-foreground 'mode-line-inactive "white")
+  (set-face-foreground 'mode-line "#00ff00"))
 
 (defun turn-buffer-modeline-white ()
   (interactive)
+  (set-face-foreground 'mode-line-inactive "white")
   (set-face-foreground 'mode-line "#ffffff"))
 
+(defun turn-buffer-modeline-blue ()
+  (set-face-foreground 'mode-line-inactive "white")
+  (set-face-foreground 'mode-line "blue"))
+
+;; (defun do--evil-travel-state (org-func &rest args)
+;;   "Make default state normal when traveling between windows.
+;; This is useful to avoid navigating with the insert state."
+;;   (unless (memq evil-state '(normal motion emacs))
+;;     (evil-normal-state +1))
+;;   (apply org-func args))
+;; (advice-add 'windmove-do-window-select :around
+;;             'do--evil-travel-state)
+
+(defun do--status-bar-change-mode-line-color()
+  (cond
+   ((memq evil-state '(hybrid insert emacs))
+    (turn-buffer-modeline-green))
+   ((memq evil-state '(visual))
+    (turn-buffer-modeline-blue))
+   (t (turn-buffer-modeline-white))))
+
+(add-hook 'post-command-hook 'do--status-bar-change-mode-line-color)
+(add-hook 'windmove-do-window-select 'do--status-bar-change-mode-line-color)
+(add-hook 'find-file-hook 'do--status-bar-change-mode-line-color)
 
 (defun dotspacemacs/user-config ()
   "Configuration function for user code.
