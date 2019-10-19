@@ -47,6 +47,7 @@ values."
      git
      markdown
      org
+     clojure
      ;; (shell :variables
      ;;        shell-default-height 30
      ;;        shell-default-position 'bottom)
@@ -369,6 +370,7 @@ This is the place where most of your configurations should be done. Unless it is
 explicitly specified that a variable should be set before a package is loaded,
 you should place your code here."
   (print "Setting up my user config..." debugbuff)
+  (global-hl-line-mode -1)
 
   (with-eval-after-load 'evil-maps
     ;; make NOIR my arrow keys
@@ -449,6 +451,7 @@ you should place your code here."
   (spacemacs/set-leader-keys "cr" 'windmove-up)
 
   (setq-default evil-escape-key-sequence "gt")
+  (global-set-key (kbd "C-g C-g") 'evil-escape)
 
   ;; evil-normal-state is preferred, so revert when idle
   (run-with-idle-timer 20 t 'evil-normal-state)
@@ -481,6 +484,24 @@ you should place your code here."
 
   (add-hook 'evil-hybrid-state-entry-hook 'turn-buffer-modeline-green)
   (add-hook 'evil-hybrid-state-exit-hook 'turn-buffer-modeline-white)
+
+  (eval-after-load "lispy"
+    (progn
+    ;; replace a global binding with own function
+    ;; (define-key lispy-mode-map (kbd "C-e") 'my-custom-eol)
+    ;; replace a global binding with major-mode's default
+    ;; (define-key lispy-mode-map (kbd "C-j") nil)
+    ;; replace a local binding
+    (define-key lispy-mode-map "n" 'lispy-left)
+    (define-key lispy-mode-map "i" 'lispy-down)
+    (define-key lispy-mode-map "o" 'lispy-right)
+    (define-key lispy-mode-map "r" 'lispy-up)
+    (define-key lispy-mode-map "[" 'lispy-brackets)
+    (define-key lispy-mode-map "u" 'lispy-backward)
+    (define-key lispy-mode-map "l" 'lispy-forward)
+    (define-key lispy-mode-map-lispy (kbd "C-d") nil)
+    ))
+
 )
 
 ;; Do not write anything past this comment. This is where Emacs will
@@ -492,7 +513,7 @@ you should place your code here."
  ;; If there is more than one, they won't work right.
  '(package-selected-packages
    (quote
-    (orgit org-projectile org-category-capture org-present yapfify which-key wgrep use-package unfill smex smeargle pytest pyenv-mode py-isort pip-requirements pcre2el org-pomodoro org-mime org-fancy-priorities org-download mwim multiple-cursors mmm-mode markdown-toc magit-gitflow macrostep live-py-mode ivy-hydra hy-mode htmlize helm-make gnuplot gitignore-mode gitconfig-mode gitattributes-mode git-timemachine git-messenger git-link gh-md fuzzy flycheck-flow flx exec-path-from-shell evil-visualstar evil-magit evil-escape elpy elisp-slime-nav diminish cython-mode counsel-projectile company-statistics company-anaconda bind-map auto-yasnippet auto-compile ace-window ac-ispell))))
+    (orgit org-projectile org-category-capture yapfify which-key wgrep use-package unfill smex smeargle pytest pyenv-mode py-isort pip-requirements pcre2el org-pomodoro org-mime org-fancy-priorities org-download mwim multiple-cursors mmm-mode markdown-toc magit-gitflow macrostep live-py-mode ivy-hydra hy-mode htmlize helm-make gnuplot gitignore-mode gitconfig-mode gitattributes-mode git-timemachine git-messenger git-link gh-md fuzzy flycheck-flow flx exec-path-from-shell evil-visualstar evil-magit evil-escape elpy elisp-slime-nav diminish cython-mode counsel-projectile company-statistics company-anaconda bind-map auto-yasnippet auto-compile ace-window ac-ispell))))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.

@@ -35,23 +35,7 @@
 (use-package elpy)
 (elpy-enable)
 
-(use-package flycheck
-  :ensure t
-  :init (global-flycheck-mode))
-(use-package flycheck-flow)
-
-(flycheck-define-checker
-    python-mypy ""
-    :command ("mypy"
-              "--ignore-missing-imports"
-              "--python-version" "3.7"
-              source-original)
-    :error-patterns
-    ((error line-start (file-name) ":" line ": error:" (message) line-end))
-    :modes python-mode)
-
-(add-to-list 'flycheck-checkers 'python-mypy t)
-(flycheck-add-next-checker 'python-pylint 'python-mypy t)
+(load "flycheck-config.el")
 
 (use-package multiple-cursors
   :ensure t
@@ -98,3 +82,21 @@
 
 (require 'yaml-mode)
 (add-to-list 'auto-mode-alist  '("\\.yml\\'" . yaml-mode))
+
+
+(eval-after-load "lispy"
+  (progn
+    ;; replace a global binding with own function
+    ;; (define-key lispy-mode-map (kbd "C-e") 'my-custom-eol)
+    ;; replace a global binding with major-mode's default
+    ;; (define-key lispy-mode-map (kbd "C-j") nil)
+    ;; replace a local binding
+    ;; (define-key lispy-mode-map "n" 'lispy-left)
+    ;; (define-key lispy-mode-map "i" 'lispy-down)
+    ;; (define-key lispy-mode-map "o" 'lispy-right)
+    ;; (define-key lispy-mode-map "r" 'lispy-up)
+    ;; (define-key lispy-mode-map "[" 'lispy-brackets)
+    ;; (define-key lispy-mode-map "u" 'lispy-backward)
+    ;; (define-key lispy-mode-map "l" 'lispy-forward)
+    ;; (define-key lispy-mode-map (kbd "C-d") nil)
+    ))

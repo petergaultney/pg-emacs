@@ -1,4 +1,5 @@
 ;;; dauphin-config.el ---
+(load "funcs.el")
 
 ;; ask emacs to save settings in a special file:
 ;; from http://tychoish.com/rhizome//useful-emacs-and-orgmode-hacks/
@@ -13,6 +14,7 @@
 (load "better-defaults.el")
 (load "window-half-scroll.el")
 (load "compile-window-placement.el")
+(load "mac-copy.el")
 
 ;; remove annoying prompt http://shreevatsa.wordpress.com/2007/01/06/using-emacsclient/
 ;; (server-start)
@@ -30,6 +32,7 @@
 (global-font-lock-mode t)
 (show-paren-mode 1)
 (column-number-mode t)
+(set-face-attribute 'highlight nil :background "#3e4446" :foreground 'unspecified)
 
 (global-set-key (kbd "C-c <left>")  'windmove-left)
 (global-set-key (kbd "C-c <right>") 'windmove-right)
@@ -133,4 +136,4 @@
 
 (load "vtl")
 
-(load "funcs.el")
+(global-set-key (kbd "C-x b") 'switch-to-buffer)
