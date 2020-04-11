@@ -29,7 +29,7 @@
 (defun work-notes ()
   "Switch to my work dir."
   (interactive)
-  (find-file "~/org/xoi.org"))
+  (find-file "~/org/xoi/xoi.org"))
 (defun pork ()
   "Open my GTD file"
   (interactive)
@@ -52,3 +52,5 @@
 (add-hook 'org-shiftleft-final-hook 'windmove-left)
 (add-hook 'org-shiftdown-final-hook 'windmove-down)
 (add-hook 'org-shiftright-final-hook 'windmove-right)
+
+(setq org-agenda-files (directory-files-recursively "~/org/" "\\.org$"))

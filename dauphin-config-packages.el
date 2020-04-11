@@ -1,4 +1,5 @@
 ;; the package manager
+;;; Code:
 (require 'package)
 
 (let* ((no-ssl (and (memq system-type '(windows-nt ms-dos))
@@ -7,6 +8,7 @@
   ;; Comment/uncomment these two lines to enable/disable MELPA and MELPA Stable as desired
   (add-to-list 'package-archives (cons "melpa" (concat proto "://melpa.org/packages/")) t)
   ;;(add-to-list 'package-archives (cons "melpa-stable" (concat proto "://stable.melpa.org/packages/")) t)
+  (add-to-list 'package-archives '("org" . "https://orgmode.org/elpa/") t)
   (when (< emacs-major-version 24)
     ;; For important compatibility libraries like cl-lib
     (add-to-list 'package-archives '("gnu" . (concat proto "://elpa.gnu.org/packages/")))))
@@ -37,22 +39,22 @@
 
 (load "flycheck-config.el")
 
-(use-package multiple-cursors
-  :ensure t
-  :bind (("C-S-l" . mc/edit-lines)
-		 ("C-* n" . mc/mark-next-like-this)
-		 ("C-* p" . mc/mark-previous-like-this)
-		 ("C-* C-*" . mc/mark-all-like-this)
-		 ("C-c C-* C-*" . mc/mark-more-like-this)
+;; (use-package multiple-cursors
+;;   :ensure t
+;;   :bind (("C-S-l" . mc/edit-lines)
+;; 		 ("C-* n" . mc/mark-next-like-this)
+;; 		 ("C-* p" . mc/mark-previous-like-this)
+;; 		 ("C-* C-*" . mc/mark-all-like-this)
+;; 		 ("C-c C-* C-*" . mc/mark-more-like-this)e
 
-		 ("C-* i" . mc/insert-numbers)
-		 ("C-* s" . mc/sort-regions)
-		 ("C-* r" . mc/reverse-regions)
-		 ("M-<mouse-1>" . mc/add-cursor-on-click))
-  :init
-  (global-unset-key (kbd "M-<down-mouse-1>"))
-  :config
-    (require 'mc-extras))
+;; 		 ("C-* i" . mc/insert-numbers)
+;; 		 ("C-* s" . mc/sort-regions)
+;; 		 ("C-* r" . mc/reverse-regions)
+;; 		 ("M-<mouse-1>" . mc/add-cursor-on-click))
+;;   :init
+;;   (global-unset-key (kbd "M-<down-mouse-1>"))
+;;   :config
+;;     (require 'mc-extras))
 
 (require 'ace-jump-mode)
 
@@ -100,3 +102,6 @@
     ;; (define-key lispy-mode-map "l" 'lispy-forward)
     ;; (define-key lispy-mode-map (kbd "C-d") nil)
     ))
+
+(require 'org-roam-config)
+;;; dauphin-config-packages.el ends here
