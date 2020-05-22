@@ -106,6 +106,6 @@
 (require 'org-roam-config)
 ;;; dauphin-config-packages.el ends here
 
-
+(require 'cider-mode)
 (define-key cider-repl-mode-map (kbd "<prior>") (lambda () (interactive) (cider-repl-previous-input)))
 (define-key cider-repl-mode-map (kbd "<next>") (lambda () (interactive) (cider-repl-next-input)))

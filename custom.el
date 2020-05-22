@@ -5,12 +5,12 @@
  ;; If there is more than one, they won't work right.
  '(auto-save-file-name-transforms (quote ((".*" "~/.emacs.d/autosaves/\\1" t))))
  '(backup-directory-alist (quote ((".*" . "~/.emacs.d/backups/"))))
- '(c-basic-offset 4)
+ '(c-basic-offset 4 t)
  '(c-default-style
    (quote
 	((java-mode . "java")
 	 (awk-mode . "awk")
-	 (other . "linux"))))
+	 (other . "linux"))) t)
  '(c-offsets-alist
    (quote
 	((inexpr-class . +)
@@ -107,7 +107,7 @@
 	  (statement-case-open after)
 	  (substatement after))
 	 (c-comment-only-line-offset . 0)
-	 (c-tab-always-indent . t))))
+	 (c-tab-always-indent . t))) t)
  '(custom-safe-themes
    (quote
 	("3c83b3676d796422704082049fc38b6966bcad960f896669dfc21a7a37a748fa" default)))
@@ -126,9 +126,6 @@
  '(minibuffer-prompt-properties
    (quote
 	(read-only t point-entered minibuffer-avoid-prompt face minibuffer-prompt)))
- '(org-agenda-files
-   (quote
-	("/Users/peter/org/roam/20200411124612-elisp_debug.org" "/Users/peter/org/roam/20200411124947-elisp_alists.org" "/Users/peter/org/us/2019-12.org" "/Users/peter/org/xoi/2019-12.org" "/Users/peter/org/xoi/2020-02.org" "/Users/peter/org/xoi/2020-03.org" "/Users/peter/org/xoi/mobile_interviews.org" "/Users/peter/org/xoi/xoi.org" "/Users/peter/org/East Africa notes.org" "/Users/peter/org/archive.org" "/Users/peter/org/notes.org" "/Users/peter/org/xoi.org")))
  '(org-default-priority 68)
  '(org-export-backends (quote (ascii html icalendar latex md odt)))
  '(org-hide-leading-stars t)

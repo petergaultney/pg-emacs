@@ -53,4 +53,6 @@
 (add-hook 'org-shiftdown-final-hook 'windmove-down)
 (add-hook 'org-shiftright-final-hook 'windmove-right)
 
-(setq org-agenda-files (directory-files-recursively "~/org/" "\\.org$"))
+(require 'directory-files-recursive)
+
+(set-variable org-agenda-files (directory-files-recursive "~/org/" "\\.org$" 3 "\\(stversions\\|stfolder\\)"))
