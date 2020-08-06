@@ -28,6 +28,10 @@
   :init (global-flycheck-mode))
 (use-package flycheck-flow)
 
+(when (require 'flycheck nil t)
+  (setq elpy-modules (delq 'elpy-module-flymake elpy-modules))
+  (add-hook 'elpy-mode-hook 'flycheck-mode))
+
 (flycheck-define-checker
     python-mypy ""
     :command ("mypy"

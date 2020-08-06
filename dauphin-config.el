@@ -25,6 +25,7 @@
 ;; (load "god-mode-config.el")
 (load "indentation.el")
 (load "javascript.el")
+(load "typescript.el")
 
 (add-to-list 'auto-mode-alist '("\\.ino\\'" . c-mode))
 
@@ -137,3 +138,5 @@
 (load "vtl")
 
 (global-set-key (kbd "C-x b") 'switch-to-buffer)
+
+(global-set-key (kbd "C-d") 'kill-whole-line)

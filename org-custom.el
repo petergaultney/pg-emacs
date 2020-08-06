@@ -1,6 +1,3 @@
-(global-set-key (kbd "C-c o a") 'org-agenda-list)
-(global-set-key (kbd "C-c o t") 'org-todo-list)
-
 (require 'org)
 (require 'org-install)
 
@@ -45,7 +42,7 @@
   :hook
   (org-mode . org-fancy-priorities-mode)
   :config
-  (setq org-fancy-priorities-list '("⚡" "⬆" "⬇" "☕")))
+  (setq org-fancy-priorities-list '("IMM❗" "HIGH" "MED" "LOW")))
 
 ;; Make windmove work in org-mode:
 (add-hook 'org-shiftup-final-hook 'windmove-up)
@@ -55,4 +52,4 @@
 
 (require 'directory-files-recursive)
 
-(set-variable org-agenda-files (directory-files-recursive "~/org/" "\\.org$" 3 "\\(stversions\\|stfolder\\)"))
+(setq org-agenda-files (directory-files-recursive "~/org/" "\\.org$" 3 "\\(stversions\\|stfolder\\)"))

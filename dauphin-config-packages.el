@@ -13,8 +13,6 @@
     ;; For important compatibility libraries like cl-lib
     (add-to-list 'package-archives '("gnu" . (concat proto "://elpa.gnu.org/packages/")))))
 
-(setq package-list '(elpy flycheck flycheck-flow))
-
 (package-initialize)
 ;; (setq package-enable-at-startup nil)
 ;; (add-to-list 'package-archives '("melpa" . "http://melpa.org/packages/"))
@@ -26,6 +24,21 @@
   (package-refresh-contents)
   (package-install 'use-package))
 
+(defvar myPackages
+  '(elpy
+    flycheck
+    flycheck-flow
+    material-theme
+    better-defaults
+    ))
+
+;; Scans the list in myPackages
+;; If the package listed is not already installed, install it
+(mapc #'(lambda (package)
+          (unless (package-installed-p package)
+            (package-install package)))
+      myPackages)
+
 (eval-when-compile
   (require 'use-package))
 ;; (require 'diminish)
@@ -34,6 +47,7 @@
 
 (require 'header2)
 
+(load-theme 'material t)
 (use-package elpy)
 (elpy-enable)
 
@@ -65,7 +79,7 @@
   t)
 (eval-after-load "ace-jump-mode"
   '(ace-jump-mode-enable-mark-sync))
-(define-key global-map (kbd "C-d") 'ace-jump-mode-pop-mark)
+; (define-key global-map (kbd "C-d") 'ace-jump-mode-pop-mark)
 (define-key global-map (kbd "C-j") 'ace-jump-mode)
 (define-key global-map (kbd "C-t") 'ace-jump-char-mode)
 
