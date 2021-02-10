@@ -33,6 +33,8 @@
     material-theme
     better-defaults
 	color-identifiers-mode
+	blacken
+;;	jedi
     ))
 
 ;; Scans the list in myPackages
@@ -43,6 +45,8 @@
       myPackages)
 
 (add-hook 'after-init-hook 'global-color-identifiers-mode)
+;; (add-hook 'python-mode-hook 'jedi:setup)
+;; (setq jedi:complete-on-dot t)                 ; optional
 
 (eval-when-compile
   (require 'use-package))
@@ -52,9 +56,12 @@
 
 (require 'header2)
 
-(load-theme 'material t)
+;; (load-theme 'material t)
 (use-package elpy)
 (elpy-enable)
+(add-hook 'elpy-mode-hook (lambda ()
+                            (add-hook 'before-save-hook
+                                      'elpy-black-fix-code nil t)))
 
 (load "flycheck-config.el")
 
@@ -75,18 +82,10 @@
 ;;   :config
 ;;     (require 'mc-extras))
 
-(require 'ace-jump-mode)
-
-(autoload
-  'ace-jump-mode-pop-mark
-  "ace-jump-mode"
-  "Ace jump back:-)"
-  t)
-(eval-after-load "ace-jump-mode"
-  '(ace-jump-mode-enable-mark-sync))
-; (define-key global-map (kbd "C-d") 'ace-jump-mode-pop-mark)
-(define-key global-map (kbd "C-j") 'ace-jump-mode)
-(define-key global-map (kbd "C-t") 'ace-jump-char-mode)
+(require 'avy)
+(global-set-key (kbd "C-t") 'avy-goto-char-2)
+(global-set-key (kbd "M-l") 'avy-goto-line)
+(global-set-key (kbd "M-t") 'avy-goto-char-timer)
 
 ; (add-to-list 'custom-theme-load-path "~/.emacs.d/local_config/themes/")
 ; (load-theme 'zenburn t)
@@ -128,3 +127,6 @@
 (require 'cider-mode)
 (define-key cider-repl-mode-map (kbd "<prior>") (lambda () (interactive) (cider-repl-previous-input)))
 (define-key cider-repl-mode-map (kbd "<next>") (lambda () (interactive) (cider-repl-next-input)))
+
+(load "auto-correct.el")
+(require 'auto-correct)
