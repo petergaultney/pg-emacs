@@ -7,7 +7,7 @@
        (proto (if no-ssl "http" "https")))
   ;; Comment/uncomment these two lines to enable/disable MELPA and MELPA Stable as desired
   (add-to-list 'package-archives (cons "melpa" (concat proto "://melpa.org/packages/")) t)
-  ;;(add-to-list 'package-archives (cons "melpa-stable" (concat proto "://stable.melpa.org/packages/")) t)
+;;  (add-to-list 'package-archives (cons "melpa-stable" (concat proto "://stable.melpa.org/packages/")) t)
   (add-to-list 'package-archives '("org" . "https://orgmode.org/elpa/") t)
   (add-to-list 'package-archives
 			   '("melpa" . "http://melpa.milkbox.net/packages/") t)
@@ -124,9 +124,10 @@
 (require 'org-roam-config)
 ;;; dauphin-config-packages.el ends here
 
-(require 'cider-mode)
-(define-key cider-repl-mode-map (kbd "<prior>") (lambda () (interactive) (cider-repl-previous-input)))
-(define-key cider-repl-mode-map (kbd "<next>") (lambda () (interactive) (cider-repl-next-input)))
+;; (use-package cider-mode)
+;; (require 'cider-mode)
+;; (define-key cider-repl-mode-map (kbd "<prior>") (lambda () (interactive) (cider-repl-previous-input)))
+;; (define-key cider-repl-mode-map (kbd "<next>") (lambda () (interactive) (cider-repl-next-input)))
 
 (load "auto-correct.el")
 (require 'auto-correct)
