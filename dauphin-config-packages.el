@@ -15,7 +15,7 @@
     ;; For important compatibility libraries like cl-lib
     (add-to-list 'package-archives '("gnu" . (concat proto "://elpa.gnu.org/packages/")))))
 
-(package-initialize)
+;; (package-initialize) ;; "unnecessary call"
 ;; (setq package-enable-at-startup nil)
 ;; (add-to-list 'package-archives '("melpa" . "http://melpa.org/packages/"))
 ;; (add-to-list 'package-archives '("org" . "http://orgmode.org/elpa/"))

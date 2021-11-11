@@ -109,7 +109,6 @@
  '(color-identifiers-avoid-faces '(font-lock-comment-face))
  '(custom-safe-themes
    '("3c83b3676d796422704082049fc38b6966bcad960f896669dfc21a7a37a748fa" default))
- '(elpy-rpc-python-command "~/miniconda3/bin/python3")
  '(evil-move-beyond-eol t)
  '(evil-want-Y-yank-to-eol nil)
  '(flycheck-javascript-flow-args nil)
