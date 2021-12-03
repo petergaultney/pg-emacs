@@ -1,0 +1,7 @@
+(require 'avy)
+(setq avy-keys '(?a ?s ?e ?t ?n ?i ?o ?h ?d))
+(global-set-key (kbd "C-t") 'avy-goto-char-timer)
+(global-set-key (kbd "M-l") 'avy-goto-line)
+(global-set-key (kbd "M-t") 'avy-goto-char-2)
+(define-key isearch-mode-map (kbd "M-j") 'avy-isearch)
+(provide 'avy-de)

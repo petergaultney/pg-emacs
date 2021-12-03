@@ -26,27 +26,7 @@
   (package-refresh-contents)
   (package-install 'use-package))
 
-(defvar myPackages
-  '(elpy
-    flycheck
-    flycheck-flow
-    material-theme
-    better-defaults
-	color-identifiers-mode
-	blacken
-;;	jedi
-    ))
-
-;; Scans the list in myPackages
-;; If the package listed is not already installed, install it
-(mapc #'(lambda (package)
-          (unless (package-installed-p package)
-            (package-install package)))
-      myPackages)
-
 (add-hook 'after-init-hook 'global-color-identifiers-mode)
-;; (add-hook 'python-mode-hook 'jedi:setup)
-;; (setq jedi:complete-on-dot t)                 ; optional
 
 (eval-when-compile
   (require 'use-package))
@@ -57,12 +37,8 @@
 (require 'header2)
 
 ;; (load-theme 'material t)
-(use-package elpy)
-(elpy-enable)
-(add-hook 'elpy-mode-hook (lambda ()
-                            (add-hook 'before-save-hook
-                                      'elpy-black-fix-code nil t)))
 
+(load "python-conf.el")
 (load "flycheck-config.el")
 
 ;; (use-package multiple-cursors
@@ -82,10 +58,7 @@
 ;;   :config
 ;;     (require 'mc-extras))
 
-(require 'avy)
-(global-set-key (kbd "C-t") 'avy-goto-char-2)
-(global-set-key (kbd "M-l") 'avy-goto-line)
-(global-set-key (kbd "M-t") 'avy-goto-char-timer)
+(require 'avy-de)
 
 ; (add-to-list 'custom-theme-load-path "~/.emacs.d/local_config/themes/")
 ; (load-theme 'zenburn t)

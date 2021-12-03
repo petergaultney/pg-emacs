@@ -12,4 +12,5 @@
                ("C-c n g" . org-roam-graph-show))
               :map org-mode-map
               (("C-c n i" . org-roam-insert))))
+(setq org-roam-v2-ack t)
 (provide 'org-roam-config)
