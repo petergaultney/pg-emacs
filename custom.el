@@ -5,11 +5,11 @@
  ;; If there is more than one, they won't work right.
  '(auto-save-file-name-transforms '((".*" "~/.emacs.d/autosaves/\\1" t)))
  '(backup-directory-alist '((".*" . "~/.emacs.d/backups/")))
- '(c-basic-offset 4 t)
+ '(c-basic-offset 4)
  '(c-default-style
    '((java-mode . "java")
 	 (awk-mode . "awk")
-	 (other . "linux")) t)
+	 (other . "linux")))
  '(c-offsets-alist
    '((inexpr-class . +)
 	 (inexpr-statement . +)
@@ -105,7 +105,7 @@
 	  (statement-case-open after)
 	  (substatement after))
 	 (c-comment-only-line-offset . 0)
-	 (c-tab-always-indent . t)) t)
+	 (c-tab-always-indent . t)))
  '(color-identifiers-avoid-faces '(font-lock-comment-face))
  '(custom-safe-themes
    '("3c83b3676d796422704082049fc38b6966bcad960f896669dfc21a7a37a748fa" default))
@@ -115,9 +115,11 @@
  '(evil-move-beyond-eol t)
  '(evil-want-Y-yank-to-eol nil)
  '(flycheck-checker-error-threshold 3000)
+ '(flycheck-disabled-checkers '(python-pylint))
  '(flycheck-javascript-flow-args nil)
  '(global-auto-revert-mode t)
  '(global-color-identifiers-mode t)
+ '(global-flycheck-mode t)
  '(global-hl-line-mode nil)
  '(header-auto-update-enabled t t)
  '(ido-enable-flex-matching t)
@@ -146,7 +148,7 @@
    '((sequence "TODO(t)" "PROG(p)" "WAIT(w)" "|" "DONE(d)" "CANCELED(c)")))
  '(package-archives '(("melpa" . "https://melpa.org/packages/")))
  '(package-selected-packages
-   '(popwin projectile realgud magit jedi dired-dups better-defaults material-theme typescript-mode vterm org-roam indent-tools flow-js2-mode add-node-modules-path prettier-js web-mode groovy-mode kotlin-mode pipenv graphql-mode org-plus-contrib orgit org-projectile org-category-capture org-present yapfify which-key wgrep use-package unfill smex smeargle pytest pyenv-mode py-isort pip-requirements pcre2el org-pomodoro org-mime org-fancy-priorities org-download mwim multiple-cursors mmm-mode markdown-toc magit-gitflow macrostep live-py-mode ivy-hydra hy-mode htmlize helm-make gnuplot gitignore-mode gitconfig-mode gitattributes-mode git-timemachine git-messenger git-link gh-md fuzzy flycheck-flow flx exec-path-from-shell evil-visualstar evil-magit evil-escape elpy elisp-slime-nav diminish cython-mode counsel-projectile company-statistics company-anaconda bind-map auto-yasnippet auto-compile ace-window ac-ispell))
+   '(anaconda-mode elpygen markdown-mode popwin projectile realgud magit jedi dired-dups better-defaults material-theme typescript-mode vterm org-roam indent-tools flow-js2-mode add-node-modules-path prettier-js web-mode groovy-mode kotlin-mode pipenv graphql-mode org-plus-contrib orgit org-projectile org-category-capture org-present yapfify which-key wgrep use-package unfill smex smeargle pytest pyenv-mode py-isort pip-requirements pcre2el org-pomodoro org-mime org-fancy-priorities org-download mwim multiple-cursors mmm-mode markdown-toc magit-gitflow macrostep live-py-mode ivy-hydra hy-mode htmlize helm-make gnuplot gitignore-mode gitconfig-mode gitattributes-mode git-timemachine git-messenger git-link gh-md fuzzy flycheck-flow flx exec-path-from-shell evil-visualstar evil-magit evil-escape elpy elisp-slime-nav diminish cython-mode counsel-projectile company-statistics company-anaconda bind-map auto-yasnippet auto-compile ace-window ac-ispell))
  '(python-flymake-command '("mypy"))
  '(safe-local-variable-values
    '((c-offsets-alist

@@ -28,9 +28,9 @@
   :init (global-flycheck-mode))
 (use-package flycheck-flow)
 
-(when (require 'flycheck nil t)
-  (setq elpy-modules (delq 'elpy-module-flymake elpy-modules))
-  (add-hook 'elpy-mode-hook 'flycheck-mode))
+;;(when (require 'flycheck nil t)
+  ;; (setq elpy-modules (delq 'elpy-module-flymake elpy-modules))
+  ;;(add-hook 'elpy-mode-hook 'flycheck-mode))
 
 (flycheck-define-checker
     python-mypy ""
@@ -43,7 +43,7 @@
     :modes python-mode)
 
 (add-to-list 'flycheck-checkers 'python-mypy t)
-(flycheck-add-next-checker 'python-pylint 'python-mypy t)
+;; (flycheck-add-next-checker 'python-pylint 'python-mypy t)
 
 (add-hook 'flycheck-mode-hook
           #'set-flychecker-executables 'local)
