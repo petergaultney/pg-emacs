@@ -1,6 +1,6 @@
 (defvar myPackages
-  '(elpy
-	anaconda-mode
+  '(;; elpy
+	;; anaconda-mode
     flycheck
     flycheck-flow
     material-theme
@@ -17,7 +17,7 @@
             (package-install package)))
       myPackages)
 
-(add-hook 'python-mode-hook 'anaconda-mode)
+;; (add-hook 'python-mode-hook 'anaconda-mode)
 
 ;; (add-hook 'python-mode-hook 'jedi:setup)
 ;; (setq jedi:complete-on-dot t)                 ; optional
