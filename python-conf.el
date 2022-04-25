@@ -7,6 +7,7 @@
     better-defaults
 	color-identifiers-mode
 	blacken
+	highlight-numbers
 ;;	jedi  ;; i can't remember why this is not enabled?
     ))
 
@@ -28,3 +29,10 @@
 ;; (add-hook 'elpy-mode-hook (lambda ()
 ;;                             (add-hook 'before-save-hook
 ;;                                       'elpy-black-fix-code nil t)))
+(add-hook 'python-mode-hook 'yas-minor-mode)
+(add-hook 'python-mode-hook #'tree-sitter-mode)
+(tree-sitter-require 'python)
+(add-hook 'python-mode-hook 'highlight-numbers-mode)
+(add-hook 'python-mode-hook
+		  (lambda ()
+			(add-hook 'before-save-hook 'blacken-buffer)))

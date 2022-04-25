@@ -16,6 +16,7 @@
 (load "compile-window-placement.el")
 (load "mac-copy.el")
 (load "find-file-in-project.el")
+(load "z-helpful.el")
 
 ;; remove annoying prompt http://shreevatsa.wordpress.com/2007/01/06/using-emacsclient/
 ;; (server-start)
