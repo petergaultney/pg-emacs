@@ -7,7 +7,7 @@
 (setq dauphin-emacs-config-file load-file-name) ;; save for later use
 (setq custom-file (concat dauphin-emacs-dir "custom.el"))
 ;; load that custom file
-(load custom-file 'noerror)
+(load custom-file 'no-error)
 
 (load (concat dauphin-emacs-dir "dauphin-config-packages.el")) ;; manual hack to see if packages are working
 
@@ -137,6 +137,8 @@
 (load "Highlight-Indentation-for-Emacs/highlight-indentation.el")
 
 (load "vtl")
+(load "dos-eol")
+(add-hook 'text-mode-hook 'remove-dos-eol)
 
 (global-set-key (kbd "C-x b") 'switch-to-buffer)
 

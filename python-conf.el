@@ -1,12 +1,10 @@
 (defvar myPackages
   '(;; elpy
-	;; anaconda-mode
     flycheck
     flycheck-flow
     material-theme
     better-defaults
 	color-identifiers-mode
-	blacken
 	highlight-numbers
 ;;	jedi  ;; i can't remember why this is not enabled?
     ))
@@ -17,6 +15,10 @@
           (unless (package-installed-p package)
             (package-install package)))
       myPackages)
+
+(defun my-python-mode-before-save-hook ()
+  (when (eq major-mode 'python-mode)
+    (blacken-buffer)))
 
 ;; (add-hook 'python-mode-hook 'anaconda-mode)
 
@@ -33,6 +35,16 @@
 (add-hook 'python-mode-hook #'tree-sitter-mode)
 (tree-sitter-require 'python)
 (add-hook 'python-mode-hook 'highlight-numbers-mode)
-(add-hook 'python-mode-hook
-		  (lambda ()
-			(add-hook 'before-save-hook 'blacken-buffer)))
+;; (add-hook 'before-save-hook 'my-python-mode-before-save-hook)
+;; (setq read-process-output-max (* 1024 1024)) ;; 1m - for lsp mode
+
+;; (with-eval-after-load 'lsp-mode  ; try this or similar
+;;   (lsp-register-custom-settings
+;;    '(("pylsp.plugins.pylsp_mypy.enabled" t t)
+;;      ("pylsp.plugins.pylsp_mypy.live_mode" t t)
+;;      ("pylsp.plugins.black.enabled" t t)
+;;      ("pylsp.plugins.pylsp_isort.enabled" t t))))
+
+;; (with-eval-after-load 'lsp-mode
+;;   ;; :global/:workspace/:file
+;;   (setq lsp-modeline-diagnostics-scope :workspace))

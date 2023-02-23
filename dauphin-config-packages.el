@@ -101,4 +101,6 @@
 
 (load "auto-correct.el")
 (require 'auto-correct)
-(load "lsp-config.el")
+;; (load "lsp-config.el")
+(load "ivy-config.el")
+(require 'new-python)
