@@ -23,10 +23,10 @@
 	  (flycheck-set-checker-executable (quote python-pylint)
 									   (concat (pipenv-bin-dir) "/mypy")))))
 
-(use-package flycheck
-  :ensure t)
-  ;; :init (global-flycheck-mode))
-(use-package flycheck-flow)
+;; (use-package flycheck
+;;   :ensure t)
+;;   ;; :init (global-flycheck-mode))
+;; (use-package flycheck-flow)
 
 ;;(when (require 'flycheck nil t)
   ;; (setq elpy-modules (delq 'elpy-module-flymake elpy-modules))
@@ -45,5 +45,5 @@
 ;; (add-to-list 'flycheck-checkers 'python-mypy t)
 ;; (flycheck-add-next-checker 'python-pylint 'python-mypy t)
 
-(add-hook 'flycheck-mode-hook
-          #'set-flychecker-executables 'local)
+;; (add-hook 'flycheck-mode-hook
+;;           #'set-flychecker-executables 'local)

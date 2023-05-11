@@ -27,9 +27,9 @@
 ;;   :ensure t
 ;;   :hook ((python-mode . new-configure-company-jedi)))
 
-(use-package elpy
-  :ensure t
-  :init (elpy-enable))
+;; (use-package elpy
+;;   :ensure t
+;;   :init (elpy-enable))
 
 ;; (use-package jedi
 ;;   :ensure t
@@ -49,14 +49,16 @@
   :config (setq-default eglot-workspace-configuration
                 '(:pylsp
                    (:plugins
-                    (:pycodestyle (:enabled nil))
-                     :pyflakes (:enabled nil)
-                     :flake8 (:enabled nil)
-					 :pylsp-mypy (:enabled t)
-					 :black (:enabled t :line-length 105)
-                     )))
+                    (:pycodestyle (:enabled nil)
+								  :pyflakes (:enabled nil)
+								  :flake8 (:enabled nil)
+								  :pylsp-mypy (:enabled t)
+								  :black (:enabled t :line_length 105)
+                     ))))
   ;; (setq-default project-vc-extra-root-markers '("pyproject.toml"))
 
   )
+
+(add-hook 'eglot--managed-mode-hook (lambda () (flymake-mode -1)))
 
 (provide 'new-python)

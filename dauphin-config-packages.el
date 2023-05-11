@@ -36,7 +36,7 @@
 ;; (load-theme 'material t)
 
 (load "python-conf.el")
-(load "flycheck-config.el")
+;; (load "flycheck-config.el")
 
 ;; (use-package multiple-cursors
 ;;   :ensure t
