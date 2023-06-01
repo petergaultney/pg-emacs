@@ -32,6 +32,7 @@
 ;; end use-package init
 
 (require 'header2)
+(load "quelpa-init.el")
 
 ;; (load-theme 'material t)
 
@@ -39,6 +40,7 @@
 ;; (load "flycheck-config.el")
 
 ;; (use-package multiple-cursors
+
 ;;   :ensure t
 ;;   :bind (("C-S-l" . mc/edit-lines)
 ;; 		 ("C-* n" . mc/mark-next-like-this)
@@ -104,3 +106,4 @@
 ;; (load "lsp-config.el")
 (load "ivy-config.el")
 (require 'new-python)
+(load "github-copilot.el")

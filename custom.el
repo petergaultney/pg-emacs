@@ -5,7 +5,6 @@
  ;; If there is more than one, they won't work right.
  '(auto-save-file-name-transforms '((".*" "~/.emacs.d/autosaves/\\1" t)))
  '(backup-directory-alist '((".*" . "~/.emacs.d/backups/")))
- '(project-vc-extra-root-markers '("pyproject.toml"))
  '(c-basic-offset 4)
  '(c-default-style
    '((java-mode . "java")
@@ -151,7 +150,8 @@
    '((sequence "TODO(t)" "PROG(p)" "WAIT(w)" "|" "DONE(d)" "CANCELED(c)")))
  '(package-archives '(("melpa" . "https://melpa.org/packages/")))
  '(package-selected-packages
-   '(company-jedi anaconda-mode tree-sitter-langs yas-minor-mode elpygen markdown-mode popwin projectile realgud magit jedi dired-dups better-defaults material-theme typescript-mode vterm org-roam indent-tools add-node-modules-path prettier-js web-mode groovy-mode kotlin-mode pipenv graphql-mode org-plus-contrib orgit org-projectile org-category-capture org-present yapfify which-key wgrep use-package unfill smex smeargle pytest pyenv-mode py-isort pip-requirements pcre2el org-pomodoro org-mime org-fancy-priorities org-download mwim multiple-cursors mmm-mode markdown-toc magit-gitflow macrostep live-py-mode ivy-hydra hy-mode htmlize helm-make gnuplot gitignore-mode gitconfig-mode gitattributes-mode git-timemachine git-messenger git-link gh-md fuzzy flycheck-flow flx exec-path-from-shell elpy elisp-slime-nav diminish cython-mode counsel-projectile company-statistics company-anaconda bind-map auto-yasnippet auto-compile ace-window ac-ispell))
+   '(copilot editorconfig quelpa-use-package company-jedi anaconda-mode tree-sitter-langs yas-minor-mode elpygen markdown-mode popwin projectile realgud magit jedi dired-dups better-defaults material-theme typescript-mode vterm org-roam indent-tools add-node-modules-path prettier-js web-mode groovy-mode kotlin-mode pipenv graphql-mode org-plus-contrib orgit org-projectile org-category-capture org-present yapfify which-key wgrep use-package unfill smex smeargle pytest pyenv-mode py-isort pip-requirements pcre2el org-pomodoro org-mime org-fancy-priorities org-download mwim multiple-cursors mmm-mode markdown-toc magit-gitflow macrostep live-py-mode ivy-hydra hy-mode htmlize helm-make gnuplot gitignore-mode gitconfig-mode gitattributes-mode git-timemachine git-messenger git-link gh-md fuzzy flycheck-flow flx exec-path-from-shell elpy elisp-slime-nav diminish cython-mode counsel-projectile company-statistics company-anaconda bind-map auto-yasnippet auto-compile ace-window ac-ispell))
+ '(project-vc-extra-root-markers '("pyproject.toml"))
  '(python-flymake-command '("mypy"))
  '(safe-local-variable-values
    '((c-offsets-alist
