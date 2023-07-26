@@ -32,8 +32,10 @@
 ;;                             (add-hook 'before-save-hook
 ;;                                       'elpy-black-fix-code nil t)))
 (add-hook 'python-mode-hook 'yas-minor-mode)
-(add-hook 'python-mode-hook #'tree-sitter-mode)
-(tree-sitter-require 'python)
+
+;; (add-hook 'python-mode-hook #'tree-sitter-mode)
+;; (tree-sitter-require 'python)
+
 (add-hook 'python-mode-hook 'highlight-numbers-mode)
 ;; (add-hook 'before-save-hook 'my-python-mode-before-save-hook)
 ;; (setq read-process-output-max (* 1024 1024)) ;; 1m - for lsp mode

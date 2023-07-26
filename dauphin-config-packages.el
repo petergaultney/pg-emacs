@@ -104,6 +104,7 @@
 (load "auto-correct.el")
 (require 'auto-correct)
 ;; (load "lsp-config.el")
-(load "ivy-config.el")
+;; (load "ivy-config.el")
+(load "helm-config.el")
 (require 'new-python)
 (load "github-copilot.el")

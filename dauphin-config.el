@@ -109,7 +109,6 @@
 
 ; join line from top line
 (global-set-key (kbd "M-j") (lambda () (interactive) (join-line -1)))
-(global-set-key (kbd "C-x g") 'magit-status)
 
 ;; SET A BUNCH OF VARIABLES
 (setq truncate-partial-width-windows nil)
@@ -136,9 +135,8 @@
 (load "org-custom")
 (load "Highlight-Indentation-for-Emacs/highlight-indentation.el")
 
-(load "vtl")
+;; (load "vtl")
 (load "dos-eol")
-(add-hook 'text-mode-hook 'remove-dos-eol)
 
 (global-set-key (kbd "C-x b") 'switch-to-buffer)
 
