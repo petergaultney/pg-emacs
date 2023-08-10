@@ -107,6 +107,8 @@
 	 (c-comment-only-line-offset . 0)
 	 (c-tab-always-indent . t)))
  '(color-identifiers-avoid-faces '(font-lock-comment-face))
+ '(copilot-node-executable
+   "/Users/peter.gaultney/.asdf/installs/nodejs/18.15.0/bin/node")
  '(custom-safe-themes
    '("3c83b3676d796422704082049fc38b6966bcad960f896669dfc21a7a37a748fa" default))
  '(ediff-split-window-function 'split-window-vertically)
@@ -149,7 +151,7 @@
    '(("melpa" . "https://melpa.org/packages/")
 	 ("elpa" . "https://elpa.gnu.org/packages/")))
  '(package-selected-packages
-   '(copilot editorconfig company-jedi anaconda-mode tree-sitter-langs yas-minor-mode elpygen markdown-mode popwin projectile realgud magit jedi dired-dups better-defaults material-theme typescript-mode vterm org-roam indent-tools add-node-modules-path prettier-js web-mode groovy-mode kotlin-mode pipenv graphql-mode org-plus-contrib orgit org-projectile org-category-capture org-present yapfify which-key wgrep use-package unfill smex smeargle pytest pyenv-mode py-isort pip-requirements pcre2el org-pomodoro org-mime org-fancy-priorities org-download mwim multiple-cursors mmm-mode markdown-toc magit-gitflow macrostep live-py-mode ivy-hydra hy-mode htmlize helm-make gnuplot gitignore-mode gitconfig-mode gitattributes-mode git-timemachine git-messenger git-link gh-md fuzzy flx exec-path-from-shell elpy elisp-slime-nav diminish cython-mode counsel-projectile company-statistics company-anaconda bind-map auto-yasnippet auto-compile ace-window ac-ispell))
+   '(helm-projectile projectile-codesearch projectile-ripgrep copilot editorconfig company-jedi anaconda-mode tree-sitter-langs yas-minor-mode elpygen markdown-mode popwin projectile realgud magit jedi dired-dups better-defaults material-theme typescript-mode vterm org-roam indent-tools add-node-modules-path prettier-js web-mode groovy-mode kotlin-mode pipenv graphql-mode org-plus-contrib orgit org-projectile org-category-capture org-present yapfify which-key wgrep use-package unfill smex smeargle pytest pyenv-mode py-isort pip-requirements pcre2el org-pomodoro org-mime org-fancy-priorities org-download mwim multiple-cursors mmm-mode markdown-toc magit-gitflow macrostep live-py-mode ivy-hydra hy-mode htmlize helm-make gnuplot gitignore-mode gitconfig-mode gitattributes-mode git-timemachine git-messenger git-link gh-md fuzzy flx exec-path-from-shell elpy elisp-slime-nav diminish cython-mode counsel-projectile company-statistics company-anaconda bind-map auto-yasnippet auto-compile ace-window ac-ispell))
  '(project-vc-extra-root-markers '("pyproject.toml"))
  '(python-flymake-command '("mypy"))
  '(safe-local-variable-values

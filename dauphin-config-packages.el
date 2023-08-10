@@ -105,6 +105,7 @@
 ;; (load "lsp-config.el")
 ;; (load "ivy-config.el")
 (load "helm-config.el")
+(load "projectile-conf.el")
 (require 'new-python)
 (load "github-copilot.el")
 
