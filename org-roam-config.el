@@ -2,6 +2,7 @@
 (use-package org-roam
       :hook
       (after-init . org-roam-mode)
+      :straight (:type built-in)
       :custom
       (org-roam-directory (expand-file-name "~/org/roam"))
 	  (org-roam-buffer-width 0.2)

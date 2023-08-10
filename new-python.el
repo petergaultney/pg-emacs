@@ -12,16 +12,16 @@
 
 ;; Packages
 
-(use-package anaconda-mode
-  :ensure t
-  :hook ((python-mode . anaconda-mode)
-         (python-mode . anaconda-eldoc-mode))
-  :bind (:map python-mode-map (("C-x C-d" . anaconda-mode-show-doc)
-                               ("C-x C-w" . anaconda-mode-find-definitions))))
+;; (use-package anaconda-mode
+;;   :ensure t
+;;   :hook ((python-mode . anaconda-mode)
+;;          (python-mode . anaconda-eldoc-mode))
+;;   :bind (:map python-mode-map (("C-x C-d" . anaconda-mode-show-doc)
+;;                                ("C-x C-w" . anaconda-mode-find-definitions))))
 
-(use-package company-anaconda
-  :ensure t
-  :hook ((python-mode . new-configure-company-anaconda)))
+;; (use-package company-anaconda
+;;   :ensure t
+;;   :hook ((python-mode . new-configure-company-anaconda)))
 
 ;; (use-package company-jedi
 ;;   :ensure t
@@ -44,6 +44,7 @@
 (use-package eglot
   :ensure t
   :defer t
+  :straight (:type built-in)
   :hook ((python-mode . eglot-ensure))
   :init (add-hook 'before-save-hook 'format-python-with-eglot-on-save)
   :config (setq-default eglot-workspace-configuration

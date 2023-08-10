@@ -32,7 +32,6 @@
 ;; end use-package init
 
 (require 'header2)
-(load "quelpa-init.el")
 
 ;; (load-theme 'material t)
 

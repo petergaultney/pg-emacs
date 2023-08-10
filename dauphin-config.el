@@ -1,4 +1,5 @@
 ;;; dauphin-config.el ---
+(load "straight-boot.el")
 (load "funcs.el")
 
 ;; ask emacs to save settings in a special file:

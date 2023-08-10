@@ -1,5 +1,4 @@
 (require 'org)
-(require 'org-install)
 
 (defun insert-org-timestamp-now ()
   "Does what it says."
