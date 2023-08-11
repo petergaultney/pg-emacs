@@ -51,5 +51,6 @@
          ("<tab>" . sqlite-mode-extras-tab-dwim)
          ("RET" . sqlite-mode-extras-ret-dwim)))
 
+(load "magit-conf.el")
 (require 'org-roam-config)
 (load "org-custom")  ;; sometimes this used to fail so it's at the very end

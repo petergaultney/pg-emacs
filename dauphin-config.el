@@ -23,11 +23,13 @@
 (set-face-attribute 'highlight nil :background "#3e4446" :foreground 'unspecified)
 
 ;; DEFINE MY PERSONAL SHORTCUTS (that don't depend on other stuff)
-(define-key global-map (kbd "C-c ,") 'decrease-left-margin)
-(define-key global-map (kbd "C-c .") 'increase-left-margin)
-(define-key global-map (kbd "C-c d") 'delete-region)
-(define-key global-map (kbd "M-g") 'goto-line)
-(define-key global-map (kbd "C-x s") 'save-buffer)
+;; equivalent to (define-key global-map ...)
+;; https://stackoverflow.com/questions/906368/what-is-the-difference-between-global-set-key-and-define-key-global-map-in-e
+(global-set-key (kbd "C-c ,") 'decrease-left-margin)
+(global-set-key (kbd "C-c .") 'increase-left-margin)
+(global-set-key (kbd "C-c d") 'delete-region)
+(global-set-key (kbd "M-g") 'goto-line)
+(global-set-key (kbd "C-x s") 'save-buffer)
 
 (global-set-key (kbd "C-x b") 'switch-to-buffer)
 (global-set-key (kbd "C-d") 'kill-whole-line)
@@ -103,10 +105,10 @@
 ;;   (switch-to-buffer (other-buffer (current-buffer) 1)))
 
 ;; DEFINE KEY BINDINGS FOR CUSTOM FUNCTIONS
-(define-key global-map (kbd "C-c e") 'open-dotemacs)
-(define-key global-map (kbd "C-c p") 'open-lclcfg)
-(define-key global-map (kbd "C-c C-e") 'reload-dotemacs)
-(define-key global-map (kbd "C-c b") 'switch-to-prev-buffer)
+(global-set-key (kbd "C-c e") 'open-dotemacs)
+(global-set-key (kbd "C-c p") 'open-lclcfg)
+(global-set-key (kbd "C-c C-e") 'reload-dotemacs)
+(global-set-key (kbd "C-c b") 'switch-to-prev-buffer)
 
 (defun unfill-paragraph (&optional region)
   "Takes a multi-line paragraph and makes it into a single line of text."
@@ -114,7 +116,7 @@
   (let ((fill-column (point-max)))
     (fill-paragraph nil region)))
 
-(define-key global-map "\M-Q" 'unfill-paragraph)
+(global-set-key "\M-Q" 'unfill-paragraph)
 
 ;; LOAD OTHER FILES WITH CUSTOM FUNCTIONS
 (load "load-files.el")
