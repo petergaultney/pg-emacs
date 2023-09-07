@@ -108,7 +108,7 @@
 	 (c-tab-always-indent . t)))
  '(color-identifiers-avoid-faces '(font-lock-comment-face))
  '(copilot-node-executable
-   "/Users/peter.gaultney/.asdf/installs/nodejs/18.15.0/bin/node")
+   (expand-file-name "~/sw/bin/node"))
  '(custom-safe-themes
    '("3c83b3676d796422704082049fc38b6966bcad960f896669dfc21a7a37a748fa" default))
  '(ediff-split-window-function 'split-window-vertically)
@@ -121,7 +121,7 @@
  '(global-hl-line-mode nil)
  '(header-auto-update-enabled t t)
  '(helm-ff-DEL-up-one-level-maybe t nil nil "where is this going?")
- '(helm-ff-auto-update-initial-value t nil nil "This takes some getting used to but makes things fast.")
+ '(helm-ff-auto-update-initial-value nil)
  '(ido-enable-flex-matching t)
  '(ido-mode 'both nil (ido))
  '(ido-show-dot-for-dired t)
@@ -132,8 +132,6 @@
  '(lua-prefix-key "C-c")
  '(minibuffer-prompt-properties
    '(read-only t point-entered minibuffer-avoid-prompt face minibuffer-prompt))
- '(org-agenda-files
-   '("/Users/peter/org/xoi/2019-12.org" "/Users/peter/org/xoi/2020-02.org" "/Users/peter/org/xoi/2020-03.org" "/Users/peter/org/xoi/mobile_interviews.org" "/Users/peter/org/xoi/xoipy-split.org" "/Users/peter/org/us/2019-12.org" "/Users/peter/org/roam/20200411124612-elisp_debug.org" "/Users/peter/org/roam/20200411124947-elisp_alists.org" "/Users/peter/org/roam/20200411130906-take_notes_with_evergreen_roam.org" "/Users/peter/org/roam/20200413094147-names_are_important_because_they_help_you_discover_the_problem_statement.org" "/Users/peter/org/roam/20200413094442-inbox.org" "/Users/peter/org/roam/20200413163208-i_work_better_when_i_can_just_go_get_things_done.org" "/Users/peter/org/roam/20200414210926-questions_for_tech_interviews.org" "/Users/peter/org/roam/20200415194906-forecasting_is_bad_but_designing_is_good.org" "/Users/peter/org/roam/20200415200842-org_mode_tips.org" "/Users/peter/org/roam/20200420210646-simplify_to_the_smallest_possible_idea.org" "/Users/peter/org/roam/20200420212355-tech_debt.org" "/Users/peter/org/roam/20200429211728-start_writing_with_sincere_sentences.org" "/Users/peter/org/roam/20200429212701-read_and_teach_the_bible_well.org" "/Users/peter/org/roam/20200429213122-transducers_separate_the_what_from_the_how.org" "/Users/peter/org/roam/20200501103625-prep_for_amazon_interview.org" "/Users/peter/org/roam/20200503135917-category_theory.org" "/Users/peter/org/roam/20200503163110-functors.org" "/Users/peter/org/roam/20200503163235-natural_transformations.org" "/Users/peter/org/roam/20200503164813-categories.org" "/Users/peter/org/roam/20200514111427-amazon_sde_2_considerations.org" "/Users/peter/org/roam/20200515221100-sudoku_solution_clojure_python.org" "/Users/peter/org/roam/20200521145240-xoi_letters_of_appreciation.org" "/Users/peter/org/roam/20200522182034-caching_and_memoization.org" "/Users/peter/org/roam/20200530095721-hammock_driven_development.org" "/Users/peter/org/roam/20200604195436-technical_leadership.org" "/Users/peter/org/roam/20200608093907-constants_code_vs_product.org" "/Users/peter/org/roam/20200611142351-east_africa_notes.org" "/Users/peter/org/roam/20200612142642-python_disassemble_function_code.org" "/Users/peter/org/roam/20200614093055-first_principles_structure.org" "/Users/peter/org/roam/20200615134941-classical_music_i_like.org" "/Users/peter/org/inbox.org" "/Users/peter/org/archive.org" "/Users/peter/org/roam/20200615134941-classical_music_i_like.org" "/Users/peter/org/roam/20200614093055-first_principles_structure.org" "/Users/peter/org/roam/20200612142642-python_disassemble_function_code.org" "/Users/peter/org/roam/20200611142351-east_africa_notes.org" "/Users/peter/org/roam/20200608093907-constants_code_vs_product.org" "/Users/peter/org/roam/20200604195436-technical_leadership.org" "/Users/peter/org/roam/20200530095721-hammock_driven_development.org" "/Users/peter/org/roam/20200522182034-caching_and_memoization.org" "/Users/peter/org/roam/20200521145240-xoi_letters_of_appreciation.org" "/Users/peter/org/roam/20200515221100-sudoku_solution_clojure_python.org" "/Users/peter/org/roam/20200514111427-amazon_sde_2_considerations.org" "/Users/peter/org/roam/20200503164813-categories.org" "/Users/peter/org/roam/20200503163235-natural_transformations.org" "/Users/peter/org/roam/20200503163110-functors.org" "/Users/peter/org/roam/20200503135917-category_theory.org" "/Users/peter/org/roam/20200501103625-prep_for_amazon_interview.org" "/Users/peter/org/roam/20200429213122-transducers_separate_the_what_from_the_how.org" "/Users/peter/org/roam/20200429212701-read_and_teach_the_bible_well.org" "/Users/peter/org/roam/20200429211728-start_writing_with_sincere_sentences.org" "/Users/peter/org/roam/20200420212355-tech_debt.org" "/Users/peter/org/roam/20200420210646-simplify_to_the_smallest_possible_idea.org" "/Users/peter/org/roam/20200415200842-org_mode_tips.org" "/Users/peter/org/roam/20200415194906-forecasting_is_bad_but_designing_is_good.org" "/Users/peter/org/roam/20200414210926-questions_for_tech_interviews.org" "/Users/peter/org/roam/20200413163208-i_work_better_when_i_can_just_go_get_things_done.org" "/Users/peter/org/roam/20200413094442-inbox.org" "/Users/peter/org/roam/20200413094147-names_are_important_because_they_help_you_discover_the_problem_statement.org" "/Users/peter/org/roam/20200411130906-take_notes_with_evergreen_roam.org" "/Users/peter/org/roam/20200411124947-elisp_alists.org" "/Users/peter/org/roam/20200411124612-elisp_debug.org" "/Users/peter/org/us/2019-12.org" "/Users/peter/org/xoi/xoipy-split.org" "/Users/peter/org/xoi/mobile_interviews.org" "/Users/peter/org/xoi/2020-03.org" "/Users/peter/org/xoi/2020-02.org" "/Users/peter/org/xoi/2019-12.org"))
  '(org-default-priority 68)
  '(org-export-backends '(ascii html icalendar latex md odt))
  '(org-hide-leading-stars t)
@@ -256,6 +254,7 @@
  '(smerge-command-prefix "(kbd \"C-c m\")")
  '(standard-indent 4)
  '(tab-width 4)
+ '(treesit-font-lock-level 4)
  '(typescript-indent-level 2)
  '(web-mode-code-indent-offset 2)
  '(web-mode-markup-indent-offset 2))
@@ -268,6 +267,8 @@
  '(flymake-errline ((((class color) (background light)) (:background "#500"))) t)
  '(flymake-error ((((class color) (background light)) (:background "#500"))))
  '(flymake-infoline ((((class color) (background light)) (:background "DarkGreen" :foreground "White"))))
+ '(font-lock-bracket-face ((t (:foreground "orange"))))
+ '(font-lock-builtin-face ((t (:foreground "gold"))))
  '(font-lock-comment-face ((t (:foreground "red"))))
  '(font-lock-function-name-face ((t (:foreground "dodgerblue3" :weight bold))))
  '(font-lock-string-face ((t (:foreground "green"))))

@@ -21,7 +21,6 @@
 (load "Highlight-Indentation-for-Emacs/highlight-indentation.el")
 ;; (load "vtl")
 (load "dos-eol")
-(load "python-conf.el")
 
 (require 'avy-de)
 ; (add-to-list 'custom-theme-load-path "~/.emacs.d/local_config/themes/")

@@ -1,41 +1,12 @@
 ;; -*- coding: utf-8; lexical-binding: t -*-
 
-	;; Configuration
+;; Configuration
 
-(defun new-configure-company-anaconda ()
-  (if (not (member 'company-anaconda company-backends))
-      (push 'company-anaconda company-backends)))
-
-;; (defun new-configure-company-jedi ()
-;;   (if (not (member 'company-jedi company-backends))
-;;       (push 'company-jedi company-backends)))
-
-;; Packages
-
-;; (use-package anaconda-mode
-;;   :ensure t
-;;   :hook ((python-mode . anaconda-mode)
-;;          (python-mode . anaconda-eldoc-mode))
-;;   :bind (:map python-mode-map (("C-x C-d" . anaconda-mode-show-doc)
-;;                                ("C-x C-w" . anaconda-mode-find-definitions))))
-
-;; (use-package company-anaconda
-;;   :ensure t
-;;   :hook ((python-mode . new-configure-company-anaconda)))
-
-;; (use-package company-jedi
-;;   :ensure t
-;;   :hook ((python-mode . new-configure-company-jedi)))
-
-;; (use-package elpy
-;;   :ensure t
-;;   :init (elpy-enable))
-
-;; (use-package jedi
-;;   :ensure t
-;;   :defer t
-;;   :hook ((python-mode . jedi-mode)
-;;          (python-mode . eglot-ensure)))
+;; how to set up pylsp server to work with this:
+;; 1. figure out which python eglot is looking for. it's usually just the 'default python'.
+;; 2. in that python, `pip install "python-language-server[flake8]"` or whatever extras you want
+;; 3. then `pip install "pylsp-mypy @ git+https://github.com/petergaultney/pylsp-mypy.git@master"
+;; 4. then `pip install python-lsp-black pyls-isort`
 
 (defun format-python-with-eglot-on-save ()
   (when (eq major-mode 'python-mode)
@@ -60,6 +31,8 @@
 
   )
 
+(add-hook 'python-mode-hook 'flycheck-mode)
 (add-hook 'eglot--managed-mode-hook (lambda () (flymake-mode -1)))
+(add-hook 'python-mode-hook 'highlight-numbers-mode)
 
 (provide 'new-python)
