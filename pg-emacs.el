@@ -1,12 +1,12 @@
-;;; dauphin-config.el ---
+;;; pg-emacs.el ---
 ;;; this is where everything starts....
 (load "straight-boot.el")
 
 ;; ask emacs to save settings in a special file:
 ;; from http://tychoish.com/rhizome//useful-emacs-and-orgmode-hacks/
-(setq dauphin-emacs-dir (file-name-directory load-file-name))
-(setq dauphin-emacs-config-file load-file-name) ;; save for later use
-(setq custom-file (concat dauphin-emacs-dir "custom.el"))
+(setq pg-emacs-dir (file-name-directory load-file-name))
+(setq pg-emacs-config-file load-file-name) ;; save for later use
+(setq custom-file (concat pg-emacs-dir "custom.el"))
 ;; load that custom file
 (load custom-file 'no-error)
 
@@ -97,7 +97,7 @@
   (find-file "~/.emacs"))
 (defun open-lclcfg ()
   (interactive)
-  (find-file dauphin-emacs-config-file))
+  (find-file pg-emacs-config-file))
 ;; (defun switch-to-previous-buffer ()
 ;;   "Switch to previously open buffer.
 ;; Repeated invocations toggle between the two most recently open buffers."
@@ -120,4 +120,4 @@
 
 ;; LOAD OTHER FILES WITH CUSTOM FUNCTIONS
 (load "load-files.el")
-(load (concat dauphin-emacs-dir "packages.el")) ;; manual hack to see if packages are working
+(load (concat pg-emacs-dir "packages.el")) ;; manual hack to see if packages are working

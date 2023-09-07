@@ -75,4 +75,4 @@
 ;; (define-key cider-repl-mode-map (kbd "<prior>") (lambda () (interactive) (cider-repl-previous-input)))
 ;; (define-key cider-repl-mode-map (kbd "<next>") (lambda () (interactive) (cider-repl-next-input)))
 
-;;; dauphin-config-packages.el ends here
+;;; packages.el ends here

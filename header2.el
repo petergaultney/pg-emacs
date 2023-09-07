@@ -357,7 +357,7 @@
 ;; Quiet byte-compiler.
 (defvar c-style)
 (defvar explicit-shell-file-name)
- 
+
 ;; User Options (Variables) --------------------------------
 
 (defgroup Automatic-File-Header nil
@@ -481,7 +481,7 @@ along with GNU Emacs.  If not, see <http://www.gnu.org/licenses/>."
 
   "*Text saying that this is free software"
   :type 'string :group 'Automatic-File-Header)
- 
+
 ;;; Internal variables -------------------------------------
 
 (defvar header-auto-update-enabled t
@@ -506,7 +506,7 @@ the function to call if the string is found near the start of the file.")
 
 (defvar header-prefix-string ""
   "Mode-specific comment prefix string for use in headers.")
- 
+
 ;;; Functions ----------------------------------------------
 
 (defsubst nonempty-comment-start ()
@@ -1117,7 +1117,7 @@ result of `update-lib-requires'."
     list))
 
 
-;; dauphin's custom changes, via http://zhangda.wordpress.com/2012/03/23/using-org-mode-as-the-ultimate-note-taking-tool-6/
+;; pg's custom changes, via http://zhangda.wordpress.com/2012/03/23/using-org-mode-as-the-ultimate-note-taking-tool-6/
 (defsubst header-org-mode ()
   "Insert \"#+TITLE: ...\" at the beginning of org file."
   (insert "#+TITLE: " (file-name-nondirectory (file-name-sans-extension (buffer-file-name))) "\n") ;; filename only, without dir or extension
