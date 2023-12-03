@@ -2,11 +2,10 @@
 (load "funcs.el")
 (load "smarter_move_beginning_of_line")
 
-(load "better-defaults.el")
 (load "window-half-scroll.el")
 (load "compile-window-placement.el")
 (load "mac-copy.el")
-(load "find-file-in-project.el")
+;; (load "find-file-in-project.el")
 (load "z-helpful.el")
 
 (load "coding-standards.el")
@@ -32,7 +31,8 @@
 (require 'auto-correct)
 ;; (load "lsp-config.el")
 ;; (load "ivy-config.el")
-(load "helm-config.el")
+;; (load "helm-config.el")
+(load "consult-config.el")
 (load "projectile-conf.el")
 (require 'new-python)
 (load "github-copilot.el")
@@ -53,3 +53,5 @@
 (load "magit-conf.el")
 (require 'org-roam-config)
 (load "org-custom")  ;; sometimes this used to fail so it's at the very end
+
+(load "better-defaults.el")  ;; needs to see that helm/consult/whatever is loaded

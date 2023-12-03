@@ -94,7 +94,7 @@
   (load-file "~/.emacs"))
 (defun open-dotemacs ()
   (interactive)
-  (find-file "~/.emacs"))
+  (find-file pg-emacs-dir))
 (defun open-lclcfg ()
   (interactive)
   (find-file pg-emacs-config-file))
@@ -121,3 +121,4 @@
 ;; LOAD OTHER FILES WITH CUSTOM FUNCTIONS
 (load "load-files.el")
 (load (concat pg-emacs-dir "packages.el")) ;; manual hack to see if packages are working
+(load "pg-replace.el")

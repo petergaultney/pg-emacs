@@ -43,9 +43,9 @@
 ;;; Code:
 
 (progn
-  (unless (or (fboundp 'helm-mode) (fboundp 'ivy-mode))
-    (ido-mode t)
-    (setq ido-enable-flex-matching t))
+  ;; (unless (or (fboundp 'helm-mode) (fboundp 'ivy-mode) (fboundp 'consult-mode))
+  ;;   (ido-mode t)
+  ;;   (setq ido-enable-flex-matching t))
 
   (unless (eq window-system 'ns)
     (menu-bar-mode -1))

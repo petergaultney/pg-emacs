@@ -123,7 +123,7 @@
  '(helm-ff-DEL-up-one-level-maybe t nil nil "where is this going?")
  '(helm-ff-auto-update-initial-value nil)
  '(ido-enable-flex-matching t)
- '(ido-mode 'both nil (ido))
+;; '(ido-mode 'both nil (ido))
  '(ido-show-dot-for-dired t)
  '(indent-tabs-mode nil)
  '(js-indent-level 2)
