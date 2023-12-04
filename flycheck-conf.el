@@ -14,5 +14,6 @@
   :ensure t
   :init (global-flycheck-mode)
   :config
+  (setq flycheck-display-errors-function nil)
   ;; (setq flycheck-display-errors-function #'flycheck-display-error-messages-truncated)
   (setq flycheck-check-syntax-automatically '(save)))

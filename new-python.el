@@ -31,8 +31,7 @@
 
   )
 
-(add-hook 'python-mode-hook 'flycheck-mode)
-(add-hook 'eglot--managed-mode-hook (lambda () (flymake-mode -1)))
+;; (add-hook 'python-mode-hook 'flycheck-mode)
+(add-hook 'eglot--managed-mode-hook (lambda () (flymake-mode t)))
 (add-hook 'python-mode-hook 'highlight-numbers-mode)
-
 (provide 'new-python)
