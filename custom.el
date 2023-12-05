@@ -114,6 +114,7 @@
  '(elpy-rpc-python-command "python3")
  '(evil-move-beyond-eol t)
  '(evil-want-Y-yank-to-eol nil)
+ '(fill-column 90)
  '(flycheck-disabled-checkers '(python-mypy))
  '(gc-cons-threshold 100000000)
  '(global-auto-revert-mode t)

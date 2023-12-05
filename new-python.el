@@ -22,7 +22,8 @@
                 '(:pylsp
                    (:plugins
                     (:pycodestyle (:enabled nil)
-								  :pyflakes (:enabled nil)
+						          :pyflakes (:enabled nil)
+                                  :isort (:enabled t)
 								  :flake8 (:enabled nil)
 								  :pylsp-mypy (:enabled t)
 								  :black (:enabled t :line_length 105)

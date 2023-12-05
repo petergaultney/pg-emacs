@@ -7,6 +7,7 @@
          ("C-c k" . consult-kmacro)
          ("C-c m" . consult-man)
          ("C-c i" . consult-info)
+         ("C-c p" . consult-projectile-find-file)
          ([remap Info-search] . consult-info)
          ;; C-x bindings in `ctl-x-map'
          ("C-x M-:" . consult-complex-command)     ;; orig. repeat-complex-command
@@ -125,10 +126,10 @@
   (vertico-buffer-mode)  ;; this makes it like helm, with a full buffer for completions.
   (vertico-mouse-mode)
   (vertico-multiform-mode)
-  ;; :config
-  ;; (load "vertico-nice-fonts.el")
+  :config
+  (load "vertico-nice-fonts.el")
   ;; Different scroll margin
-  ;; (setq vertico-scroll-margin 0)
+  (setq vertico-scroll-margin 5)
 
   ;; Show more candidates
   ;; (setq vertico-count 20)
@@ -202,7 +203,28 @@
   :hook
   (embark-collect-mode . consult-preview-at-point-mode))
 
+;; this function doesn't work, for whatever reason.
+;; https://github.com/erickgnavar/dotfiles/tree/master/.emacs.d
+(defun my/grep-edit-results ()
+  "Export results using `embark-export' and activate `wgrep'.
+This only runs for ripgrep results"
+  (interactive)
+  (when (cl-search "Ripgrep" (buffer-string))
+    ;; we use `run-at-time' to ensure all of these steps
+    ;; will be executed in order
+    (run-at-time 0 nil #'embark-export)
+    (run-at-time 0 nil #'wgrep-change-to-wgrep-mode)))
+
 (use-package wgrep
   :ensure t
+  ;; :bind (("M-r" . #'my/grep-edit-results))
   :config
   (setq wgrep-auto-save-buffer t))
+
+  ;;(define-key minibuffer-mode-map (kbd "C-c C-e") #'my/grep-edit-results))
+
+(use-package orderless
+  :ensure t
+  :custom
+  (completion-styles '(orderless basic))
+  (completion-category-overrides '((file (styles basic partial-completion)))))
