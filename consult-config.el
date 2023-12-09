@@ -1,3 +1,11 @@
+(setq lexical-binding t)
+
+(defun my/consult-ripgrep ()
+  (interactive)
+  (run-at-time 0 nil #'consult-ripgrep
+     (universal-argument)
+    ))
+
 (use-package consult
   ;; Replace bindings. Lazily loaded due by `use-package'.
   :bind (;; C-c bindings in `mode-specific-map'
@@ -7,7 +15,7 @@
          ("C-c k" . consult-kmacro)
          ("C-c m" . consult-man)
          ("C-c i" . consult-info)
-         ("C-c p" . consult-projectile-find-file)
+         ("M-p" . consult-projectile-find-file)
          ([remap Info-search] . consult-info)
          ;; C-x bindings in `ctl-x-map'
          ("C-x M-:" . consult-complex-command)     ;; orig. repeat-complex-command
@@ -38,7 +46,7 @@
          ("M-s c" . consult-locate)
          ("M-s g" . consult-grep)
          ("M-s G" . consult-git-grep)
-         ("M-s r" . consult-ripgrep)
+         ("M-r" . my/consult-ripgrep)
          ("M-s l" . consult-line)
          ("M-s L" . consult-line-multi)
          ("M-s k" . consult-keep-lines)
@@ -46,7 +54,6 @@
          ;; Isearch integration
          ("M-s e" . consult-isearch-history)
          :map isearch-mode-map
-         ("M-e" . consult-isearch-history)         ;; orig. isearch-edit-string
          ("M-s e" . consult-isearch-history)       ;; orig. isearch-edit-string
          ("M-s l" . consult-line)                  ;; needed by consult-line to detect isearch
          ("M-s L" . consult-line-multi)            ;; needed by consult-line to detect isearch
@@ -130,6 +137,9 @@
   (load "vertico-nice-fonts.el")
   ;; Different scroll margin
   (setq vertico-scroll-margin 5)
+  :bind (:map vertico-map
+              ("M-e" . embark-export))
+
 
   ;; Show more candidates
   ;; (setq vertico-count 20)
@@ -175,8 +185,8 @@
   :ensure t
 
   :bind
-  (("M-e" . embark-act)
-   ("M-." . embark-dwim)
+  (("M-." . embark-act)
+   ("M-m" . embark-dwim)
    ("C-h B" . embark-bindings)) ;; alternative for `describe-bindings'
 
   :init

@@ -6,7 +6,6 @@
 (load "compile-window-placement.el")
 (load "mac-copy.el")
 ;; (load "find-file-in-project.el")
-(load "z-helpful.el")
 
 (load "coding-standards.el")
 (load "unfill-paragraph.el")
@@ -55,3 +54,5 @@
 (load "org-custom")  ;; sometimes this used to fail so it's at the very end
 
 (load "better-defaults.el")  ;; needs to see that helm/consult/whatever is loaded
+
+;; (load "z-helpful.el")  ;; broken as of 2023-12-08 with Wrong type argument: 1,listp

@@ -1,5 +1,7 @@
 ;;; pg-emacs.el ---
 ;;; this is where everything starts....
+(setq debug-on-error t)
+
 (load "straight-boot.el")
 
 ;; ask emacs to save settings in a special file:
