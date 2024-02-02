@@ -6,7 +6,10 @@
 
 ;; ask emacs to save settings in a special file:
 ;; from http://tychoish.com/rhizome//useful-emacs-and-orgmode-hacks/
-(setq pg-emacs-dir (file-name-directory load-file-name))
+(setq pg-emacs-dir (file-name-directory (or load-file-name (buffer-file-name))))
+;; load-file-name is only non-nil if using load-file.
+;; the or buffer-file-name is for when you're using eval-buffer or some other form of eval
+(buffer-file-name)
 (setq pg-emacs-config-file load-file-name) ;; save for later use
 (setq custom-file (concat pg-emacs-dir "custom.el"))
 ;; load that custom file
@@ -110,6 +113,11 @@
 (global-set-key (kbd "C-c e") 'open-dotemacs)
 (global-set-key (kbd "C-c C-e") 'reload-dotemacs)
 (global-set-key (kbd "C-c b") 'switch-to-prev-buffer)
+
+(with-eval-after-load 'minibuffer
+  (keymap-set minibuffer-local-completion-map "<down>" #'minibuffer-next-completion)
+  (keymap-set minibuffer-local-completion-map "<up>" #'minibuffer-prev-completion))
+
 
 (defun unfill-paragraph (&optional region)
   "Takes a multi-line paragraph and makes it into a single line of text."
