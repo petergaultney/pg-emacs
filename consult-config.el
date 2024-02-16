@@ -229,6 +229,7 @@ This only runs for ripgrep results"
   :ensure t
   ;; :bind (("M-r" . #'my/grep-edit-results))
   :config
+  (setq wgrep-enable-key "w")
   (setq wgrep-auto-save-buffer t))
 
   ;;(define-key minibuffer-mode-map (kbd "C-c C-e") #'my/grep-edit-results))
