@@ -35,6 +35,7 @@
 (global-set-key (kbd "C-c d") 'delete-region)
 (global-set-key (kbd "M-g") 'goto-line)
 (global-set-key (kbd "C-x s") 'save-buffer)
+(global-set-key (kbd "C-f") 'find-file-other-window)
 
 (global-set-key (kbd "C-x b") 'switch-to-buffer)
 (global-set-key (kbd "C-d") 'kill-whole-line)
@@ -127,6 +128,7 @@
 
 (global-set-key "\M-Q" 'unfill-paragraph)
 
+(load "minibuffer.el")
 ;; LOAD OTHER FILES WITH CUSTOM FUNCTIONS
 (load "load-files.el")
 (load (concat pg-emacs-dir "packages.el")) ;; manual hack to see if packages are working
