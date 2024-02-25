@@ -152,6 +152,8 @@
   )
 
 ;; Configure directory extension.
+;; if this gives you troulbe on initial install (void function vertico-directory or vertico-buffer-mode)
+;; try just package-installing vertico. I don't really understand why straight doesn't seem to be working.
 (use-package vertico-directory
   :after vertico
   :straight nil
