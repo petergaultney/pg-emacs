@@ -1,5 +1,13 @@
+;; this is old package.el stuff. I am leaving it in place despite also
+;; using straight.el because i'm not yet convinced that straight
+;; is necessarily 100% better.
+;; However, for most new packages, I will just install with use-package, which
+;; is currently configured to use straight.el.
+;; I may later decide to try out elpaca.
+
 ;; For loading things that are packages that may need to be installed.
 ;;; Code:
+
 (require 'package)
 
 (let* ((no-ssl (and (memq system-type '(windows-nt ms-dos))
@@ -14,11 +22,10 @@
 ;; (package-initialize) ;; "unnecessary call"
 ;; (setq package-enable-at-startup nil)
 
-(unless (package-installed-p 'use-package)
-  (package-refresh-contents)
-  (package-install 'use-package))
-
-(add-hook 'after-init-hook 'global-color-identifiers-mode)
+;; use-package is now installed via straight.el
+;; (unless (package-installed-p 'use-package)
+;;   (package-refresh-contents)
+;;   (package-install 'use-package))
 
 (eval-when-compile
   (require 'use-package))

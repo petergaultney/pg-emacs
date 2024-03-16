@@ -126,6 +126,9 @@
   ;; (setq consult-project-function nil)
   )
 
+(use-package consult-projectile
+  :ensure t)
+
 ;; Enable vertico
 (use-package vertico
   :init

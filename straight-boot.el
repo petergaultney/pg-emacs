@@ -1,3 +1,6 @@
+;; (setq package-enable-at-startup nil)
+;; the above line needs to go into ~/.emacs.d/early-init.el
+
 (defvar bootstrap-version)
 (let ((bootstrap-file
        (expand-file-name "straight/repos/straight.el/bootstrap.el" user-emacs-directory))

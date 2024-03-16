@@ -1,4 +1,8 @@
 (use-package projectile)
+(use-package projectile-ripgrep
+  :after projectile
+  )
+(use-package projectile-codesearch)
   ;; Recommended keymap prefix on macOS
   ;; :bind (:map projectile-mode-map
   ;;             ((kbd "C-c p") . 'projectile-command-map)))

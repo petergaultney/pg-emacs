@@ -50,7 +50,7 @@
          ("RET" . sqlite-mode-extras-ret-dwim)))
 
 (load "magit-conf.el")
-(require 'org-roam-config)
+;; (require 'org-roam-config)
 (load "org-custom")  ;; sometimes this used to fail so it's at the very end
 
 (load "better-defaults.el")  ;; needs to see that helm/consult/whatever is loaded

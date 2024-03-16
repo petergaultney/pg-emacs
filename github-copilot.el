@@ -1,6 +1,6 @@
 ;; requires node to be installed!
 (use-package copilot
-  :straight (:host github :repo "zerolfx/copilot.el" :files ("dist" "*.el"))
+  :straight (:host github :repo "copilot-emacs/copilot.el" :files ("dist" "*.el"))
   :ensure t)
 
 (global-unset-key (kbd "M-e"))

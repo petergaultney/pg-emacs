@@ -4,6 +4,9 @@
 
 (load "straight-boot.el")
 
+(straight-use-package 'use-package)
+;; this needs to be early so that use-package is available elsewhere.
+
 ;; ask emacs to save settings in a special file:
 ;; from http://tychoish.com/rhizome//useful-emacs-and-orgmode-hacks/
 (setq pg-emacs-dir (file-name-directory (or load-file-name (buffer-file-name))))
@@ -14,6 +17,13 @@
 (setq custom-file (concat pg-emacs-dir "custom.el"))
 ;; load that custom file
 (load custom-file 'no-error)
+
+(use-package highlight-numbers)
+(use-package color-identifiers-mode
+  :straight t
+  :config
+  (add-hook 'after-init-hook 'global-color-identifiers-mode))
+(use-package elisp-autofmt)
 
 ;; remove annoying prompt http://shreevatsa.wordpress.com/2007/01/06/using-emacsclient/
 ;; (server-start)
