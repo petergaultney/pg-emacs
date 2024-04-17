@@ -18,6 +18,8 @@
 ;; load that custom file
 (load custom-file 'no-error)
 
+(load "treesit-config.el")
+
 (use-package highlight-numbers)
 (use-package color-identifiers-mode
   :straight t

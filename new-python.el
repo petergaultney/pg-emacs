@@ -25,17 +25,22 @@
  (setq-default eglot-workspace-configuration
                '(:pylsp
                  (:plugins
-                  (:pycodestyle
-                   (:enabled nil)
+                  (:pycodestyle (:enabled nil)
                    :pyflakes (:enabled nil)
                    :isort (:enabled t)
                    :flake8 (:enabled nil)
                    :pylsp-mypy (:enabled t)
                    :black (:enabled t :line_length 105)))))
- ;; (setq-default project-vc-extra-root-markers '("pyproject.toml"))
  )
 
-;; (add-hook 'python-mode-hook 'flycheck-mode)
+;; requires https://github.com/blahgeek/emacs-lsp-booster
+;; to be built and on the PATH
+(use-package eglot-booster
+  :after eglot
+  :ensure t
+  :straight (:type git :host github :repo "jdtsmith/eglot-booster")
+  :config    (eglot-booster-mode))
+
 (add-hook 'eglot--managed-mode-hook (lambda () (flymake-mode t)))
 (add-hook 'python-mode-hook 'highlight-numbers-mode)
 (provide 'new-python)
