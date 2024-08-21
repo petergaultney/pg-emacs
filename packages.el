@@ -83,3 +83,5 @@
 ;; (define-key cider-repl-mode-map (kbd "<next>") (lambda () (interactive) (cider-repl-next-input)))
 
 ;;; packages.el ends here
+
+(use-package xonsh-mode)

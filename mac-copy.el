@@ -1,4 +1,4 @@
-;; copy straight to mac clipboard with a keystroke!!
+;; copy directly to mac clipboard with a keystroke!!
 (defun pb (&optional b e)
   (interactive "r")
   (shell-command-on-region

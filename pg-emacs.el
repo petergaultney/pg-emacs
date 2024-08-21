@@ -2,9 +2,10 @@
 ;;; this is where everything starts....
 (setq debug-on-error t)
 
-(load "straight-boot.el")
+;; (load "straight-boot.el")
+(load "elpaca.el")
 
-(straight-use-package 'use-package)
+;; (straight-use-package 'use-package)
 ;; this needs to be early so that use-package is available elsewhere.
 
 ;; ask emacs to save settings in a special file:
@@ -18,13 +19,12 @@
 ;; load that custom file
 (load custom-file 'no-error)
 
-(load "treesit-config.el")
+;; (load "treesit-config.el")
 
 (use-package highlight-numbers)
 (use-package color-identifiers-mode
-  :straight t
   :config
-  (add-hook 'after-init-hook 'global-color-identifiers-mode))
+  (add-hook 'elpaca-after-init-hook 'global-color-identifiers-mode))
 (use-package elisp-autofmt)
 
 ;; remove annoying prompt http://shreevatsa.wordpress.com/2007/01/06/using-emacsclient/

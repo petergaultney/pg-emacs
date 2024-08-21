@@ -159,8 +159,8 @@
 ;; try just package-installing vertico. I don't really understand why straight doesn't seem to be working.
 (use-package vertico-directory
   :after vertico
-  :straight nil
-  :ensure nil
+  ;; :straight nil
+  :ensure nil ;; this is a vertico extension and (I guess?) installed by default.
   ;; More convenient directory navigation commands
   :bind (:map vertico-map
               ("RET" . vertico-directory-enter)
@@ -172,6 +172,7 @@
 
 ;; Persist history over Emacs restarts. Vertico sorts by history position.
 (use-package savehist
+  :ensure nil  ;; this is built-in to emacs
   :init
   (savehist-mode))
 

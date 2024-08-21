@@ -11,8 +11,6 @@
 (load "unfill-paragraph.el")
 ;; (load "god-mode-config.el")
 (load "indentation.el")
-(load "javascript.el")
-(load "typescript.el")
 
 (require 'header2)
 
@@ -28,16 +26,12 @@
 
 (load "auto-correct.el")
 (require 'auto-correct)
-;; (load "lsp-config.el")
-;; (load "ivy-config.el")
-;; (load "helm-config.el")
 (load "consult-config.el")
-(load "projectile-conf.el")
-(require 'new-python)
 (load "github-copilot.el")
+(require 'new-python)
 
 (use-package sqlite-mode-extras
-  :straight nil  ;; this avoids a weird error where straight tries to download something it can't find.
+  ;; :straight nil  ;; this avoids a weird error where straight tries to download something it can't find.
   :demand  ;; not sure what this is for
   :bind (:map
          sqlite-mode-map
@@ -56,3 +50,6 @@
 (load "better-defaults.el")  ;; needs to see that helm/consult/whatever is loaded
 
 ;; (load "z-helpful.el")  ;; broken as of 2023-12-08 with Wrong type argument: 1,listp
+(load "projectile-conf.el")
+(load "javascript.el")
+(load "typescript.el")

@@ -1,6 +1,9 @@
 (use-package projectile)
 (use-package projectile-ripgrep
   :after projectile
+  :ensure (projectile-ripgrep
+	       :host github
+		   :repo "nlamirault/ripgrep.el")
   )
 (use-package projectile-codesearch)
   ;; Recommended keymap prefix on macOS
