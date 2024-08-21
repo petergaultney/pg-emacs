@@ -1,5 +1,11 @@
 clone this repository into a directory within your .emacs.d, e.g., `~/.emacs.d/pg-emacs`
 
+add this to `~/.emacs.d/early-init.el`:
+
+```
+(setq package-enable-at-startup nil) ;; for elpaca
+```
+
 then add the following to your .emacs:
 
 ```
