@@ -53,3 +53,4 @@
 (load "projectile-conf.el")
 (load "javascript.el")
 (load "typescript.el")
+(load "open-ai.el")

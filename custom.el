@@ -121,6 +121,20 @@
  '(global-auto-revert-mode t)
  '(global-color-identifiers-mode t)
  '(global-hl-line-mode nil)
+ '(gptel-backend
+   #s(gptel-openai "ChatGPT" "api.openai.com"
+                   #[0 "\300 \211\205\14\0\301\302\2PBC\207"
+                       [gptel--get-api-key "Authorization" "Bearer "]
+                       4]
+                   "https" t "/v1/chat/completions" gptel-api-key
+                   ("gpt-3.5-turbo" "gpt-3.5-turbo-16k" "gpt-4o-mini" "gpt-4" "gpt-4o" "gpt-4-turbo" "gpt-4-turbo-preview" "gpt-4-32k" "gpt-4-1106-preview" "gpt-4-0125-preview")
+                   "https://api.openai.com/v1/chat/completions" nil))
+ '(gptel-default-mode 'markdown-mode)
+ '(gptel-model "gpt-4-turbo")
+ '(gptel-prompt-prefix-alist
+   '((markdown-mode . "## ")
+     (org-mode . "** ")
+     (text-mode . "## ")))
  '(header-auto-update-enabled t t)
  '(helm-ff-DEL-up-one-level-maybe t nil nil "where is this going?")
  '(helm-ff-auto-update-initial-value nil)
@@ -290,6 +304,6 @@
  '(outline-3 ((t (:foreground "yellow" :weight bold))))
  '(outline-4 ((t (:foreground "orange"))))
  '(outline-5 ((t (:foreground "red"))))
- '(region ((t (:background "#0000ff" :foreground "white"))))
+ '(region ((t (:extend t :inverse-video nil))))
  '(secondary-selection ((((class color) (min-colors 8) (background light)) (:background "yellow1" :foreground "black"))))
  '(spacemacs-hybrid-face ((t (:inherit 'mode-line :background "SkyBlue2" :foreground "#000000")))))
