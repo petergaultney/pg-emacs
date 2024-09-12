@@ -5,11 +5,11 @@
  ;; If there is more than one, they won't work right.
  '(auto-save-file-name-transforms '((".*" "~/.emacs.d/autosaves/\\1" t)))
  '(backup-directory-alist '((".*" . "~/.emacs.d/backups/")))
- '(c-basic-offset 4 t)
+ '(c-basic-offset 4)
  '(c-default-style
    '((java-mode . "java")
      (awk-mode . "awk")
-     (other . "linux")) t)
+     (other . "linux")))
  '(c-offsets-alist
    '((inexpr-class . +)
      (inexpr-statement . +)
@@ -105,7 +105,7 @@
       (statement-case-open after)
       (substatement after))
      (c-comment-only-line-offset . 0)
-     (c-tab-always-indent . t)) t)
+     (c-tab-always-indent . t)))
  '(color-identifiers-avoid-faces '(font-lock-comment-face))
  '(color-identifiers:num-colors 20 t)
  '(copilot-node-executable (expand-file-name "~/sw/bin/node"))
@@ -304,6 +304,6 @@
  '(outline-3 ((t (:foreground "yellow" :weight bold))))
  '(outline-4 ((t (:foreground "orange"))))
  '(outline-5 ((t (:foreground "red"))))
- '(region ((t (:extend t :inverse-video nil))))
+ '(region ((t (:extend t :inverse-video t))))
  '(secondary-selection ((((class color) (min-colors 8) (background light)) (:background "yellow1" :foreground "black"))))
  '(spacemacs-hybrid-face ((t (:inherit 'mode-line :background "SkyBlue2" :foreground "#000000")))))
