@@ -1,10 +1,6 @@
 (setq lexical-binding t)
 
-(defun my/consult-ripgrep ()
-  (interactive)
-  (run-at-time 0 nil #'consult-ripgrep
-     (universal-argument)
-    ))
+(load "consult-ripgrep-conf.el")
 
 (use-package consult
   ;; Replace bindings. Lazily loaded due by `use-package'.

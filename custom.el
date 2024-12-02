@@ -5,11 +5,11 @@
  ;; If there is more than one, they won't work right.
  '(auto-save-file-name-transforms '((".*" "~/.emacs.d/autosaves/\\1" t)))
  '(backup-directory-alist '((".*" . "~/.emacs.d/backups/")))
- '(c-basic-offset 4)
+ '(c-basic-offset 4 t)
  '(c-default-style
    '((java-mode . "java")
      (awk-mode . "awk")
-     (other . "linux")))
+     (other . "linux")) t)
  '(c-offsets-alist
    '((inexpr-class . +)
      (inexpr-statement . +)
@@ -105,7 +105,7 @@
       (statement-case-open after)
       (substatement after))
      (c-comment-only-line-offset . 0)
-     (c-tab-always-indent . t)))
+     (c-tab-always-indent . t)) t)
  '(color-identifiers-avoid-faces '(font-lock-comment-face))
  '(color-identifiers:num-colors 20 t)
  '(copilot-node-executable (expand-file-name "~/sw/bin/node"))
@@ -121,16 +121,16 @@
  '(global-auto-revert-mode t)
  '(global-color-identifiers-mode t)
  '(global-hl-line-mode nil)
- '(gptel-backend
-   #s(gptel-openai "ChatGPT" "api.openai.com"
-                   #[0 "\300 \211\205\14\0\301\302\2PBC\207"
-                       [gptel--get-api-key "Authorization" "Bearer "]
-                       4]
-                   "https" t "/v1/chat/completions" gptel-api-key
-                   ("gpt-3.5-turbo" "gpt-3.5-turbo-16k" "gpt-4o-mini" "gpt-4" "gpt-4o" "gpt-4-turbo" "gpt-4-turbo-preview" "gpt-4-32k" "gpt-4-1106-preview" "gpt-4-0125-preview")
-                   "https://api.openai.com/v1/chat/completions" nil))
+ ;; '(gptel-backend
+ ;;   #s(gptel-openai "ChatGPT" "api.openai.com"
+ ;;                   #[0 "\300 \211\205\14\0\301\302\2PBC\207"
+ ;;                       [gptel--get-api-key "Authorization" "Bearer "]
+ ;;                       4]
+ ;;                   "https" t "/v1/chat/completions" gptel-api-key
+ ;;                   ('gpt-3.5-turbo-16k 'gpt-4o-mini 'gpt-4 'gpt-4o 'gpt-4-turbo 'gpt-4-turbo-preview 'gpt-4-32k 'gpt-4-1106-preview 'gpt-4-0125-preview)
+ ;;                   "https://api.openai.com/v1/chat/completions" nil))
  '(gptel-default-mode 'markdown-mode)
- '(gptel-model "gpt-4-turbo")
+ '(gptel-model 'gpt-4-turbo)
  '(gptel-prompt-prefix-alist
    '((markdown-mode . "## ")
      (org-mode . "** ")
@@ -271,6 +271,7 @@
  '(tab-width 4)
  '(treesit-font-lock-level 4)
  '(typescript-indent-level 2)
+ '(vertico-buffer-display-action '(display-buffer-use-least-recent-window))
  '(web-mode-code-indent-offset 2)
  '(web-mode-markup-indent-offset 2))
 (custom-set-faces

@@ -54,3 +54,4 @@
 (load "javascript.el")
 (load "typescript.el")
 (load "open-ai.el")
+(load "windows.el")
