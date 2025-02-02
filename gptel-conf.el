@@ -7,6 +7,9 @@
     (insert-file-contents (expand-file-name "~/.claude-api-key"))
     (string-trim (buffer-string))))
 
+(defvar gptel-file-datetime-fmt "%y-%m-%d_%H%M_")
+(defvar gptel-default-directory (expand-file-name "~/docs/llm-chats"))
+
 (defun gptel-rename-chat ()
   (interactive)
   (unless gptel-mode
@@ -30,16 +33,24 @@ Use the following guidelines:
              (if (eq major-mode 'org-mode) "org" "md")))
       :callback
       (lambda (resp info)                           ;callback called with response and request info
+
         (if (stringp resp)
             (let ((buf (plist-get info :buffer)))
-              (when (and (buffer-live-p buf)
-                         (y-or-n-p (format "Rename buffer %s to %s? " (buffer-name buf) resp)))
-                (with-current-buffer buf (rename-visited-file resp))))
+              (when (and (buffer-live-p buf))
+                (let* ((date-prefix (format-time-string gptel-file-datetime-fmt))
+                      (new-name (concat date-prefix resp)))
+                  (when (y-or-n-p (format "Rename buffer %s to %s? " (buffer-name buf) new-name))
+                    (with-current-buffer buf (rename-visited-file new-name))))))
           (message "Error(%s): did not receive a response from the LLM."
                    (plist-get info :status)))))))
 
 
-(defvar gptel-default-directory "~/docs/llm-chats")
+(defun my-gptel-activate ()
+  "Activate `gptel-mode` for specific Markdown files."
+  (when (and buffer-file-name
+             (string-match-p gptel-default-directory buffer-file-name))
+    (gptel-mode 1)))
+
 
 (defun gptel-set-default-directory ()
   (unless (buffer-file-name)
@@ -60,6 +71,7 @@ Use the following guidelines:
 ;; Set M-o as the global prefix for GPTel commands
 (global-set-key (kbd "M-o") gptel-global-prefix-map)
 
+
 (use-package gptel
   :ensure (:host github :repo "karthink/gptel" )
   :config
@@ -67,12 +79,18 @@ Use the following guidelines:
   (gptel-make-anthropic "Claude" :stream t :key #'read-claude-api-key)
   ;; (add-hook 'gptel-mode-hook #'gptel-set-default-directory)
   (add-hook 'gptel-mode-hook #'gptel-set-default-directory nil t)
+  :hook (markdown-mode . my-gptel-activate)
   )
+
 
 (use-package posframe
   :ensure (:host github :repo "tumashu/posframe"))
 (use-package gptel-quick
   :ensure (:host github :repo "karthink/gptel-quick"))
+
+
+
+
 
 ;; all of the below comes from
 ;; https://github.com/benthamite/dotfiles/blob/master/emacs/extras/simple-extras.el
@@ -111,12 +129,15 @@ This function is meant to be an `:after' advice to `gptel'."
     ;; selected an existing buffer
     (unless (buffer-file-name (get-buffer name))
       (switch-to-buffer name)
-      (let* ((extension (pcase major-mode
-			  ('org-mode "org")
-			  ('markdown-mode "md")
-			  (_ (user-error "Unsupported major mode"))))
-	     (filename (file-name-concat gptel-default-directory
-					 (file-name-with-extension (simple-extras-slugify name) extension))))
+      (let* ((datetime-prefix (format-time-string gptel-file-datetime-fmt))
+             (extension (pcase major-mode
+                          ('org-mode "org")
+                          ('markdown-mode "md")
+                          (_ (user-error "Unsupported major mode"))))
+             (filename (file-name-concat gptel-default-directory
+                                         (file-name-with-extension (concat datetime-prefix
+                                                                           (simple-extras-slugify name))
+                                                                   extension))))
 	(when (derived-mode-p 'org-mode)
 	  (goto-char (point-min))
 	  (org-insert-heading nil nil 1)
