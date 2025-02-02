@@ -48,10 +48,11 @@ Use the following guidelines:
 
 (defvar gptel-global-prefix-map
   (let ((map (make-sparse-keymap)))
-    (define-key map (kbd "n") 'gptel) ; Bind for starting a new session
-    (define-key map (kbd "t") 'gptel-quick)             ; Bind for gptel-quick
-    (define-key map (kbd "r") 'gptel-rename-chat)       ; Bind for renaming chat
-    (define-key map (kbd "m") 'gptel-menu)              ; Bind for GPTel menu
+    (define-key map (kbd "n") 'gptel) ; start a new chat
+    (define-key map (kbd "t") 'gptel-quick)
+    (define-key map (kbd "q") 'gptel-quick)
+    (define-key map (kbd "r") 'gptel-rename-chat)
+    (define-key map (kbd "m") 'gptel-menu)
     (define-key map (kbd "d") 'gptel-mode) ; activates the mode on existing buffer
     map)
   "Global keymap for all GPTel commands.")

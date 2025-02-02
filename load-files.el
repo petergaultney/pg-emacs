@@ -5,7 +5,7 @@
 (load "window-half-scroll.el")
 (load "compile-window-placement.el")
 (load "mac-copy.el")
-(load "open-ai.el")
+(load "gptel-conf.el")
 (load "windows.el")
 
 ;; (load "find-file-in-project.el")
