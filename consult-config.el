@@ -127,6 +127,7 @@
 
 ;; Enable vertico
 (use-package vertico
+  :ensure t
   :init
   (vertico-mode)
   (vertico-buffer-mode)  ;; this makes it like helm, with a full buffer for completions.

@@ -84,4 +84,8 @@
 
 ;;; packages.el ends here
 
-(use-package xonsh-mode)
+(use-package xonsh-mode
+  :ensure t)
+
+(use-package adoc-mode
+  :ensure t)

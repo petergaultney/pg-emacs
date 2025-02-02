@@ -1,4 +1,5 @@
-(use-package markdown-mode)
+(use-package markdown-mode
+  :ensure t)
 
 (defun read-claude-api-key ()
   "Read the contents of my Claude API key file."

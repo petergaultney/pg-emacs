@@ -5,6 +5,9 @@
 (load "window-half-scroll.el")
 (load "compile-window-placement.el")
 (load "mac-copy.el")
+(load "open-ai.el")
+(load "windows.el")
+
 ;; (load "find-file-in-project.el")
 
 (load "coding-standards.el")
@@ -26,7 +29,6 @@
 
 (load "auto-correct.el")
 (require 'auto-correct)
-(load "consult-config.el")
 (load "github-copilot.el")
 (require 'new-python)
 
@@ -47,11 +49,9 @@
 ;; (require 'org-roam-config)
 (load "org-custom")  ;; sometimes this used to fail so it's at the very end
 
+(load "consult-config.el")
 (load "better-defaults.el")  ;; needs to see that helm/consult/whatever is loaded
 
 ;; (load "z-helpful.el")  ;; broken as of 2023-12-08 with Wrong type argument: 1,listp
 (load "projectile-conf.el")
 (load "javascript.el")
-(load "typescript.el")
-(load "open-ai.el")
-(load "windows.el")

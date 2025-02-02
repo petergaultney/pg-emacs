@@ -1,11 +1,13 @@
-(use-package projectile)
+(use-package projectile
+  :ensure t)
 (use-package projectile-ripgrep
   :after projectile
   :ensure (projectile-ripgrep
 	       :host github
 		   :repo "nlamirault/ripgrep.el")
   )
-(use-package projectile-codesearch)
+(use-package projectile-codesearch
+  :ensure t)
   ;; Recommended keymap prefix on macOS
   ;; :bind (:map projectile-mode-map
   ;;             ((kbd "C-c p") . 'projectile-command-map)))

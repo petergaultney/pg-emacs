@@ -1,9 +1,15 @@
 ;;; pg-emacs.el ---
 ;;; this is where everything starts....
 (setq debug-on-error t)
+;; (setq debug-on-message "Package cl is deprecated")
 
 ;; (load "straight-boot.el")
 (load "elpaca.el")
+
+(elpaca elpaca-use-package
+  ;; Enable Elpaca support for use-package's :ensure keyword.
+  ;; do it in a separate file so this doesn't break every time i upgrade elpaca.
+    (elpaca-use-package-mode))
 
 ;; (straight-use-package 'use-package)
 ;; this needs to be early so that use-package is available elsewhere.
@@ -21,11 +27,14 @@
 
 ;; (load "treesit-config.el")
 
-(use-package highlight-numbers)
+(use-package highlight-numbers
+  :ensure t)
 (use-package color-identifiers-mode
+  :ensure t
   :config
   (add-hook 'elpaca-after-init-hook 'global-color-identifiers-mode))
-(use-package elisp-autofmt)
+(use-package elisp-autofmt
+  :ensure t)
 
 ;; remove annoying prompt http://shreevatsa.wordpress.com/2007/01/06/using-emacsclient/
 ;; (server-start)
