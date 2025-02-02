@@ -7,9 +7,7 @@
  '(backup-directory-alist '((".*" . "~/.emacs.d/backups/")))
  '(c-basic-offset 4 t)
  '(c-default-style
-   '((java-mode . "java")
-     (awk-mode . "awk")
-     (other . "linux")) t)
+   '((java-mode . "java") (awk-mode . "awk") (other . "linux")) t)
  '(c-offsets-alist
    '((inexpr-class . +) (inexpr-statement . +) (lambda-intro-cont . +)
      (inlambda . c-lineup-inexpr-block) (template-args-cont c-lineup-template-args +)
@@ -55,6 +53,7 @@
    '("3c83b3676d796422704082049fc38b6966bcad960f896669dfc21a7a37a748fa" default))
  '(ediff-split-window-function 'split-window-vertically)
  '(elpy-rpc-python-command "python3")
+ '(eval-expression-debug-on-error nil)
  '(evil-move-beyond-eol t)
  '(evil-want-Y-yank-to-eol nil)
  '(fill-column 90)
@@ -64,7 +63,7 @@
  '(global-color-identifiers-mode t)
  '(global-hl-line-mode nil)
  '(gptel-default-mode 'markdown-mode)
- '(gptel-model "gpt-4o")
+ '(gptel-model 'gpt-4o)
  '(gptel-prompt-prefix-alist
    '((markdown-mode . "## ") (org-mode . "** ") (text-mode . "## ")))
  '(header-auto-update-enabled t t)

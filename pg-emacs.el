@@ -1,6 +1,6 @@
 ;;; pg-emacs.el ---
 ;;; this is where everything starts....
-(setq debug-on-error t)
+(load "errors.el")
 ;; (setq debug-on-message "Package cl is deprecated")
 
 ;; (load "straight-boot.el")
