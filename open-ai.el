@@ -45,18 +45,19 @@ Use the following guidelines:
   (unless (buffer-file-name)
     (setq default-directory gptel-default-directory)))
 
-;; Define a prefix keymap for gptel-mode
-(defvar gptel-mode-prefix-map (let ((map (make-sparse-keymap)))
-                                (define-key map (kbd "r") 'gptel-rename-chat)
-                                (define-key map (kbd "m") 'gptel-menu)
-                                map)
-  "Keymap for custom GPTel commands in gptel-mode.")
 
-;; Assign the prefix keymap to M-o when gptel-mode is active
-(defun gptel-setup-keybindings ()
-  "Set up custom keybindings for gptel-mode."
-  (let ((map (current-local-map)))
-    (define-key map (kbd "M-o") gptel-mode-prefix-map)))
+(defvar gptel-global-prefix-map
+  (let ((map (make-sparse-keymap)))
+    (define-key map (kbd "n") 'gptel) ; Bind for starting a new session
+    (define-key map (kbd "t") 'gptel-quick)             ; Bind for gptel-quick
+    (define-key map (kbd "r") 'gptel-rename-chat)       ; Bind for renaming chat
+    (define-key map (kbd "m") 'gptel-menu)              ; Bind for GPTel menu
+    (define-key map (kbd "d") 'gptel-mode) ; activates the mode on existing buffer
+    map)
+  "Global keymap for all GPTel commands.")
+
+;; Set M-o as the global prefix for GPTel commands
+(global-set-key (kbd "M-o") gptel-global-prefix-map)
 
 (use-package gptel
   :ensure (:host github :repo "karthink/gptel" )
@@ -65,11 +66,12 @@ Use the following guidelines:
   (gptel-make-anthropic "Claude" :stream t :key #'read-claude-api-key)
   ;; (add-hook 'gptel-mode-hook #'gptel-set-default-directory)
   (add-hook 'gptel-mode-hook #'gptel-set-default-directory nil t)
-  :hook (gptel-mode . gptel-setup-keybindings)
   )
 
-
-
+(use-package posframe
+  :ensure (:host github :repo "tumashu/posframe"))
+(use-package gptel-quick
+  :ensure (:host github :repo "karthink/gptel-quick"))
 
 ;; all of the below comes from
 ;; https://github.com/benthamite/dotfiles/blob/master/emacs/extras/simple-extras.el

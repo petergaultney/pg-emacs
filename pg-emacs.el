@@ -99,20 +99,7 @@
 ;; END SET A BUNCH OF VARIABLES
 
 ;; TEMP FILES - DON'T LITTER MY WORKSPACE!!
-(make-directory "~/.emacs.d/autosaves/" t)
-(defvar user-temporary-file-directory
-  (concat temporary-file-directory user-login-name "/"))
-(make-directory user-temporary-file-directory t)
-(setq backup-by-copying t)
-(setq backup-directory-alist
-      `(("." . ,user-temporary-file-directory)
-        ))
-(setq auto-save-list-file-prefix
-      (concat user-temporary-file-directory ".auto-saves-"))
-(setq auto-save-file-name-transforms
-      `((".*" ,user-temporary-file-directory t)))
-
-(setq frame-title-format "%b")
+(load "temp-files.el")
 ;; END TEMP FILES
 
 ;; CUSTOM FUNCTIONS
