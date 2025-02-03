@@ -1,3 +1,5 @@
+(require 'smerge-mode)
+
 (defun maybe-deactivate-smerge-mode ()
   "Deactivate `smerge-mode' if no conflict markers are found in the buffer."
   (when (and smerge-mode
