@@ -116,7 +116,7 @@
 
 ;; DEFINE KEY BINDINGS FOR CUSTOM FUNCTIONS
 (global-set-key (kbd "C-c e") 'open-dotemacs)
-(global-set-key (kbd "C-c C-e") 'reload-dotemacs)
+(global-set-key (kbd "C-c C-m") 'reload-dotemacs)
 (global-set-key (kbd "C-c b") 'switch-to-prev-buffer)
 
 (with-eval-after-load 'minibuffer
