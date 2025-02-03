@@ -62,8 +62,6 @@
  '(global-hl-line-mode nil)
  '(gptel-default-mode 'markdown-mode)
  '(gptel-model 'gpt-4o)
- '(gptel-prompt-prefix-alist
-    '((markdown-mode . "## ") (org-mode . "** ") (text-mode . "## ")))
  '(header-auto-update-enabled t t)
  '(helm-ff-DEL-up-one-level-maybe t nil nil "where is this going?")
  '(helm-ff-auto-update-initial-value nil)
@@ -186,4 +184,4 @@
  '(outline-5 ((t (:foreground "red"))))
  '(region ((t (:extend t :inverse-video t))))
  '(secondary-selection ((((class color) (min-colors 8) (background light)) (:background "yellow1" :foreground "black"))))
- '(spacemacs-hybrid-face ((t (:inherit 'mode-line :background "SkyBlue2" :foreground "#000000")))))
+ )

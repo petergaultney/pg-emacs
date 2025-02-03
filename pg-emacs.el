@@ -1,18 +1,8 @@
 ;;; pg-emacs.el ---
 ;;; this is where everything starts....
-(load "errors.el")
 ;; (setq debug-on-message "Package cl is deprecated")
 
-;; (load "straight-boot.el")
-(load "elpaca.el")
-
-(elpaca elpaca-use-package
-  ;; Enable Elpaca support for use-package's :ensure keyword.
-  ;; do it in a separate file so this doesn't break every time i upgrade elpaca.
-    (elpaca-use-package-mode))
-
-;; (straight-use-package 'use-package)
-;; this needs to be early so that use-package is available elsewhere.
+;; BEGIN "VERY SAFE" config - needs no packages (i hope!)
 
 ;; ask emacs to save settings in a special file:
 ;; from http://tychoish.com/rhizome//useful-emacs-and-orgmode-hacks/
@@ -22,26 +12,6 @@
 (buffer-file-name)
 (setq pg-emacs-config-file load-file-name) ;; save for later use
 (setq custom-file (concat pg-emacs-dir "custom.el"))
-;; load that custom file
-(load custom-file 'no-error)
-
-;; (load "treesit-config.el")
-
-(use-package highlight-numbers
-  :ensure t)
-(use-package color-identifiers-mode
-  :ensure t
-  :config
-  (add-hook 'elpaca-after-init-hook 'global-color-identifiers-mode))
-(use-package elisp-autofmt
-  :ensure t)
-
-;; remove annoying prompt http://shreevatsa.wordpress.com/2007/01/06/using-emacsclient/
-;; (server-start)
-;; (remove-hook 'kill-buffer-query-functions 'server-kill-buffer-query-function)
-
-(add-to-list 'auto-mode-alist '("\\.ino\\'" . c-mode))
-
 (menu-bar-mode 0)
 (global-font-lock-mode t)
 (show-paren-mode 1)
@@ -93,6 +63,39 @@
 (setq tab-stop-list (number-sequence 4 120 4))
 (setq tramp-default-method "ssh")
 ;; END SET A BUNCH OF VARIABLES
+
+;; END "VERY SAFE" config
+
+(load "elpaca.el")
+
+(elpaca elpaca-use-package
+  ;; Enable Elpaca support for use-package's :ensure keyword.
+  ;; do it in a separate file so this doesn't break every time i upgrade elpaca.
+  (elpaca-use-package-mode))
+
+(load "errors.el")
+
+;; load that custom file
+(load custom-file 'no-error)
+
+;; (load "treesit-config.el")
+
+(use-package highlight-numbers
+  :ensure t)
+(use-package color-identifiers-mode
+  :ensure t
+  :config
+  (add-hook 'elpaca-after-init-hook 'global-color-identifiers-mode))
+(use-package elisp-autofmt
+  :ensure t)
+
+;; remove annoying prompt http://shreevatsa.wordpress.com/2007/01/06/using-emacsclient/
+;; (server-start)
+;; (remove-hook 'kill-buffer-query-functions 'server-kill-buffer-query-function)
+
+(add-to-list 'auto-mode-alist '("\\.ino\\'" . c-mode))
+
+
 
 ;; TEMP FILES - DON'T LITTER MY WORKSPACE!!
 (load "temp-files.el")

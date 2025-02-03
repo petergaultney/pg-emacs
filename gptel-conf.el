@@ -85,18 +85,17 @@ Use the following guidelines:
   :config
   (setq gptel-default-mode 'adoc-mode)
   (gptel-make-anthropic "Claude" :stream t :key #'read-claude-api-key)
+  (setq gptel-prompt-prefix-alist
+        (append '((adoc-mode . "== "))
+               gptel-prompt-prefix-alist))
+  (setq gptel-response-prefix-alist
+        '((markdown-mode . "### ")
+          (adoc-mode . "=== ")
+          (org-mode . "")
+          (text-mode . "")))
   :hook (gptel-mode . gptel-set-default-directory)
   :hook (markdown-mode . my-gptel-activate)
-  :hook (gptel-mode . visual-line-mode)
-  :custom
-  (gptel-prompt-prefix-alist
-    (append '((adoc-mode . "== "))
-     gptel-prompt-prefix-alist))
-  (gptel-response-prefix-alist
-    '((markdown-mode . "### ")
-       (adoc-mode . "=== ")
-       (org-mode . "")
-       (text-mode . ""))))
+  :hook (gptel-mode . visual-line-mode))
 
 
 (use-package posframe

@@ -1,5 +1,5 @@
 (customize-set-variable 'c-default-style
-						'((java-mode . "java")
+			'((java-mode . "java")
                           (awk-mode . "awk")
                           (other . "linux")))
 (customize-set-variable 'standard-indent 4)
@@ -9,7 +9,7 @@
 (customize-set-variable 'header-auto-update-enabled t)
 
 (customize-set-variable 'c-offsets-alist
-						'(
+			'(
                           (inexpr-class . +)
                           (inexpr-statement . +)
                           (lambda-intro-cont . +)

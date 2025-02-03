@@ -76,12 +76,16 @@
         (my-log-error-to-file err)))))
 
 
-(advice-mapc (lambda (fun props)
-               (message "Removing advice %S" fun)
-               (advice-remove 'signal fun))
-  'signal)
-(advice-add 'signal :around #'my-wrap-error-handler)
 
+
+(defun register-error-logger ()
+  (interactive)
+  (advice-mapc (lambda (fun props)
+                 (message "Removing advice %S" fun)
+                 (advice-remove 'signal fun))
+    'signal)
+  (advice-add 'signal :around #'my-wrap-error-handler))
+  
 
 (defun trigger-error-for-logging ()
   "Function to deliberately trigger an error for testing the error logger."
@@ -93,3 +97,4 @@
   (put 'test-error 'error-conditions '(error))
   (put 'test-error 'error-message "Test error for logging"))
 ;; Use M-x trigger-error-for-logging to test the logger
+
