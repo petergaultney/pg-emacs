@@ -31,8 +31,6 @@
   (interactive)
   (find-file "~/org/gtd.org"))
 
-(define-key global-map (kbd "C-c w") 'work-notes)
-
 (require 'org-bullets)
 (add-hook 'org-mode-hook (lambda () (org-bullets-mode 1)))
 

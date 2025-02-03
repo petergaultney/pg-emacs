@@ -64,11 +64,6 @@
 ; join line from top line
 (global-set-key (kbd "M-j") (lambda () (interactive) (join-line -1)))
 
-(global-set-key (kbd "C-c <left>")  'windmove-left)
-(global-set-key (kbd "C-c <right>") 'windmove-right)
-(global-set-key (kbd "C-c <up>")    'windmove-up)
-(global-set-key (kbd "C-c <down>")  'windmove-down)
-
 ;; MOUSE SCROLL (I know this means I'm weak)
 (unless window-system
   (require 'mouse)
@@ -142,3 +137,4 @@
 (load (concat pg-emacs-dir "packages.el")) ;; manual hack to see if packages are working
 (load "pg-replace.el")
 (load "abbrevs.el")
+(load "smerge-deactivate.el")

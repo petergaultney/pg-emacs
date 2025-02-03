@@ -20,7 +20,11 @@
     (let ((my-log-error-in-progress t))
       (let ((log-file "~/.emacs.d/emacs-error-log.txt")) ; Change this path if needed
         (unless (or (and (consp error-data) (eq (car error-data) 'user-error))
-                    (eq (car error-data) 'end-of-buffer))
+                    (eq (car error-data) 'end-of-buffer)
+                    (and (consp error-data)
+                         (stringp (cadr error-data))
+                         (string-match "Cannot resize window" (cadr error-data)))) ; Ignore this specific error
+          )
           (with-temp-buffer
             (let ((timestamp (format-time-string "%Y-%m-%dT%H:%M:%S%z")))
               (insert (format "Timestamp start: %s\n" timestamp))
