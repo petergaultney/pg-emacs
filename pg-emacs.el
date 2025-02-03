@@ -57,6 +57,7 @@
 (global-set-key (kbd "M-g") 'goto-line)
 (global-set-key (kbd "C-x s") 'save-buffer)
 (global-set-key (kbd "C-f") 'find-file-other-window)
+(global-set-key (kbd "C-c g") 'abort-recursive-edit)
 
 (global-set-key (kbd "C-x b") 'switch-to-buffer)
 (global-set-key (kbd "C-d") 'kill-whole-line)
