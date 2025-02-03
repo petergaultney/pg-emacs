@@ -16,21 +16,28 @@
     (user-error "This command is intended to be used in gptel chat buffers."))
   (let ((gptel-model 'gpt-4o-mini))
     (gptel-request
-        (list nil                                    ;user
-              "What is the chat content?"            ;llm
-              (concat "```" (if (eq major-mode 'org-mode) "org" "markdown") "\n"
-                      (buffer-substring-no-properties (point-min) (point-max))
-                      "\n```"))                      ;user
+      (list nil                                    ;user
+        "What is the chat content?"            ;llm
+        (concat "```" (pcase major-mode
+                        ('org-mode "org")
+                        ('adoc-mode "asciidoc")
+                        (_ "markdown"))
+          "\n"
+          (buffer-substring-no-properties (point-min) (point-max))
+          "\n```"))                      ;user
       :system
       (list (format                                  ;system message
-             "I will provide a transcript of a chat with an LLM.  \
+              "I will provide a transcript of a chat with an LLM.  \
 Suggest a short and informative name for a file to store this chat in.  \
 Use the following guidelines:
 - be very concise, one very short sentence at most
 - no spaces, use underscores if required
 - return ONLY the title, no explanation or summary
 - append the extension .%s"
-             (if (eq major-mode 'org-mode) "org" "md")))
+              (pcase major-mode
+                ('org-mode "org")
+                ('adoc-mode "adoc")
+                (_ "md"))))
       :callback
       (lambda (resp info)                           ;callback called with response and request info
 
@@ -70,17 +77,26 @@ Use the following guidelines:
 
 ;; Set M-o as the global prefix for GPTel commands
 (global-set-key (kbd "M-o") gptel-global-prefix-map)
+(global-set-key (kbd "C-o") gptel-global-prefix-map) ;; overrides open-line, which inserts a newline? hah.
 
 
 (use-package gptel
   :ensure (:host github :repo "karthink/gptel" )
   :config
-  (setq gptel-default-mode 'markdown-mode)
+  (setq gptel-default-mode 'adoc-mode)
   (gptel-make-anthropic "Claude" :stream t :key #'read-claude-api-key)
-  ;; (add-hook 'gptel-mode-hook #'gptel-set-default-directory)
-  (add-hook 'gptel-mode-hook #'gptel-set-default-directory nil t)
+  :hook (gptel-mode . gptel-set-default-directory)
   :hook (markdown-mode . my-gptel-activate)
-  )
+  :hook (gptel-mode . visual-line-mode)
+  :custom
+  (gptel-prompt-prefix-alist
+    (append '((adoc-mode . "== "))
+     gptel-prompt-prefix-alist))
+  (gptel-response-prefix-alist
+    '((markdown-mode . "### ")
+       (adoc-mode . "=== ")
+       (org-mode . "")
+       (text-mode . ""))))
 
 
 (use-package posframe
@@ -133,6 +149,7 @@ This function is meant to be an `:after' advice to `gptel'."
              (extension (pcase major-mode
                           ('org-mode "org")
                           ('markdown-mode "md")
+                          ('adoc-mode "adoc")
                           (_ (user-error "Unsupported major mode"))))
              (filename (file-name-concat gptel-default-directory
                                          (file-name-with-extension (concat datetime-prefix
