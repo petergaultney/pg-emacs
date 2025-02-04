@@ -90,18 +90,7 @@
     '((sequence "TODO(t)" "PROG(p)" "WAIT(w)" "|" "DONE(d)" "CANCELED(c)")))
  '(package-archives
     '(("melpa" . "https://melpa.org/packages/") ("elpa" . "https://elpa.gnu.org/packages/")))
- '(package-selected-packages
-    '(company-jedi anaconda-mode yas-minor-mode elpygen popwin realgud jedi dired-dups
-       better-defaults material-theme typescript-mode vterm indent-tools
-       add-node-modules-path prettier-js web-mode groovy-mode kotlin-mode pipenv
-       graphql-mode org-plus-contrib orgit org-category-capture org-present yapfify
-       which-key unfill smex smeargle pytest pyenv-mode py-isort pip-requirements pcre2el
-       org-pomodoro org-mime org-download mwim multiple-cursors mmm-mode markdown-toc
-       magit-gitflow macrostep live-py-mode hy-mode htmlize gnuplot gitignore-mode
-       gitconfig-mode gitattributes-mode git-timemachine git-messenger git-link gh-md
-       fuzzy flx exec-path-from-shell elpy elisp-slime-nav diminish cython-mode
-       company-statistics company-anaconda bind-map auto-yasnippet auto-compile ace-window
-       ac-ispell))
+ '(package-selected-packages nil)
  '(project-vc-extra-root-markers '("pyproject.toml"))
  '(python-flymake-command '("mypy"))
  '(safe-local-variable-values
@@ -183,5 +172,4 @@
  '(outline-4 ((t (:foreground "orange"))))
  '(outline-5 ((t (:foreground "red"))))
  '(region ((t (:extend t :inverse-video t))))
- '(secondary-selection ((((class color) (min-colors 8) (background light)) (:background "yellow1" :foreground "black"))))
- )
+ '(secondary-selection ((((class color) (min-colors 8) (background light)) (:background "yellow1" :foreground "black")))))
