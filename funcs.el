@@ -13,3 +13,13 @@
   (interactive)
   (kill-line)
   (setq kill-ring (cdr kill-ring)))
+
+
+(defun untabify-directory (dir)
+  "Untabify all files in the given DIRECTORY."
+  (interactive "DDirectory: ")
+  (dolist (file (directory-files-recursively dir "\\."))
+    (with-temp-buffer
+      (insert-file-contents file)
+      (untabify (point-min) (point-max))
+      (write-file file))))

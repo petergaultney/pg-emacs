@@ -1,4 +1,5 @@
 ;; requires node v18+ to be installed!
+(message "Loading github copilot... sometimes this breaks randomly")
 (use-package copilot
   :ensure (:host github :repo "copilot-emacs/copilot.el" :files ("dist" "*.el"))
   :config

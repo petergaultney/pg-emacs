@@ -46,7 +46,9 @@
        (c-comment-only-line-offset . 0) (c-tab-always-indent . t)) t)
  '(color-identifiers-avoid-faces '(font-lock-comment-face))
  '(color-identifiers:num-colors 20 t)
- '(copilot-node-executable (expand-file-name "~/sw/bin/node"))
+ '(copilot-node-executable
+   (let ((node (replace-regexp-in-string "\n$" "" (shell-command-to-string "command -v node"))))
+        node))
  '(custom-safe-themes
     '("3c83b3676d796422704082049fc38b6966bcad960f896669dfc21a7a37a748fa" default))
  '(ediff-split-window-function 'split-window-vertically)
