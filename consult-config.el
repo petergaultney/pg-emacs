@@ -135,6 +135,9 @@
   (vertico-multiform-mode)
   :config
   (load "vertico-nice-fonts.el")
+  (add-to-list 'display-buffer-alist
+    '("\\*Vertico\\*"
+       (display-buffer-reuse-window display-buffer-same-window)))
   ;; Different scroll margin
   (setq vertico-scroll-margin 5)
   :bind (:map vertico-map

@@ -69,7 +69,7 @@
       (reusable-frames . nil))))
 ;; Adjust how Emacs splits windows based on buffer size and ensure it uses side-by-side splits:
 (setq split-height-threshold nil)
-(setq split-width-threshold 0)
+(setq split-width-threshold 200)
 
 
 (defun allow-more-windows ()
