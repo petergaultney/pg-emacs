@@ -6,7 +6,7 @@
 (load "compile-window-placement.el")
 (load "mac-copy.el")
 (load "gptel-conf.el")
-(load "windows.el")
+(load "windows.el") ;; this ABSOLUTELY MUST remain above consult-config.el, because it does a setq on display-buffer-alist
 
 ;; (load "find-file-in-project.el")
 

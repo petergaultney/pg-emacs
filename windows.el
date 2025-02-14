@@ -2,12 +2,6 @@
 (winner-mode 1)
 (setq winner-dont-bind-my-keys 1)
 
-;; these are my chosen shortcuts
-(global-set-key (kbd "C-c <left>")  'windmove-left)
-(global-set-key (kbd "C-c <right>") 'windmove-right)
-(global-set-key (kbd "C-c <up>")    'windmove-up)
-(global-set-key (kbd "C-c <down>")  'windmove-down)
-
 (defun delete-window-vertically-or-horizontally ()
   "Delete an adjacent window and expand the current window in that direction."
   ;; this one works but oddly gives an error when trying to call enlarge-window
@@ -66,3 +60,26 @@
 (define-key my-window-commands-map (kbd "<right>") 'windmove-right)
 (define-key my-window-commands-map (kbd "<up>") 'windmove-up)
 (define-key my-window-commands-map (kbd "<down>") 'windmove-down)
+
+;; Use the `display-buffer-alist` in your `init.el` file to control how windows are split.
+;; You can set `display-buffer-alist` to enforce horizontal splits by default. For example:
+(setq display-buffer-alist
+  '((".*"
+      (display-buffer-reuse-window display-buffer-same-window)
+      (reusable-frames . nil))))
+;; Adjust how Emacs splits windows based on buffer size and ensure it uses side-by-side splits:
+(setq split-height-threshold nil)
+(setq split-width-threshold 0)
+
+
+(defun allow-more-windows ()
+  (interactive)
+  (setq split-width-threshold nil))
+
+;; put everything i'm used to under this same C-v prefix (instead of C-x)
+(define-key my-window-commands-map (kbd "0") 'delete-window)
+(define-key my-window-commands-map (kbd "1") 'delete-other-windows)
+(define-key my-window-commands-map (kbd "2") 'split-window-below)
+(define-key my-window-commands-map (kbd "3") 'split-window-right)
+(define-key my-window-commands-map (kbd "4") 'allow-more-windows)
+(define-key my-window-commands-map (kbd "b") 'balance-windows)
