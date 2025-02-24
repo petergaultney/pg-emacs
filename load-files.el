@@ -55,3 +55,4 @@
 ;; (load "z-helpful.el")  ;; broken as of 2023-12-08 with Wrong type argument: 1,listp
 (load "projectile-conf.el")
 (load "javascript.el")
+(load "color.el")

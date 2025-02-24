@@ -1,6 +1,7 @@
 ;; elisp for custom window management
 (winner-mode 1)
 (setq winner-dont-bind-my-keys 1)
+(setq windmove-wrap-around t)
 
 (defun delete-window-vertically-or-horizontally ()
   "Delete an adjacent window and expand the current window in that direction."
@@ -83,3 +84,23 @@
 (define-key my-window-commands-map (kbd "3") 'split-window-right)
 (define-key my-window-commands-map (kbd "4") 'allow-more-windows)
 (define-key my-window-commands-map (kbd "b") 'balance-windows)
+
+;; (use-package switch-window
+;;   :ensure t
+;;   :config
+;;   (define-key my-window-commands-map (kbd "C-w") 'switch-window)
+;;   (setq switch-window-shortcut-style 'qwerty)
+;;   (setq switch-window-shortcut-appearance 'asciiart)
+;;   (setq switch-window-qwerty-shortcuts
+;;     '("a" "s" "e" "t" "n" "i" "o" "h"))
+;;   )
+;;
+;; not as good as ace-window, because it blanks the whole buffer to show the window 'letters'
+
+(use-package ace-window
+  :ensure t
+  :config
+  (define-key my-window-commands-map (kbd "C-v") 'ace-window)
+  (setq aw-dispatch-always t)
+  (setq aw-keys '(?a ?s ?e ?t ?q ?w ?d ?f))
+  )
