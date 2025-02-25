@@ -93,6 +93,17 @@ Use the following guidelines:
           (adoc-mode . "=== ")
           (org-mode . "")
           (text-mode . "")))
+  (unless (alist-get 'claude-3-7-sonnet-20250219 gptel--anthropic-models)
+    (add-to-list 'gptel--anthropic-models
+      '(claude-3-7-sonnet-20250219
+         :description "Highest level of intelligence and capability" :capabilities
+         (media tool-use cache)
+         :mime-types
+         ("image/jpeg" "image/png" "image/gif" "image/webp" "application/pdf")
+         :context-window 200 :input-cost 3 :output-cost 15 :cutoff-date "2024-11")))
+  (setq
+    gptel-model 'claude-3-7-sonnet-20250219
+    gptel-backend (gptel-make-anthropic "Claude" :stream t :key #'read-claude-api-key))
   :hook (gptel-mode . gptel-set-default-directory)
   :hook (markdown-mode . my-gptel-activate)
   :hook (gptel-mode . visual-line-mode))
