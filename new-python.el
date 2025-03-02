@@ -33,6 +33,8 @@
 
   :init (add-hook 'before-save-hook 'format-python-with-eglot-on-save)
   :config
+  (setq eglot-events-buffer-config '(:size 0 :format full))
+  ;; (setq eglot-show-diagnostics-indicators nil) ;; not, apparently, necessary
   (setq-default eglot-workspace-configuration
     '(:pylsp
        (:plugins
