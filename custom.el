@@ -4,9 +4,9 @@
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
  '(backup-directory-alist '((".*" . "~/.emacs.d/backups/")))
- '(c-basic-offset 4 t)
+ '(c-basic-offset 4)
  '(c-default-style
-    '((java-mode . "java") (awk-mode . "awk") (other . "linux")) t)
+    '((java-mode . "java") (awk-mode . "awk") (other . "linux")))
  '(c-offsets-alist
     '((inexpr-class . +) (inexpr-statement . +) (lambda-intro-cont . +)
        (inlambda . c-lineup-inexpr-block) (template-args-cont c-lineup-template-args +)
@@ -43,12 +43,14 @@
          (brace-entry-open) (defun-open after) (class-open after) (inline-open after)
          (block-open after) (block-close . c-snug-do-while) (statement-case-open after)
          (substatement after))
-       (c-comment-only-line-offset . 0) (c-tab-always-indent . t)) t)
+       (c-comment-only-line-offset . 0) (c-tab-always-indent . t)))
  '(color-identifiers-avoid-faces '(font-lock-comment-face))
  '(color-identifiers:num-colors 20 t)
  '(copilot-node-executable
-   (let ((node (replace-regexp-in-string "\n$" "" (shell-command-to-string "command -v node"))))
-        node))
+    (let
+      ((node
+         (replace-regexp-in-string "\12$" "" (shell-command-to-string "command -v node"))))
+      node))
  '(custom-safe-themes
     '("3c83b3676d796422704082049fc38b6966bcad960f896669dfc21a7a37a748fa" default))
  '(ediff-split-window-function 'split-window-vertically)
@@ -63,7 +65,10 @@
  '(global-color-identifiers-mode t)
  '(global-hl-line-mode nil)
  '(gptel-default-mode 'markdown-mode)
- '(gptel-model 'gpt-4o)
+ '(gptel-prompt-prefix-alist
+    '((adoc-mode . "== ") (markdown-mode . "## ") (org-mode . "** ") (text-mode . "## ")))
+ '(gptel-response-prefix-alist
+    '((markdown-mode . "### ") (adoc-mode . "=== ") (org-mode . "*** ") (text-mode . "### ")))
  '(header-auto-update-enabled t t)
  '(helm-ff-DEL-up-one-level-maybe t nil nil "where is this going?")
  '(helm-ff-auto-update-initial-value nil)

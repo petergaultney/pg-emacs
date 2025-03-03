@@ -8,7 +8,7 @@
     (string-trim (buffer-string))))
 
 (defvar gptel-file-datetime-fmt "%y-%m-%d_%H%M_")
-(defvar gptel-default-directory (expand-file-name "~/docs/llm-chats"))
+(defvar gptel-default-directory (expand-file-name "~/llm-chats"))
 
 (defun gptel-rename-chat ()
   (interactive)
@@ -52,12 +52,26 @@ Use the following guidelines:
                    (plist-get info :status)))))))
 
 
-(defun my-gptel-activate ()
-  "Activate `gptel-mode` for specific Markdown files."
-  (when (and buffer-file-name
-             (string-match-p gptel-default-directory buffer-file-name))
-    (gptel-mode 1)))
+(defun my-gptel-path-match-p (filepath)
+  "Test if FILEPATH matches LLM chats criteria.
+Returns t if the path is a markdown/adoc file in an LLM chats directory."
+  (and filepath
+       (string-match-p "\\.\\(?:md\\|adoc\\)$" filepath)
+       (string-match-p "\\bllm[-[:space:]]chats\\b"
+                       (downcase (file-truename filepath)))))
 
+(defun my-gptel-test-file (filepath)
+  "Test if FILEPATH would activate gptel-mode."
+  (interactive "fFile to test: ")
+  (message "File %s: gptel would %sbe activated"
+           filepath
+           (if (my-gptel-path-match-p filepath) "" "NOT ")))
+
+(defun my-gptel-activate ()
+  "Activate `gptel-mode` for Markdown/AsciiDoc files in LLM chats directories."
+  (when (my-gptel-path-match-p buffer-file-name)
+    (message "Activating gptel-mode for %s" buffer-file-name)
+    (gptel-mode 1)))
 
 (defun gptel-set-default-directory ()
   (unless (buffer-file-name)
@@ -83,16 +97,7 @@ Use the following guidelines:
 (use-package gptel
   :ensure (:host github :repo "karthink/gptel" )
   :config
-  (setq gptel-default-mode 'adoc-mode)
   (gptel-make-anthropic "Claude" :stream t :key #'read-claude-api-key)
-  (setq gptel-prompt-prefix-alist
-        (append '((adoc-mode . "== "))
-               gptel-prompt-prefix-alist))
-  (setq gptel-response-prefix-alist
-        '((markdown-mode . "### ")
-          (adoc-mode . "=== ")
-          (org-mode . "")
-          (text-mode . "")))
   (unless (alist-get 'claude-3-7-sonnet-20250219 gptel--anthropic-models)
     (add-to-list 'gptel--anthropic-models
       '(claude-3-7-sonnet-20250219
