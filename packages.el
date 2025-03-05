@@ -89,3 +89,6 @@
 
 (use-package adoc-mode
   :ensure t)
+
+(use-package lua-mode
+  :ensure t)

@@ -56,3 +56,4 @@
 (load "projectile-conf.el")
 (load "javascript.el")
 (load "ansi-color-conf.el")
+(load "themes.el")

@@ -1,0 +1,171 @@
+(use-package ef-themes :ensure t)
+(use-package doom-themes :ensure t)
+;; (use-package nord-theme :ensure t)
+(use-package spacemacs-theme :ensure t)
+
+(defun fix-markdown-headers ()
+  "Fix markdown headers to be readable in dark themes -
+   apparently markdown mode customizes its face backgrounds, but i never want that."
+  (interactive)
+  (dolist (level '(1 2 3 4 5 6))
+    (let ((face (intern (format "markdown-header-face-%d" level))))
+      (set-face-foreground face nil))))
+
+(defun remove-all-backgrounds ()
+  "Remove background colors from all faces except crucial UI elements."
+  (interactive)
+  (let ((preserve-bg-faces
+          '(
+			 ;; Selection and completion UI
+			 vertico-current           ; Currently selected item in vertico
+			 consult-preview-match     ; Preview matches in consult
+			 completions-highlight     ; Standard completion highlighting
+
+			 ;; Region and search
+			 region                    ; Selected text
+			 isearch                   ; Incremental search matches
+			 lazy-highlight            ; Other search matches
+
+			 ;; Diff/magit
+			 diff-added
+			 diff-removed
+			 magit-diff-added-highlight
+			 magit-diff-removed-highlight
+
+			 show-paren-match          ; The matching parenthesis
+			 show-paren-mismatch       ; Mismatched parenthesis
+
+			 ;; Org mode
+			 org-block                 ; Code blocks need backgrounds
+			 org-code                  ; Inline code
+			 org-table                 ; Tables
+
+			 ;; UI elements
+			 header-line
+
+			 ;; Others
+			 hl-line                   ; Line highlighting
+			 highlight                 ; Generic highlighting
+			 secondary-selection       ; Secondary selection
+			 which-key-highlighted-command-face ; Which-key highlighting
+			 )))
+
+    (mapc (lambda (face)
+            (when (and (face-background face)
+                    (not (memq face preserve-bg-faces)))
+              (set-face-background face "unspecified-bg")))
+      (face-list))))
+
+
+(defun invert-modeline ()
+  "Invert modeline colors using foreground as background and vice versa."
+  (interactive)
+  ;; Get foreground and set as modeline background
+  (let ((fg (face-foreground 'default))
+         (bg (face-background 'default nil t))) ;; fallback to terminal bg if needed
+
+    ;; Set mode-line and mode-line-inactive with inverted colors
+    (set-face-attribute 'mode-line nil
+      :background fg
+      :foreground bg
+      :box nil)
+
+    ;; Slightly dimmer for inactive modelines
+    (set-face-attribute 'mode-line-inactive nil
+      :background fg
+      :foreground bg
+      :box nil)))
+
+
+(defun load-theme-tweaks (theme &optional no-bg invert-mode)
+  "Load THEME with tweaks.
+When NO-BG is non-nil (default t), remove all background colors.
+When INVERT-MODE is non-nil (default t), invert modeline colors."
+  (load-theme theme t)
+  ;; Default both to t when not specified
+  (when (or (eq no-bg t) (null no-bg))
+    (remove-all-backgrounds))
+  (when (or (eq invert-mode t) (null invert-mode))
+    (invert-modeline))
+  (fix-markdown-headers) ;; always do this last
+  )
+
+(defvar my-preferred-dark-theme 'ef-dark
+  "The dark theme to use when toggling themes.")
+
+(defvar my-preferred-light-theme 'ef-light
+  "The light theme to use when toggling themes.")
+
+(defun toggle-light-dark-theme ()
+  "Toggle between light and dark themes."
+  (interactive)
+  (if (eq (car custom-enabled-themes) 'ef-autumn)
+    (load-theme-tweaks 'ef-light)
+    (load-theme-tweaks 'ef-autumn)))
+
+(defun toggle-light-dark-theme ()
+  "Toggle between preferred light and dark themes."
+  (interactive)
+  (if (eq (car custom-enabled-themes) my-preferred-dark-theme)
+    (load-theme-tweaks my-preferred-light-theme)
+    (load-theme-tweaks my-preferred-dark-theme)))
+
+
+(defun print-names-of-visible-faces ()
+  "Print all unique faces currently visible on screen to a buffer."
+  (interactive)
+  (let ((visible-faces '())
+        (line-count (count-lines (window-start) (window-end))))
+
+    ;; Collect faces from visible text
+    (save-excursion
+      (goto-char (window-start))
+      (dotimes (_ line-count)
+        (let ((line-start (line-beginning-position))
+              (line-end (line-end-position)))
+          (while (< line-start line-end)
+            (let* ((face-prop (get-text-property line-start 'face))
+                   (faces (if (listp face-prop) face-prop (list face-prop))))
+              (dolist (face faces)
+                (when (and face (facep face))
+                  (cl-pushnew face visible-faces :test #'eq))))
+            (setq line-start (next-property-change line-start nil line-end))))
+        (forward-line 1)))
+
+    ;; Add mode-line and header-line faces
+    (when (get-buffer-window)
+      (cl-pushnew 'mode-line visible-faces :test #'eq)
+      (cl-pushnew 'mode-line-inactive visible-faces :test #'eq)
+      (cl-pushnew 'header-line visible-faces :test #'eq))
+
+    ;; Collect faces from other visible windows
+    (dolist (window (window-list))
+      (when (not (eq window (selected-window)))
+        (with-current-buffer (window-buffer window)
+          (let ((line-count (count-lines (window-start window) (window-end window))))
+            (save-excursion
+              (goto-char (window-start window))
+              (dotimes (_ line-count)
+                (let ((line-start (line-beginning-position))
+                      (line-end (line-end-position)))
+                  (while (< line-start line-end)
+                    (let* ((face-prop (get-text-property line-start 'face))
+                           (faces (if (listp face-prop) face-prop (list face-prop))))
+                      (dolist (face faces)
+                        (when (and face (facep face))
+                          (cl-pushnew face visible-faces :test #'eq))))
+                    (setq line-start (next-property-change line-start nil line-end))))
+                (forward-line 1)))))))
+
+    ;; Display results
+    (with-current-buffer (get-buffer-create "*visible-faces*")
+      (erase-buffer)
+      (dolist (face (sort (delq nil visible-faces) #'string-lessp))
+        (insert (format "%s\n" face)))
+      (goto-char (point-min))
+      (switch-to-buffer (current-buffer))
+      (message "Found %d visible faces" (length visible-faces)))))
+
+
+;; Load the default theme (dark)
+(load-theme-tweaks my-preferred-dark-theme)
