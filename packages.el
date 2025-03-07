@@ -58,6 +58,7 @@
   :interpreter ("scala" . scala-mode))
 
 (use-package lua-mode
+  :ensure t
   :interpreter ("lua" . lua-mode))
 
 (eval-after-load "lispy"
@@ -88,7 +89,4 @@
   :ensure t)
 
 (use-package adoc-mode
-  :ensure t)
-
-(use-package lua-mode
   :ensure t)
