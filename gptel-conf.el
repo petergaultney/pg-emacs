@@ -80,18 +80,17 @@ Returns t if the path is a markdown/adoc file in an LLM chats directory."
 
 (defvar gptel-global-prefix-map
   (let ((map (make-sparse-keymap)))
-    (define-key map (kbd "n") 'gptel) ; start a new chat
-    (define-key map (kbd "t") 'gptel-quick)
-    (define-key map (kbd "q") 'gptel-quick)
-    (define-key map (kbd "r") 'gptel-rename-chat)
-    (define-key map (kbd "m") 'gptel-menu)
-    (define-key map (kbd "d") 'gptel-mode) ; activates the mode on existing buffer
+    (define-key map (kbd "M-n") 'gptel) ; start a new chat
+    (define-key map (kbd "M-t") 'gptel-quick)
+    (define-key map (kbd "M-q") 'gptel-quick)
+    (define-key map (kbd "M-r") 'gptel-rename-chat)
+    (define-key map (kbd "M-m") 'gptel-menu)
+    (define-key map (kbd "M-d") 'gptel-mode) ; activates the mode on existing buffer
     map)
   "Global keymap for all GPTel commands.")
 
 ;; Set M-o as the global prefix for GPTel commands
 (global-set-key (kbd "M-o") gptel-global-prefix-map)
-(global-set-key (kbd "C-o") gptel-global-prefix-map) ;; overrides open-line, which inserts a newline? hah.
 
 
 (use-package gptel
