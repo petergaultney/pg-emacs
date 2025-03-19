@@ -1,4 +1,4 @@
-(use-package ef-themes :ensure t)
+(use-package ef-themes :ensure (:host github :repo "protesilaos/ef-themes"))
 (use-package doom-themes :ensure t)
 ;; (use-package nord-theme :ensure t)
 (use-package spacemacs-theme :ensure t)
@@ -46,6 +46,7 @@
 			 ;; Others
 			 hl-line                   ; Line highlighting
 			 highlight                 ; Generic highlighting
+			 highligh t-numbers-number  ;Number highlighting
 			 secondary-selection       ; Secondary selection
 			 which-key-highlighted-command-face ; Which-key highlighting
 			 )))
@@ -90,25 +91,6 @@ When INVERT-MODE is non-nil (default t), invert modeline colors."
   (fix-markdown-headers) ;; always do this last
   )
 
-(defvar my-preferred-dark-theme 'ef-dark
-  "The dark theme to use when toggling themes.")
-
-(defvar my-preferred-light-theme 'ef-light
-  "The light theme to use when toggling themes.")
-
-(defun toggle-light-dark-theme ()
-  "Toggle between light and dark themes."
-  (interactive)
-  (if (eq (car custom-enabled-themes) 'ef-autumn)
-    (load-theme-tweaks 'ef-light)
-    (load-theme-tweaks 'ef-autumn)))
-
-(defun toggle-light-dark-theme ()
-  "Toggle between preferred light and dark themes."
-  (interactive)
-  (if (eq (car custom-enabled-themes) my-preferred-dark-theme)
-    (load-theme-tweaks my-preferred-light-theme)
-    (load-theme-tweaks my-preferred-dark-theme)))
 
 
 (defun print-names-of-visible-faces ()
@@ -166,6 +148,55 @@ When INVERT-MODE is non-nil (default t), invert modeline colors."
       (switch-to-buffer (current-buffer))
       (message "Found %d visible faces" (length visible-faces)))))
 
+(defvar my-preferred-dark-theme
+  ;; 'ef-autumn
+  ;; 'ef-dark
+  'ef-night
+  ;; 'spacemacs-dark
+  "The dark theme to use when toggling themes.")
+
+(defvar my-preferred-light-theme
+  'ef-light
+  "The light theme to use when toggling themes.")
+
+(defun toggle-light-dark-theme ()
+  "Toggle between preferred light and dark themes."
+  (interactive)
+  (if (eq (car custom-enabled-themes) my-preferred-dark-theme)
+    (load-theme-tweaks my-preferred-light-theme)
+    (load-theme-tweaks my-preferred-dark-theme)))
+
+(defun theme-light ()
+  "Load the preferred light theme."
+  (interactive)
+  (load-theme-tweaks my-preferred-light-theme))
+
+(defun theme-dark ()
+  "Load the preferred dark theme."
+  (interactive)
+  ;; log the name of the theme
+  (message "Theme: %s" my-preferred-dark-theme)
+  (load-theme-tweaks my-preferred-dark-theme))
 
 ;; Load the default theme (dark)
 (load-theme-tweaks my-preferred-dark-theme)
+
+
+(defun switch-theme-interactive (&optional use-defaults)
+  "Switch themes interactively with customized tweaks.
+When USE-DEFAULTS is non-nil, apply default tweaks without prompting."
+  (interactive "P")
+  (let* ((themes (custom-available-themes))
+         (theme-name (completing-read "Choose theme: "
+                                     (mapcar #'symbol-name themes)
+                                     nil t))
+         (theme-symbol (intern theme-name)))
+
+    ;; Disable currently enabled themes
+    (mapc #'disable-theme custom-enabled-themes)
+
+    ;; Use your custom load-theme-tweaks function
+    (load-theme-tweaks theme-symbol t t)
+
+    ;; Provide feedback
+    (message "Loaded theme %s" theme-name)))

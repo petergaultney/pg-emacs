@@ -61,6 +61,10 @@
 (define-key my-window-commands-map (kbd "<right>") 'windmove-right)
 (define-key my-window-commands-map (kbd "<up>") 'windmove-up)
 (define-key my-window-commands-map (kbd "<down>") 'windmove-down)
+(define-key my-window-commands-map (kbd "C-<left>") 'windmove-left)
+(define-key my-window-commands-map (kbd "C-<right>") 'windmove-right)
+(define-key my-window-commands-map (kbd "C-<up>") 'windmove-up)
+(define-key my-window-commands-map (kbd "C-<down>") 'windmove-down)
 
 ;; Use the `display-buffer-alist` in your `init.el` file to control how windows are split.
 ;; You can set `display-buffer-alist` to enforce horizontal splits by default. For example:
