@@ -148,16 +148,23 @@ When INVERT-MODE is non-nil (default t), invert modeline colors."
       (switch-to-buffer (current-buffer))
       (message "Found %d visible faces" (length visible-faces)))))
 
-(defvar my-preferred-dark-theme
-  ;; 'ef-autumn
-  ;; 'ef-dark
-  'ef-night
-  ;; 'spacemacs-dark
-  "The dark theme to use when toggling themes.")
 
-(defvar my-preferred-light-theme
-  'ef-light
-  "The light theme to use when toggling themes.")
+(add-hook 'elpaca-after-init-hook
+  (lambda ()
+
+	(defvar my-preferred-dark-theme
+	  ;; 'ef-autumn
+	  ;; 'ef-dark
+	  ;;'ef-night
+	  ;; 'spacemacs-dark
+	  'doom-solarized-dark
+	  "The dark theme to use when toggling themes.")
+
+	(defvar my-preferred-light-theme
+	  'ef-light
+	  "The light theme to use when toggling themes.")
+
+	(load-theme-tweaks my-preferred-dark-theme)))
 
 (defun toggle-light-dark-theme ()
   "Toggle between preferred light and dark themes."
@@ -179,7 +186,7 @@ When INVERT-MODE is non-nil (default t), invert modeline colors."
   (load-theme-tweaks my-preferred-dark-theme))
 
 ;; Load the default theme (dark)
-(load-theme-tweaks my-preferred-dark-theme)
+;;(load-theme-tweaks my-preferred-dark-theme)
 
 
 (defun switch-theme-interactive (&optional use-defaults)
