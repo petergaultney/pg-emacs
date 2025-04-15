@@ -62,9 +62,9 @@ Use the following guidelines:
   "Test if FILEPATH matches LLM chats criteria.
 Returns t if the path is a markdown/adoc file in an LLM chats directory."
   (and filepath
-       (string-match-p "\\.\\(?:md\\|adoc\\)$" filepath)
-       (string-match-p "\\bllm[-[:space:]]chats\\b"
-                       (downcase (file-truename filepath)))))
+    (string-match-p "\\.\\(?:md\\|adoc\\)$" filepath)
+    (string-match-p "\\bllm[-[:space:]]chats\\b"
+      (downcase (file-truename filepath)))))
 
 (defun my-gptel-test-file (filepath)
   "Test if FILEPATH would activate gptel-mode."
