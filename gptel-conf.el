@@ -4,7 +4,13 @@
 (defun read-claude-api-key ()
   "Read the contents of my Claude API key file."
   (with-temp-buffer
-    (insert-file-contents (expand-file-name "~/.claude-api-key"))
+    (insert-file-contents (expand-file-name "~/.keys/claude-api"))
+    (string-trim (buffer-string))))
+
+(defun read-gemini-api-key ()
+  "Read the contents of my Gemini API key file."
+  (with-temp-buffer
+    (insert-file-contents (expand-file-name "~/.keys/gemini-api"))
     (string-trim (buffer-string))))
 
 (defvar gptel-file-datetime-fmt "%y-%m-%d_%H%M_")
@@ -97,6 +103,7 @@ Returns t if the path is a markdown/adoc file in an LLM chats directory."
   :ensure (:host github :repo "karthink/gptel" )
   :config
   (gptel-make-anthropic "Claude" :stream t :key #'read-claude-api-key)
+  (gptel-make-gemini "Gemini" :stream t :key #'read-gemini-api-key)
   (unless (alist-get 'claude-3-7-sonnet-20250219 gptel--anthropic-models)
     (add-to-list 'gptel--anthropic-models
       '(claude-3-7-sonnet-20250219
