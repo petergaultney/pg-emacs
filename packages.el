@@ -90,3 +90,9 @@
 
 (use-package adoc-mode
   :ensure t)
+
+(use-package visual-fill-column
+  :ensure t)
+
+(use-package hjson-mode
+  :ensure (:host github :repo "hjson/hjson-emacs"))

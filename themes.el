@@ -40,13 +40,22 @@
 			 org-code                  ; Inline code
 			 org-table                 ; Tables
 
+			 ;; Markdown
+			 markdown-header-face
+			 markdown-header-face-1
+			 markdown-header-face-2
+			 markdown-header-face-3
+			 markdown-header-face-4
+			 markdown-header-face-5
+			 markdown-header-face-6
+
 			 ;; UI elements
 			 header-line
 
 			 ;; Others
 			 hl-line                   ; Line highlighting
 			 highlight                 ; Generic highlighting
-			 highligh t-numbers-number  ;Number highlighting
+			 highlight-numbers-number  ;Number highlighting
 			 secondary-selection       ; Secondary selection
 			 which-key-highlighted-command-face ; Which-key highlighting
 			 )))

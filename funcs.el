@@ -23,3 +23,12 @@
       (insert-file-contents file)
       (untabify (point-min) (point-max))
       (write-file file))))
+
+(defun copy-identifier-at-point ()
+  "Copy the identifier at point to the kill ring."
+  (interactive)
+  (when-let ((ident (thing-at-point 'symbol t))) ; 'symbol often means identifier
+    (kill-new ident)
+    (message "Copied: %s" ident)))
+
+(define-key global-map (kbd "C-c <down>") 'copy-identifier-at-point)
