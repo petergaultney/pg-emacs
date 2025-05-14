@@ -8,8 +8,9 @@
    apparently markdown mode customizes its face backgrounds, but i never want that."
   (interactive)
   (dolist (level '(1 2 3 4 5 6))
-    (let ((face (intern (format "markdown-header-face-%d" level))))
-      (set-face-foreground face nil))))
+    (let ((md-face (intern (format "markdown-header-face-%d" level)))
+          (outline-face (intern (format "outline-%d" level))))
+      (set-face-attribute md-face nil :inherit outline-face))))
 
 (defun remove-all-backgrounds ()
   "Remove background colors from all faces except crucial UI elements."
