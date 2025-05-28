@@ -20,7 +20,7 @@
   (interactive)
   (unless gptel-mode
     (user-error "This command is intended to be used in gptel chat buffers."))
-  (let ((gptel-model 'gpt-4o-mini))
+  (let ((gptel-model 'claude-3-haiku-latest))
     (gptel-request
       (list nil                                    ;user
         "What is the chat content?"            ;llm
@@ -107,11 +107,20 @@ Returns t if the path is a markdown/adoc file in an LLM chats directory."
   (unless (alist-get 'claude-3-7-sonnet-20250219 gptel--anthropic-models)
     (add-to-list 'gptel--anthropic-models
       '(claude-3-7-sonnet-20250219
-         :description "Highest level of intelligence and capability" :capabilities
-         (media tool-use cache)
+         :description "Highest level of intelligence and capability"
+		 :capabilities (media tool-use cache)
          :mime-types
          ("image/jpeg" "image/png" "image/gif" "image/webp" "application/pdf")
          :context-window 200 :input-cost 3 :output-cost 15 :cutoff-date "2024-11")))
+  (unless (alist-get 'claude-sonnet-4-20250514 gptel--anthropic-models)
+    (add-to-list 'gptel--anthropic-models
+      '(claude-sonnet-4-20250514
+         :description "High intelligence and balanced performance"
+		 :capabilities (media tool-use cache)
+         :mime-types
+         ("image/jpeg" "image/png" "image/gif" "image/webp" "application/pdf")
+         :context-window 200 :input-cost 3 :output-cost 15 :cutoff-date "2025-03")))
+
   (setq
     gptel-model 'claude-3-7-sonnet-20250219
     gptel-backend (gptel-make-anthropic "Claude" :stream t :key #'read-claude-api-key))
