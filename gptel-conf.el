@@ -39,7 +39,8 @@ Use the following guidelines:
 - be very concise, one very short sentence at most
 - no spaces, use underscores if required
 - return ONLY the title, no explanation or summary
-- append the extension .%s"
+- append the extension .%s
+- never give me a generic description like 'a transcript of a chat with an LLM'"
               (pcase major-mode
                 ('org-mode "org")
                 ('adoc-mode "adoc")
@@ -122,7 +123,7 @@ Returns t if the path is a markdown/adoc file in an LLM chats directory."
          :context-window 200 :input-cost 3 :output-cost 15 :cutoff-date "2025-03")))
 
   (setq
-    gptel-model 'claude-3-7-sonnet-20250219
+    gptel-model 'claude-sonnet-4-20250514
     gptel-backend (gptel-make-anthropic "Claude" :stream t :key #'read-claude-api-key))
   :hook (gptel-mode . gptel-set-default-directory)
   :hook (markdown-mode . my-gptel-activate)
