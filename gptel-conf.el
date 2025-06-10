@@ -105,6 +105,7 @@ Returns t if the path is a markdown/adoc file in an LLM chats directory."
   :config
   (gptel-make-anthropic "Claude" :stream t :key #'read-claude-api-key)
   (gptel-make-gemini "Gemini" :stream t :key #'read-gemini-api-key)
+  (push 'gemini-2.5-pro-preview-06-05 (gptel-backend-models (gptel-get-backend "Gemini")))
   (unless (alist-get 'claude-3-7-sonnet-20250219 gptel--anthropic-models)
     (add-to-list 'gptel--anthropic-models
       '(claude-3-7-sonnet-20250219

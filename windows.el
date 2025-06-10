@@ -45,7 +45,7 @@
 (defvar my-window-commands-map (make-sparse-keymap)
   "A keymap for window management commands.")
 
-;; Bind the keymap to C-c w
+;; Bind the keymap to C-v w
 (global-set-key (kbd "C-v") my-window-commands-map) ;; this is normally scroll-up-command, but i _never_ use that.
 
 ;; Bind 'k' to close-most-recently-created-window
