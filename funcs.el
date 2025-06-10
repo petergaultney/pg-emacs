@@ -53,10 +53,10 @@
   (interactive)
   (let ((file (buffer-file-name)))
     (if file
-        (when (yes-or-no-p (format "Really delete %s? " (file-name-nondirectory file)))
-          (delete-file file t)  ; t means "move to trash if possible"
-          (kill-buffer)
-          (message "File %s deleted" (file-name-nondirectory file)))
-      (error "Buffer is not visiting a file"))))
+      (when (yes-or-no-p (format "Really delete %s? " (file-name-nondirectory file)))
+        (delete-file file t)  ; t means "move to trash if possible"
+        (kill-buffer)
+        (message "File %s deleted" (file-name-nondirectory file)))
+    (error "Buffer is not visiting a file"))))
 
 (global-set-key (kbd "C-c d") 'delete-current-file)
