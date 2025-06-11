@@ -72,7 +72,44 @@ Use the following guidelines:
                                          new-name))
                     (with-current-buffer buf (rename-visited-file new-name))))))
           (message "Error(%s): did not receive a response from the LLM."
-                   (plist-get info :status)))))))
+            (plist-get info :status)))))))
+
+
+(defun mkdir-and-move (source-file target-dir target-file)
+  "Create TARGET-DIR if needed and move SOURCE-FILE to TARGET-FILE."
+  (make-directory target-dir t)  ; t makes it idempotent
+  (rename-file source-file target-file)
+  (message "Moved %s -> %s" source-file target-file))
+
+(defun llm-chat-mkdir-and-move-stub (source-file target-dir target-file)
+  "Stub that prints what would be done instead of actually doing it."
+  (message "Would create dir: %s" target-dir)
+  (message "Would move: %s -> %s" source-file target-file))
+
+(defun my/organize-llm-chats (&optional directory move-fn)
+  "Organize LLM chat files by moving old months into YYYY-MM directories.
+Files from the current month stay in place.
+MOVE-FN defaults to the stub for testing."
+  (interactive)
+  (let* ((dir (or directory gptel-default-directory))
+         (current-month (format-time-string "%Y-%m"))
+         (files (directory-files dir t "^[0-9][0-9]-[0-9][0-9]-[0-9][0-9]_.*"))
+         (move-function (or move-fn #'mkdir-and-move)))
+
+    (dolist (file files)
+      (when (file-regular-p file)
+        (let* ((basename (file-name-nondirectory file))
+               (date-part (substring basename 0 8)) ; YY-MM-DD
+               (year (+ 2000 (string-to-number (substring date-part 0 2))))
+               (month (substring date-part 3 5))
+               (file-month (format "%04d-%s" year month)))
+
+          (unless (string= file-month current-month)
+            (let* ((target-dir (expand-file-name file-month dir))
+                   (target-file (expand-file-name basename target-dir)))
+
+              (funcall move-function file target-dir target-file))))))
+    (message "Done organizing LLM chats")))
 
 
 (defun my-gptel-path-match-p (filepath)
