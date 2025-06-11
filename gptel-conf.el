@@ -16,23 +16,24 @@
 (defvar gptel-file-datetime-fmt "%y-%m-%d_%H%M_")
 (defvar gptel-default-directory (expand-file-name "~/llm-chats"))
 
+
 (defun gptel-rename-chat ()
   (interactive)
   (unless gptel-mode
     (user-error "This command is intended to be used in gptel chat buffers."))
   (let ((gptel-model 'claude-3-haiku-latest))
     (gptel-request
-      (list nil                                    ;user
-        "What is the chat content?"            ;llm
+      (list nil
+        "What is the chat content?"
         (concat "```" (pcase major-mode
                         ('org-mode "org")
                         ('adoc-mode "asciidoc")
                         (_ "markdown"))
           "\n"
           (buffer-substring-no-properties (point-min) (point-max))
-          "\n```"))                      ;user
+          "\n```"))
       :system
-      (list (format                                  ;system message
+      (list (format
               "I will provide a transcript of a chat with an LLM.  \
 Suggest a short and informative name for a file to store this chat in.  \
 Use the following guidelines:
@@ -46,14 +47,29 @@ Use the following guidelines:
                 ('adoc-mode "adoc")
                 (_ "md"))))
       :callback
-      (lambda (resp info)                           ;callback called with response and request info
-
+      (lambda (resp info)
         (if (stringp resp)
             (let ((buf (plist-get info :buffer)))
               (when (and (buffer-live-p buf))
-                (let* ((date-prefix (format-time-string gptel-file-datetime-fmt))
-                      (new-name (concat date-prefix resp)))
-                  (when (y-or-n-p (format "Rename buffer %s to %s? " (buffer-name buf) new-name))
+                (let* ((current-name (buffer-file-name buf))
+                       (current-basename (when current-name (file-name-nondirectory current-name)))
+                       ;; Extract existing timestamp with debug message
+                       (existing-timestamp
+                        (progn
+                          (when current-basename
+                            (message "Current filename: %s" current-basename)
+                            (if (string-match "^\\([0-9]\\{2\\}-[0-9]\\{2\\}-[0-9]\\{2\\}_[0-9]\\{4\\}\\)" current-basename)
+                                (match-string 1 current-basename)
+                              (message "Regex didn't match timestamp in: %s" current-basename)
+                              nil))))
+                       ;; Use existing timestamp or generate new one
+                       (date-prefix (or existing-timestamp
+                                        (format-time-string gptel-file-datetime-fmt)))
+                       (new-name (concat date-prefix "_" resp)))
+                  (message "Using timestamp: %s" date-prefix)
+                  (when (y-or-n-p (format "Rename buffer %s to %s? "
+                                         (or current-basename (buffer-name buf))
+                                         new-name))
                     (with-current-buffer buf (rename-visited-file new-name))))))
           (message "Error(%s): did not receive a response from the LLM."
                    (plist-get info :status)))))))
