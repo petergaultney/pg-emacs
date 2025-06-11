@@ -35,7 +35,11 @@
 
 (defun rename-current-file (new-name)
   "Rename the current file and buffer."
-  (interactive "FNew name: ")
+  (interactive
+   (list (read-file-name "New name: "
+                         (file-name-directory (buffer-file-name))
+                         nil nil
+                         (file-name-nondirectory (buffer-file-name)))))
   (let ((old-name (buffer-file-name)))
     (if old-name
         (progn

@@ -37,3 +37,11 @@
     (load "./elpaca-autoloads")))
 (add-hook 'after-init-hook #'elpaca-process-queues)
 (elpaca `(,@elpaca-order))
+
+
+(defun my/elpaca-generate-lockfile-to-config ()
+  "Generate elpaca lockfile and write to my config directory."
+  (interactive)
+  (let ((lockfile-path (expand-file-name "elpaca-lockfile.el" pg-emacs-dir)))
+    (elpaca-write-lock-file lockfile-path)
+	(message "Wrote elpaca lockfile to %s" lockfile-path)))

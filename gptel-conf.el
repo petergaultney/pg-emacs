@@ -122,7 +122,11 @@ Returns t if the path is a markdown/adoc file in an LLM chats directory."
          :mime-types
          ("image/jpeg" "image/png" "image/gif" "image/webp" "application/pdf")
          :context-window 200 :input-cost 3 :output-cost 15 :cutoff-date "2025-03")))
-
+  (gptel-make-anthropic "claude-4-sonnet-thinking"
+	:key #'read-claude-api-key
+    :stream t
+	:models '(claude-4-sonnet-20250514)
+	:request-params '(:thinking (:type "enabled" :budget_tokens 2048) :max_tokens 4096))
   (setq
     gptel-model 'claude-sonnet-4-20250514
     gptel-backend (gptel-make-anthropic "Claude" :stream t :key #'read-claude-api-key))
