@@ -159,30 +159,11 @@ Returns t if the path is a markdown/adoc file in an LLM chats directory."
   (gptel-make-anthropic "Claude" :stream t :key #'read-claude-api-key)
   (gptel-make-gemini "Gemini" :stream t :key #'read-gemini-api-key)
   (push 'gemini-2.5-pro-preview-06-05 (gptel-backend-models (gptel-get-backend "Gemini")))
-  (unless (alist-get 'claude-3-7-sonnet-20250219 gptel--anthropic-models)
-    (add-to-list 'gptel--anthropic-models
-      '(claude-3-7-sonnet-20250219
-         :description "Highest level of intelligence and capability"
-		 :capabilities (media tool-use cache)
-         :mime-types
-         ("image/jpeg" "image/png" "image/gif" "image/webp" "application/pdf")
-         :context-window 200 :input-cost 3 :output-cost 15 :cutoff-date "2024-11")))
-  (unless (alist-get 'claude-sonnet-4-20250514 gptel--anthropic-models)
-    (add-to-list 'gptel--anthropic-models
-      '(claude-sonnet-4-20250514
-         :description "High intelligence and balanced performance"
-		 :capabilities (media tool-use cache)
-         :mime-types
-         ("image/jpeg" "image/png" "image/gif" "image/webp" "application/pdf")
-         :context-window 200 :input-cost 3 :output-cost 15 :cutoff-date "2025-03")))
   (gptel-make-anthropic "claude-4-sonnet-thinking"
 	:key #'read-claude-api-key
     :stream t
 	:models '(claude-4-sonnet-20250514)
 	:request-params '(:thinking (:type "enabled" :budget_tokens 2048) :max_tokens 4096))
-  (setq
-    gptel-model 'claude-sonnet-4-20250514
-    gptel-backend (gptel-make-anthropic "Claude" :stream t :key #'read-claude-api-key))
   :hook (gptel-mode . gptel-set-default-directory)
   :hook (markdown-mode . my-gptel-activate)
   :hook (gptel-mode . visual-line-mode))
@@ -192,9 +173,6 @@ Returns t if the path is a markdown/adoc file in an LLM chats directory."
   :ensure (:host github :repo "tumashu/posframe"))
 (use-package gptel-quick
   :ensure (:host github :repo "karthink/gptel-quick"))
-
-
-
 
 
 ;; all of the below comes from
