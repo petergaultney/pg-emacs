@@ -38,7 +38,7 @@
 Suggest a short and informative name for a file to store this chat in.  \
 Use the following guidelines:
 - be very concise, one very short sentence at most
-- no spaces, use underscores if required
+- no spaces, use dashes to separate words
 - return ONLY the title, no explanation or summary
 - append the extension .%s
 - never give me a generic description like 'a transcript of a chat with an LLM'"
@@ -75,41 +75,65 @@ Use the following guidelines:
             (plist-get info :status)))))))
 
 
-(defun mkdir-and-move (source-file target-dir target-file)
-  "Create TARGET-DIR if needed and move SOURCE-FILE to TARGET-FILE."
-  (make-directory target-dir t)  ; t makes it idempotent
-  (rename-file source-file target-file)
-  (message "Moved %s -> %s" source-file target-file))
+(defun my/organize-llm-chats (&optional days-str directory move-fn)
+  "Organize and rename LLM chat files.
 
-(defun llm-chat-mkdir-and-move-stub (source-file target-dir target-file)
-  "Stub that prints what would be done instead of actually doing it."
-  (message "Would create dir: %s" target-dir)
-  (message "Would move: %s -> %s" source-file target-file))
+Renames files from 'YYYYMMDD...' format to 'YY-MM-DD...'.
+Moves files older than a specified number of days into 'YYYY-MM'
+subdirectories. Interactively prompts for days, defaulting to 8.
 
-(defun my/organize-llm-chats (&optional directory move-fn)
-  "Organize LLM chat files by moving old months into YYYY-MM directories.
-Files from the current month stay in place.
-MOVE-FN defaults to the stub for testing."
-  (interactive)
-  (let* ((dir (or directory gptel-default-directory))
-         (current-month (format-time-string "%Y-%m"))
-         (files (directory-files dir t "^[0-9][0-9]-[0-9][0-9]-[0-9][0-9]_.*"))
-         (move-function (or move-fn #'mkdir-and-move)))
+The MOVE-FN must be a function that accepts two arguments,
+SOURCE and DESTINATION, and handles the file operation."
+  (interactive "sDays to keep (default 8): ")
+  (let* ((days (if (or (null days-str) (string-empty-p days-str))
+                   8 ; Default to 8 if user hits Enter
+                 (string-to-number days-str)))
+         (dir (or directory gptel-default-directory))
+         ;; Define two separate regexes for clarity, as you suggested.
+         (long-format-re "^\\([0-9]\\{4\\}\\)\\([0-9]\\{2\\}\\)\\([0-9]\\{2\\}\\)_\\([0-9]\\{2\\}\\)\\([0-9]\\{2\\}\\)[0-9]\\{2\\}[@_]\\(.*\\)\\.md$")
+         (short-format-re "^\\([0-9]\\{2\\}\\)-\\([0-9]\\{2\\}\\)-\\([0-9]\\{2\\}\\)_\\([0-9]\\{2\\}\\)\\([0-9]\\{2\\}\\)_\\(.*\\)\\.md$")
+         (files (directory-files dir t "\\.md$" t)) ; Get all markdown files with full paths
+         (move-function (or move-fn #'my/mkdir-and-move))
+         (cutoff-time (time-subtract (current-time) (seconds-to-time (* days 24 3600)))))
 
     (dolist (file files)
       (when (file-regular-p file)
-        (let* ((basename (file-name-nondirectory file))
-               (date-part (substring basename 0 8)) ; YY-MM-DD
-               (year (+ 2000 (string-to-number (substring date-part 0 2))))
-               (month (substring date-part 3 5))
-               (file-month (format "%04d-%s" year month)))
+        (let (file-time new-basename ; These will be set by the cond block
+              (basename (file-name-nondirectory file)))
+          (cond
+           ;; Case 1: Long format (YYYYMMDD_HHMMSS...)
+           ((string-match long-format-re basename)
+            (let* ((year  (string-to-number (match-string 1 basename)))
+                   (month (string-to-number (match-string 2 basename)))
+                   (day   (string-to-number (match-string 3 basename)))
+                   (hour  (string-to-number (match-string 4 basename)))
+                   (min   (string-to-number (match-string 5 basename)))
+                   (title (replace-regexp-in-string "[@_]" "-" (match-string 6 basename))))
+              (setq file-time (encode-time 0 min hour day month year))
+              (setq new-basename (format "%02d-%02d-%02d_%02d%02d_%s.md"
+                                         (- year 2000) month day hour min title))))
 
-          (unless (string= file-month current-month)
-            (let* ((target-dir (expand-file-name file-month dir))
-                   (target-file (expand-file-name basename target-dir)))
+           ;; Case 2: Short format (YY-MM-DD_HHMM...) -- now with robust parsing
+           ((string-match short-format-re basename)
+            (let* ((yy    (string-to-number (match-string 1 basename)))
+                   (month (string-to-number (match-string 2 basename)))
+                   (day   (string-to-number (match-string 3 basename)))
+                   (hour  (string-to-number (match-string 4 basename)))
+                   (min   (string-to-number (match-string 5 basename))))
+              (setq file-time (encode-time 0 min hour day month (+ 2000 yy)))
+              (setq new-basename basename)))) ; No rename needed for this format
 
-              (funcall move-function file target-dir target-file))))))
-    (message "Done organizing LLM chats")))
+          ;; --- Take Action ---
+          ;; This block runs only if one of the above cond clauses matched.
+          (when file-time
+            (let* ((is-old (time-less-p file-time cutoff-time))
+                   (target-dir (if is-old (expand-file-name (format-time-string "%Y-%m" file-time) dir) dir))
+                   (target-file (expand-file-name new-basename target-dir)))
+              ;; Only call the move function if the path will change.
+              (unless (string= file target-file)
+                (funcall move-function file target-file)))))))
+    (message "Done organizing LLM chats.")))
+
 
 
 (defun my-gptel-path-match-p (filepath)
