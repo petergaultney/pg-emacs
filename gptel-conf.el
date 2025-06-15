@@ -158,12 +158,25 @@ Returns t if the path is a markdown/adoc file in an LLM chats directory."
   :config
   (gptel-make-anthropic "Claude" :stream t :key #'read-claude-api-key)
   (gptel-make-gemini "Gemini" :stream t :key #'read-gemini-api-key)
+
   (push 'gemini-2.5-pro-preview-06-05 (gptel-backend-models (gptel-get-backend "Gemini")))
+
   (gptel-make-anthropic "claude-4-sonnet-thinking"
 	:key #'read-claude-api-key
     :stream t
 	:models '(claude-4-sonnet-20250514)
-	:request-params '(:thinking (:type "enabled" :budget_tokens 2048) :max_tokens 4096))
+	:request-params '(:thinking (:type "enabled" :budget_tokens 2048)))
+  (gptel-make-gemini "gemini-2.5-pro-thinking"
+	:key #'read-gemini-api-key
+    :stream t
+	:models '(gemini-2.5-pro-preview-06-05)
+	:request-params '(:generationConfig (:thinkingConfig (:thinkingBudget 2048))))
+
+  ;; defaults
+  (setq
+    gptel-model 'claude-sonnet-4-20250514
+    gptel-backend (gptel-make-anthropic "Claude" :stream t :key #'read-claude-api-key))
+
   :hook (gptel-mode . gptel-set-default-directory)
   :hook (markdown-mode . my-gptel-activate)
   :hook (gptel-mode . visual-line-mode))
