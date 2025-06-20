@@ -3,5 +3,6 @@
   '(
     ("improt" "import" nil :count 4)
     ("instructinos" "instructions" nil :count 1)
-	("techincally" "technically" nil :count 0)
+    ("techincally" "technically" nil :count 1)
    ))
+

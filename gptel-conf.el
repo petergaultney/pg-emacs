@@ -21,31 +21,29 @@
   (interactive)
   (unless gptel-mode
     (user-error "This command is intended to be used in gptel chat buffers."))
-  (let ((gptel-model 'claude-3-haiku-latest))
+  (let ((gptel-model 'claude-3-5-haiku-20241022)
+        (file-ext (pcase major-mode
+                    ('org-mode "org")
+                    ('adoc-mode "adoc")
+                    (_ "md")))
+        (code-lang (pcase major-mode
+                     ('org-mode "org")
+                     ('adoc-mode "asciidoc")
+                     (_ "markdown"))))
+
     (gptel-request
-      (list nil
-        "What is the chat content?"
-        (concat "```" (pcase major-mode
-                        ('org-mode "org")
-                        ('adoc-mode "asciidoc")
-                        (_ "markdown"))
-          "\n"
-          (buffer-substring-no-properties (point-min) (point-max))
-          "\n```"))
+      (concat "What is the chat content?\n\n"
+              "```" code-lang "\n"
+              (buffer-substring-no-properties (point-min) (point-max))
+              "\n```")
       :system
-      (list (format
-              "I will provide a transcript of a chat with an LLM.  \
-Suggest a short and informative name for a file to store this chat in.  \
-Use the following guidelines:
-- be very concise, one very short sentence at most
-- no spaces, use dashes to separate words
-- return ONLY the title, no explanation or summary
-- append the extension .%s
-- never give me a generic description like 'a transcript of a chat with an LLM'"
-              (pcase major-mode
-                ('org-mode "org")
-                ('adoc-mode "adoc")
-                (_ "md"))))
+      (format "Suggest a short filename for this chat transcript.
+- Return ONLY the filename
+- Be specific about the topic discussed
+- No generic names: avoid 'chat', 'LLM', 'conversation', 'transcript', 'summary'
+- Use dashes, no spaces
+- End with .%s" file-ext)
+
       :callback
       (lambda (resp info)
         (if (stringp resp)
@@ -71,8 +69,9 @@ Use the following guidelines:
                                          (or current-basename (buffer-name buf))
                                          new-name))
                     (with-current-buffer buf (rename-visited-file new-name))))))
-          (message "Error(%s): did not receive a response from the LLM."
-            (plist-get info :status)))))))
+          (message "Error(%s): %s"
+             (plist-get info :status)
+             (plist-get info :error)))))))
 
 
 (defun my/organize-llm-chats (&optional days-str directory move-fn)
