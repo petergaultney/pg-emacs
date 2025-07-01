@@ -238,6 +238,7 @@ trailing hyphen."
   "Convert STRING into slug."
   (downcase (simple-extras-slug-hyphenate (simple-extras-slug-no-punct string))))
 
+
 (defun gptel-extras-save-buffer (name _ _ interactivep)
   "Save the `gptel' buffer with NAME right after it is created.
 The buffer is saved to a file in `gptel-extras-dir'. INTERACTIVEP is t when
@@ -272,3 +273,11 @@ This function is meant to be an `:after' advice to `gptel'."
 	(add-hook 'before-save-hook #'gptel--save-state nil t)))))
 
 (advice-add 'gptel :after #'gptel-extras-save-buffer)
+
+(defun my/gptel-save-state-wrapper (orig-fun &rest args)
+  "Wrap gptel--save-state to prevent modification prompts."
+  (let ((modified-p (buffer-modified-p)))
+    (apply orig-fun args)  ; This calls the ORIGINAL gptel--save-state
+    (set-buffer-modified-p modified-p)))
+
+(advice-add 'gptel--save-state :around #'my/gptel-save-state-wrapper)
