@@ -39,6 +39,7 @@
       :system
       (format "Suggest a short filename for this chat transcript.
 - Return ONLY the filename
+- It must be very short - no more than 7 words!!
 - Be specific about the topic discussed
 - No generic names: avoid 'chat', 'LLM', 'conversation', 'transcript', 'summary'
 - Use dashes, no spaces
