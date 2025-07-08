@@ -1,5 +1,6 @@
 (use-package markdown-mode
-  :ensure t)
+  :ensure t
+  :custom (markdown-fontify-code-blocks-natively t) (markdown-fontify-whole-heading t))
 
 (defun read-claude-api-key ()
   "Read the contents of my Claude API key file."

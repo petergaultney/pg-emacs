@@ -1,5 +1,5 @@
 (use-package ef-themes :ensure (:host github :repo "protesilaos/ef-themes"))
-(use-package doom-themes :ensure t)
+;; (use-package doom-themes :ensure t) ;; doom themes take over too much stuff and do magic which I do not like.
 ;; (use-package nord-theme :ensure t)
 (use-package spacemacs-theme :ensure t)
 
@@ -59,6 +59,12 @@
 			 highlight-numbers-number  ;Number highlighting
 			 secondary-selection       ; Secondary selection
 			 which-key-highlighted-command-face ; Which-key highlighting
+
+			 ;; avy
+			 avy-lead-face            ; Avy lead face
+			 avy-lead-face-0          ; Avy lead face for first candidate
+			 avy-lead-face-1          ; Avy lead face for second candidate
+			 avy-lead-face-2          ; Avy lead face for third candidate
 			 )))
 
     (mapc (lambda (face)
@@ -92,6 +98,9 @@
   "Load THEME with tweaks.
 When NO-BG is non-nil (default t), remove all background colors.
 When INVERT-MODE is non-nil (default t), invert modeline colors."
+  (interactive
+   (list (intern (completing-read "Load custom theme: "
+                   (mapcar 'symbol-name (custom-available-themes))))))
   (load-theme theme t)
   ;; Default both to t when not specified
   (when (or (eq no-bg t) (null no-bg))
@@ -163,11 +172,10 @@ When INVERT-MODE is non-nil (default t), invert modeline colors."
   (lambda ()
 
 	(defvar my-preferred-dark-theme
-	  ;; 'ef-autumn
+	  'ef-autumn
 	  ;; 'ef-dark
 	  ;;'ef-night
 	  ;; 'spacemacs-dark
-	  'doom-solarized-dark
 	  "The dark theme to use when toggling themes.")
 
 	(defvar my-preferred-light-theme

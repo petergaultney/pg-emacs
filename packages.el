@@ -96,3 +96,9 @@
 
 (use-package hjson-mode
   :ensure (:host github :repo "hjson/hjson-emacs"))
+
+(use-package expand-region
+  :ensure (:host github :repo "petergaultney/expand-region.el")
+  :bind (("C-c x" . er/expand-region))
+  :init
+  (setq expand-region-show-expansion-message nil)) ;; disable expansion message
