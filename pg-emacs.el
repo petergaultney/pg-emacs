@@ -12,7 +12,7 @@
 (buffer-file-name)
 (setq pg-emacs-config-file load-file-name) ;; save for later use
 (setq custom-file (concat pg-emacs-dir "custom.el"))
-(menu-bar-mode 0)
+;; (menu-bar-mode 0)
 (global-font-lock-mode t)
 (show-paren-mode 1)
 (column-number-mode t)

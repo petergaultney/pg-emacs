@@ -57,3 +57,5 @@
 (load "javascript.el")
 (load "ansi-color-conf.el")
 (load "themes.el")
+(load "obsidian.el")
+(load "shell-conf.el")

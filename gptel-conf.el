@@ -1,5 +1,6 @@
 (use-package markdown-mode
   :ensure t
+  :mode ("\\.md\\'" . gfm-mode)  ;; prefer gfm-mode because it supports underscores that aren't italics.
   :custom (markdown-fontify-code-blocks-natively t) (markdown-fontify-whole-heading t))
 
 (defun read-claude-api-key ()
@@ -202,9 +203,11 @@ Returns t if the path is a markdown/adoc file in an LLM chats directory."
     gptel-model 'claude-sonnet-4-20250514
     gptel-backend (gptel-make-anthropic "Claude" :stream t :key #'read-claude-api-key))
 
-  :hook (gptel-mode . gptel-set-default-directory)
   :hook (markdown-mode . my-gptel-activate)
-  :hook (gptel-mode . visual-line-mode))
+  :hook (gfm-mode . my-gptel-activate)
+  :hook (gptel-mode . gptel-set-default-directory)
+  :hook (gptel-mode . visual-line-mode)
+  :hook (gptel-mode . visual-fill-column-mode))
 
 
 (use-package posframe
@@ -255,6 +258,7 @@ This function is meant to be an `:after' advice to `gptel'."
              (extension (pcase major-mode
                           ('org-mode "org")
                           ('markdown-mode "md")
+                          ('gfm-mode "md")
                           ('adoc-mode "adoc")
                           (_ (user-error "Unsupported major mode"))))
              (filename (file-name-concat gptel-default-directory
