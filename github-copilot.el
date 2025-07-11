@@ -4,9 +4,9 @@
   :ensure (:host github :repo "copilot-emacs/copilot.el" :files ("dist" "*.el"))
   :config
   (define-key copilot-completion-map (kbd "M-v") 'copilot-accept-completion)
-  (define-key copilot-completion-map (kbd "TAB") 'copilot-next-completion)
+  (define-key copilot-completion-map (kbd "<tab>") 'copilot-next-completion)
   (define-key copilot-completion-map (kbd "<backtab>") 'copilot-previous-completion)
-  (define-key copilot-completion-map (kbd "Esc") 'copilot-clear-overlay)
+  (define-key copilot-completion-map (kbd "<escape>") 'copilot-clear-overlay)
   (add-hook 'prog-mode-hook 'copilot-mode)
   )
 (global-unset-key (kbd "M-v"))
