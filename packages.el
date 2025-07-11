@@ -102,3 +102,15 @@
   :bind (("C-c x" . er/expand-region))
   :init
   (setq expand-region-show-expansion-message nil)) ;; disable expansion message
+
+(use-package diredfl
+  :ensure t
+  :init
+  (diredfl-global-mode 1) ;; enable diredfl globally
+  )
+
+(use-package rainbow-delimiters
+  :ensure t
+  :hook ((prog-mode . rainbow-delimiters-mode)
+		 (emacs-lisp-mode . rainbow-delimiters-mode))
+)

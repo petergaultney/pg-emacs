@@ -33,16 +33,25 @@
 
   :init (add-hook 'before-save-hook 'format-python-with-eglot-on-save)
   :config
-  (setq eglot-events-buffer-config '(:size 0 :format full))
+  (setq eglot-events-buffer-config '(:size 20000000 :format full))
   ;; (setq eglot-show-diagnostics-indicators nil) ;; not, apparently, necessary
   (setq-default eglot-workspace-configuration
-    '(:pylsp
+	'(:pylsp
        (:plugins
-         (:pycodestyle (:enabled nil)
+		 (:pycodestyle (:enabled nil)
+
+           :jedi_completion (:enabled t)
+           :jedi_definition (:enabled t)
+           :jedi_hover (:enabled t)
+           :jedi_references (:enabled t)
+           :jedi_signature_help (:enabled t)
+           :jedi_symbols (:enabled t)
+           :rope (:enabled :json-false)  ; Disable rope - it conflicts with jedi
+
            :pyflakes (:enabled nil)
            :isort (:enabled t)
            :flake8 (:enabled nil)
-           :pylsp-mypy (:enabled t)
+           :pylsp-mypy (:enabled t :live_mode t)
            :black (:enabled t :line_length 105))))))
 
 ;; requires https://github.com/blahgeek/emacs-lsp-booster

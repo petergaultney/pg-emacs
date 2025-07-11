@@ -49,6 +49,7 @@
 			 markdown-header-face-4
 			 markdown-header-face-5
 			 markdown-header-face-6
+			 markdown-code-face  ;; because it turns out it's nice to have code blocks look very distinct.
 
 			 ;; UI elements
 			 header-line
