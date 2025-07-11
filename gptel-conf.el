@@ -242,7 +242,6 @@ trailing hyphen."
   "Convert STRING into slug."
   (downcase (simple-extras-slug-hyphenate (simple-extras-slug-no-punct string))))
 
-
 (defun gptel-extras-save-buffer (name _ _ interactivep)
   "Save the `gptel' buffer with NAME right after it is created.
 The buffer is saved to a file in `gptel-extras-dir'. INTERACTIVEP is t when
@@ -277,7 +276,6 @@ This function is meant to be an `:after' advice to `gptel'."
 	(write-file filename 'confirm)
 	(add-hook 'before-save-hook #'gptel--save-state nil t)))))
 
-(advice-add 'gptel :after #'gptel-extras-save-buffer)
 
 (defun my/gptel-save-state-wrapper (orig-fun &rest args)
   "Wrap gptel--save-state to prevent modification prompts."
@@ -285,4 +283,26 @@ This function is meant to be an `:after' advice to `gptel'."
     (apply orig-fun args)  ; This calls the ORIGINAL gptel--save-state
     (set-buffer-modified-p modified-p)))
 
-(advice-add 'gptel--save-state :around #'my/gptel-save-state-wrapper)
+(defvar-local gptel-anthropic-use-web-search nil
+  "When non-nil, enable the Anthropic web search tool for the current buffer.")
+
+(with-eval-after-load 'gptel
+
+  (advice-add 'gptel--save-state :around #'my/gptel-save-state-wrapper)
+  (advice-add 'gptel :after #'gptel-extras-save-buffer)
+
+  ;; (load-file "gptel-pricing.el")
+  ;; (add-hook 'gptel-post-response-functions #'gptel-track-cost)
+
+  (advice-add
+    'gptel--request-data :around
+    (lambda (orig-fn &rest args)
+      (let ((result (apply orig-fn args)))
+        (if (and gptel-anthropic-use-web-search
+              (cl-typep (car args) 'gptel-anthropic))
+		  (cons :tools
+			(cons [(:type "web_search_20250305"
+					 :name "web_search"
+					 :max_uses 5)]
+              result))
+		  result)))))

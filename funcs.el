@@ -5,7 +5,7 @@
   "Move SOURCE to DESTINATION, creating parent directory of DESTINATION if it doesn't exist."
   (let ((target-dir (file-name-directory destination)))
 	(make-directory target-dir t))  ; t makes it idempotent
-  (rename-file source destination)
+  (rename-file source destination t) ;; t means overwrite
   (message "Moved %s -> %s" (file-name-nondirectory source) destination))
 
 ;; The helper function that performs the actual file system mutation.

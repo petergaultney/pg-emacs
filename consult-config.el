@@ -140,9 +140,13 @@
        (display-buffer-reuse-window display-buffer-same-window)))
   ;; Different scroll margin
   (setq vertico-scroll-margin 5)
+
+  ;; (setq vertico-multiform-categories
+  ;;   '((file (vertico-sort-function . vertico-sort-directories-first)
+  ;;       (:keymap . vertico-directory-map))))
+
   :bind (:map vertico-map
               ("M-e" . embark-export))
-
 
   ;; Show more candidates
   ;; (setq vertico-count 20)
