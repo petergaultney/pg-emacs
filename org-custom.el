@@ -5,9 +5,10 @@
   (interactive)
   (require 'org-clock)
   (org-insert-time-stamp (org-current-time org-clock-rounding-minutes) 'with-hm))
-(define-key global-map (kbd "C-c o n") 'insert-org-timestamp-now)
+;; (define-key global-map (kbd "C-c o n") 'insert-org-timestamp-now)
 ;; (eval-after-load "org-mode"
 ;;   '(define-key org-mode-map (kbd "C-c o n") 'org-time-stamp))
+;; (global-set-key (kbd "C-c a") 'org-agenda)
 
 (defun org ()
   "Switch to my org dir."

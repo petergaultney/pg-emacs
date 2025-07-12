@@ -23,15 +23,14 @@
 ;; https://stackoverflow.com/questions/906368/what-is-the-difference-between-global-set-key-and-define-key-global-map-in-e
 (global-set-key (kbd "C-c ,") 'decrease-left-margin)
 (global-set-key (kbd "C-c .") 'increase-left-margin)
-(global-set-key (kbd "C-c d") 'delete-region)
+;; (global-set-key (kbd "C-c d") 'delete-region)
 (global-set-key (kbd "M-g") 'goto-line)
 (global-set-key (kbd "C-x s") 'save-buffer)
 (global-set-key (kbd "C-f") 'find-file-other-window)
-(global-set-key (kbd "C-c g") 'abort-recursive-edit)
+;; (global-set-key (kbd "C-c g") 'abort-recursive-edit)
 
 (global-set-key (kbd "C-x b") 'switch-to-buffer)
 (global-set-key (kbd "C-d") 'kill-whole-line)
-(global-set-key (kbd "C-c a") 'org-agenda)
 ; join line from top line
 (global-set-key (kbd "M-j") (lambda () (interactive) (join-line -1)))
 
@@ -93,22 +92,11 @@
 
 (add-to-list 'auto-mode-alist '("\\.ino\\'" . c-mode))
 
-
-
 ;; TEMP FILES - DON'T LITTER MY WORKSPACE!!
 (load "temp-files.el")
 ;; END TEMP FILES
 
 ;; CUSTOM FUNCTIONS
-(defun reload-dotemacs ()
-  (interactive)
-  (load-file "~/.emacs"))
-(defun open-dotemacs ()
-  (interactive)
-  (find-file pg-emacs-dir))
-(defun open-lclcfg ()
-  (interactive)
-  (find-file pg-emacs-config-file))
 ;; (defun switch-to-previous-buffer ()
 ;;   "Switch to previously open buffer.
 ;; Repeated invocations toggle between the two most recently open buffers."
@@ -116,8 +104,6 @@
 ;;   (switch-to-buffer (other-buffer (current-buffer) 1)))
 
 ;; DEFINE KEY BINDINGS FOR CUSTOM FUNCTIONS
-(global-set-key (kbd "C-c e") 'open-dotemacs)
-(global-set-key (kbd "C-c C-m") 'reload-dotemacs)
 (global-set-key (kbd "C-c b") 'switch-to-prev-buffer)
 
 (with-eval-after-load 'minibuffer

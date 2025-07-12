@@ -10,13 +10,18 @@
 
 (require 'package)
 
-(let* ((no-ssl (and (memq system-type '(windows-nt ms-dos))
-                    (not (gnutls-available-p))))
-       (proto (if no-ssl "http" "https")))
+(let*
+  (
+    (no-ssl (and (memq system-type '(windows-nt ms-dos)) (not (gnutls-available-p))))
+    (proto
+      (if no-ssl
+        "http"
+        "https")))
   ;; Comment/uncomment these two lines to enable/disable MELPA and MELPA Stable as desired
   (add-to-list 'package-archives (cons "melpa" (concat proto "://melpa.org/packages/")) t)
-  (add-to-list 'package-archives (cons "elpa" (concat proto "://elpa.gnu.org/packages/")) t)
-;;  (add-to-list 'package-archives (cons "melpa-stable" (concat proto "://stable.melpa.org/packages/")) t)
+  (add-to-list 'package-archives (cons "elpa" (concat proto "://elpa.gnu.org/packages/"))
+    t)
+  ;;  (add-to-list 'package-archives (cons "melpa-stable" (concat proto "://stable.melpa.org/packages/")) t)
   (add-to-list 'package-archives '("org" . "https://orgmode.org/elpa/") t))
 
 ;; (package-initialize) ;; "unnecessary call"
@@ -32,8 +37,6 @@
 ;; (require 'diminish)
 (require 'bind-key)
 ;; end use-package init
-
-;; (load-theme 'material t)
 
 ;; (use-package multiple-cursors
 
@@ -54,12 +57,9 @@
 ;;     (require 'mc-extras))
 
 
-(use-package scala-mode
-  :interpreter ("scala" . scala-mode))
+(use-package scala-mode :interpreter ("scala" . scala-mode))
 
-(use-package lua-mode
-  :ensure t
-  :interpreter ("lua" . lua-mode))
+(use-package lua-mode :ensure t :interpreter ("lua" . lua-mode))
 
 (eval-after-load "lispy"
   (progn
@@ -85,35 +85,31 @@
 
 ;;; packages.el ends here
 
-(use-package xonsh-mode
-  :ensure t)
+(use-package xonsh-mode :ensure t)
 
-(use-package adoc-mode
-  :ensure t)
+(use-package adoc-mode :ensure t)
 
-(use-package visual-fill-column
-  :ensure t)
+(use-package visual-fill-column :ensure t)
 
-(use-package hjson-mode
-  :ensure (:host github :repo "hjson/hjson-emacs"))
+(use-package hjson-mode :ensure (:host github :repo "hjson/hjson-emacs"))
 
-(use-package expand-region
+(use-package
+  expand-region
   :ensure (:host github :repo "petergaultney/expand-region.el")
   :bind (("C-c x" . er/expand-region))
   :init
   (setq expand-region-show-expansion-message nil)) ;; disable expansion message
 
-(use-package diredfl
+(use-package
+  diredfl
   :ensure t
   :init
   (diredfl-global-mode 1) ;; enable diredfl globally
   )
 
-(use-package rainbow-delimiters
+(use-package
+  rainbow-delimiters
   :ensure t
-  :hook ((prog-mode . rainbow-delimiters-mode)
-		 (emacs-lisp-mode . rainbow-delimiters-mode))
-)
+  :hook ((prog-mode . rainbow-delimiters-mode) (emacs-lisp-mode . rainbow-delimiters-mode)))
 
-(use-package which-key
-  :ensure t)
+(use-package which-key :ensure t)
