@@ -1,15 +1,16 @@
 (setq lexical-binding t)
 
-(defun my/old-consult-ripgrep ()
+(defun my/consult-ripgrep ()
   (interactive)
   (run-at-time 0 nil #'consult-ripgrep
      (universal-argument)
     ))
 
-(defun my/consult-ripgrep (arg)
-  (interactive "P")
-  (run-at-time 0 nil #'consult-ripgrep arg))
+;; (defun my/consult-ripgrep (arg)
+;;   (interactive "P")
+;;   (run-at-time 0 nil #'consult-ripgrep arg))
 ;; works now? not sure why the old one broke. i think i updated consult, though.
+;; now this doesn't work. i dooooo nooooot get it
 
 (defun consult--ripgrep-noignore-builder (input)
   "consult--ripgrep-builder with INPUT, but ignores .gitignore."

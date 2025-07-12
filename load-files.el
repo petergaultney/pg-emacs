@@ -59,3 +59,4 @@
 (load "themes.el")
 (load "obsidian.el")
 (load "shell-conf.el")
+(load "keyfind.el")

@@ -114,3 +114,6 @@
   :hook ((prog-mode . rainbow-delimiters-mode)
 		 (emacs-lisp-mode . rainbow-delimiters-mode))
 )
+
+(use-package which-key
+  :ensure t)

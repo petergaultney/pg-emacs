@@ -86,8 +86,6 @@
   :ensure t
   :config
   (add-hook 'elpaca-after-init-hook 'global-color-identifiers-mode))
-(use-package elisp-autofmt
-  :ensure t)
 
 ;; remove annoying prompt http://shreevatsa.wordpress.com/2007/01/06/using-emacsclient/
 ;; (server-start)
