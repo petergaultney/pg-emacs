@@ -9,7 +9,7 @@
       (auto-fill-function " ↵")
       (eldoc-mode "" eldoc)
       (color-identifiers-mode " 🍭")
-	  (which-key-mode "")
+	  ;; (which-key-mode "") ;; use (setq which-key-lighter nil) instead ??
       (whitespace-mode " _" whitespace)
       (paredit-mode " ()" paredit))))
 
@@ -20,24 +20,53 @@
   (force-mode-line-update))
 
 
-(defun my-modeline ()
-  "Display colored project or directory name in the modeline."
-  (let ((place-name (if (and (projectile-project-p)
-                       (projectile-project-name)
-                       (not (string= (projectile-project-name) "-")))
-						(projectile-project-name)
-					  (file-name-nondirectory (directory-file-name default-directory)))))
-    (when (and place-name (not (string-empty-p place-name)))
-      (let* ((colors (my-pick-fg-bg-color-from-hsl place-name 0.4))
-             (bg-color (nth 0 colors))
-             (text-color (nth 1 colors)))
-        (propertize (format " %s " place-name)
-                    'face `(:background ,bg-color :foreground ,text-color))))))
+(defun my--get-modeline-place-info ()
+  "Return the project or directory info as a cons cell (NAME . DIR).
+Returns nil if no suitable name can be found."
+  (let* ((project-name (and (fboundp 'projectile-project-p)
+                            (projectile-project-p)
+                            (projectile-project-name)))
+         (is-real-project (and project-name (not (string= project-name "-")))))
+    (cond (is-real-project
+           (cons project-name (projectile-project-root)))
+          ((buffer-file-name)
+           (cons (file-name-nondirectory (directory-file-name default-directory))
+                 default-directory))
+          (t nil))))
+
+(defun my--propertize-for-dired (text dir)
+  "Propertize TEXT to open DIR in dired on click."
+  (let ((map (make-sparse-keymap)))
+    (define-key map [mode-line mouse-1]
+      `(lambda () (interactive) (dired ,dir)))
+    (propertize text
+                'keymap map
+                'help-echo (format "mouse-1: Dired %s" dir))))
+
+
+(defun my-modeline-place ()
+  "Display a clickable, colored project or directory name."
+  (when-let* ((place-info (my--get-modeline-place-info))
+              (name (car place-info))
+              (dir (cdr place-info))
+              ;; Assuming my-pick-fg-bg-color-from-hsl is defined elsewhere
+              (colors (my-pick-fg-bg-color-from-hsl name 0.4))
+              (bg-color (nth 0 colors))
+              (text-color (nth 1 colors)))
+    (let* ((text (format " %s " name))
+           (colored-text (propertize text 'face `(:background ,bg-color
+                                                  :foreground ,text-color))))
+      (my--propertize-for-dired colored-text dir))))
+
 
 ;; warning! this next section is manually overriding the mode-line-format.
 
-(setq old-mode-line-format mode-line-format)
-;; (setq mode-line-format old-mode-line-format) ;; fix the modeline
+;; This is a safer way to add elements to the mode-line.
+;; It avoids replacing the entire variable.
+(add-to-list 'mode-line-format '(:eval (my-modeline-place)) t)
+
+;; To remove it if needed:
+;; (setq mode-line-format (delete '(:eval (my-modeline-place)) mode-line-format))
 
 (defun insert-after-mode-line-modes (new-element)
   "Insert NEW-ELEMENT after mode-line-modes in mode-line-format."

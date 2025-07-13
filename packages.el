@@ -112,4 +112,8 @@
   :ensure t
   :hook ((prog-mode . rainbow-delimiters-mode) (emacs-lisp-mode . rainbow-delimiters-mode)))
 
-(use-package which-key :ensure t :config (which-key-mode 1))
+(use-package
+  which-key
+  :ensure t
+  :init (setq which-key-lighter "")
+  :config (which-key-mode 1))
