@@ -76,6 +76,7 @@
   :ensure (:wait t))
 
 (load "errors.el")
+(load "colors.el")  ;; i might use this various places.
 
 ;; load that custom file
 (load custom-file 'no-error)
