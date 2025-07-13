@@ -72,6 +72,9 @@
   ;; do it in a separate file so this doesn't break every time i upgrade elpaca.
   (elpaca-use-package-mode))
 
+(use-package hydra
+  :ensure (:wait t))
+
 (load "errors.el")
 
 ;; load that custom file
@@ -126,3 +129,6 @@
 (load "pg-replace.el")
 (load "abbrevs.el")
 (load "smerge-deactivate.el")
+
+(add-to-list 'default-frame-alist '(alpha . (90 . 80)))
+;; do this at the very end as an indicator if something went wrong
