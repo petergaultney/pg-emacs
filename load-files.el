@@ -62,3 +62,4 @@
 (load "keyfind.el")
 (load "files.el")
 (load "elisp-conf.el")
+(load "modeline.el")
