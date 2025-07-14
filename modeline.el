@@ -59,7 +59,6 @@ Returns nil if no suitable name can be found."
       (place-info (my--get-modeline-place-info))
       (name (car place-info))
       (dir (cdr place-info))
-      ;; Assuming my-pick-fg-bg-color-from-hsl is defined elsewhere
       (colors (my-pick-fg-bg-color-from-hsl name 0.4))
       (bg-color (nth 0 colors))
       (text-color (nth 1 colors)))
@@ -71,11 +70,23 @@ Returns nil if no suitable name can be found."
       (my--propertize-for-dired colored-text dir))))
 
 
-;; warning! this next section is manually overriding the mode-line-format.
+(defun my-modeline-subproject ()
+  "Display a clickable, colored subproject name, if one is found.
+Relies on `my-cached-subproject-root` being set."
+  (when-let* ((dir my-cached-subproject-root))
+    (let*
+      (
+        (name (file-name-nondirectory (directory-file-name dir)))
+        (colors (my-pick-fg-bg-color-from-hsl name 0.4))
+        (bg-color (nth 0 colors))
+        (text-color (nth 1 colors))
+        (text (format "/%s " name))
+        (colored-text
+          (propertize text 'face `(:background ,bg-color :foreground ,text-color))))
+      (my--propertize-for-dired colored-text dir))))
 
-;; This is a safer way to add elements to the mode-line.
-;; It avoids replacing the entire variable.
-(add-to-list 'mode-line-format '(:eval (my-modeline-place)) t)
+
+;; warning! this next section is manually overriding the mode-line-format.
 
 ;; To remove it if needed:
 ;; (setq mode-line-format (delete '(:eval (my-modeline-place)) mode-line-format))
@@ -90,4 +101,5 @@ Returns nil if no suitable name can be found."
     (reverse new-format)))
 
 (setq-default mode-line-format
-  (insert-after-mode-line-modes '(:eval (my-modeline-place))))
+  (insert-after-mode-line-modes
+    '((:eval (my-modeline-place)) (:eval (my-modeline-subproject)))))

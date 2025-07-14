@@ -1,7 +1,13 @@
-(use-package markdown-mode
+(use-package
+  markdown-mode
   :ensure t
-  :mode ("\\.md\\'" . gfm-mode)  ;; prefer gfm-mode because it supports underscores that aren't italics.
-  :custom (markdown-fontify-code-blocks-natively t) (markdown-fontify-whole-heading t))
+  :mode ("\\.md\\'" . gfm-mode) ;; prefer gfm-mode because it supports underscores that aren't italics.
+  :bind
+  ((:map markdown-mode-map ("C-c m b" . markdown-insert-code-block))
+    (:map gfm-mode-map ("C-c m b" . markdown-insert-code-block)))
+  :custom
+  (markdown-fontify-code-blocks-natively t)
+  (markdown-fontify-whole-heading t))
 
 (defun read-claude-api-key ()
   "Read the contents of my Claude API key file."
@@ -23,58 +29,75 @@
   (interactive)
   (unless gptel-mode
     (user-error "This command is intended to be used in gptel chat buffers."))
-  (let ((gptel-model 'claude-3-5-haiku-20241022)
-        (file-ext (pcase major-mode
-                    ('org-mode "org")
-                    ('adoc-mode "adoc")
-                    (_ "md")))
-        (code-lang (pcase major-mode
-                     ('org-mode "org")
-                     ('adoc-mode "asciidoc")
-                     (_ "markdown"))))
+  (let
+    (
+      (gptel-model 'claude-3-5-haiku-20241022)
+      (file-ext
+        (pcase major-mode
+          ('org-mode "org")
+          ('adoc-mode "adoc")
+          (_ "md")))
+      (code-lang
+        (pcase major-mode
+          ('org-mode "org")
+          ('adoc-mode "asciidoc")
+          (_ "markdown"))))
 
     (gptel-request
-      (concat "What is the chat content?\n\n"
-              "```" code-lang "\n"
-              (buffer-substring-no-properties (point-min) (point-max))
-              "\n```")
+      (concat
+        "What is the chat content?\n\n"
+        "```"
+        code-lang
+        "\n"
+        (buffer-substring-no-properties (point-min) (point-max))
+        "\n```")
       :system
-      (format "Suggest a short filename for this chat transcript.
+      (format
+        "Suggest a short filename for this chat transcript.
 - Return ONLY the filename
 - It must be very short - no more than 7 words!!
 - Be specific about the topic discussed
 - No generic names: avoid 'chat', 'LLM', 'conversation', 'transcript', 'summary'
 - Use dashes, no spaces
-- End with .%s" file-ext)
+- End with .%s"
+        file-ext)
 
       :callback
       (lambda (resp info)
         (if (stringp resp)
-            (let ((buf (plist-get info :buffer)))
-              (when (and (buffer-live-p buf))
-                (let* ((current-name (buffer-file-name buf))
-                       (current-basename (when current-name (file-name-nondirectory current-name)))
-                       ;; Extract existing timestamp with debug message
-                       (existing-timestamp
-                        (progn
-                          (when current-basename
-                            (message "Current filename: %s" current-basename)
-                            (if (string-match "^\\([0-9]\\{2\\}-[0-9]\\{2\\}-[0-9]\\{2\\}_[0-9]\\{4\\}\\)" current-basename)
-                                (match-string 1 current-basename)
-                              (message "Regex didn't match timestamp in: %s" current-basename)
-                              nil))))
-                       ;; Use existing timestamp or generate new one
-                       (date-prefix (or existing-timestamp
-                                        (format-time-string gptel-file-datetime-fmt)))
-                       (new-name (concat date-prefix "_" resp)))
-                  (message "Using timestamp: %s" date-prefix)
-                  (when (y-or-n-p (format "Rename buffer %s to %s? "
-                                         (or current-basename (buffer-name buf))
-                                         new-name))
-                    (with-current-buffer buf (rename-visited-file new-name))))))
-          (message "Error(%s): %s"
-             (plist-get info :status)
-             (plist-get info :error)))))))
+          (let ((buf (plist-get info :buffer)))
+            (when (and (buffer-live-p buf))
+              (let*
+                (
+                  (current-name (buffer-file-name buf))
+                  (current-basename
+                    (when current-name
+                      (file-name-nondirectory current-name)))
+                  ;; Extract existing timestamp with debug message
+                  (existing-timestamp
+                    (progn
+                      (when current-basename
+                        (message "Current filename: %s" current-basename)
+                        (if
+                          (string-match
+                            "^\\([0-9]\\{2\\}-[0-9]\\{2\\}-[0-9]\\{2\\}_[0-9]\\{4\\}\\)"
+                            current-basename)
+                          (match-string 1 current-basename)
+                          (message "Regex didn't match timestamp in: %s" current-basename)
+                          nil))))
+                  ;; Use existing timestamp or generate new one
+                  (date-prefix
+                    (or existing-timestamp (format-time-string gptel-file-datetime-fmt)))
+                  (new-name (concat date-prefix "_" resp)))
+                (message "Using timestamp: %s" date-prefix)
+                (when
+                  (y-or-n-p
+                    (format "Rename buffer %s to %s? "
+                      (or current-basename (buffer-name buf))
+                      new-name))
+                  (with-current-buffer buf
+                    (rename-visited-file new-name))))))
+          (message "Error(%s): %s" (plist-get info :status) (plist-get info :error)))))))
 
 
 (defun my/organize-llm-chats (&optional days-str directory move-fn)
@@ -87,55 +110,77 @@ subdirectories. Interactively prompts for days, defaulting to 8.
 The MOVE-FN must be a function that accepts two arguments,
 SOURCE and DESTINATION, and handles the file operation."
   (interactive "sDays to keep (default 8): ")
-  (let* ((days (if (or (null days-str) (string-empty-p days-str))
-                   8 ; Default to 8 if user hits Enter
-                 (string-to-number days-str)))
-         (dir (or directory gptel-default-directory))
-         ;; Define two separate regexes for clarity, as you suggested.
-         (long-format-re "^\\([0-9]\\{4\\}\\)\\([0-9]\\{2\\}\\)\\([0-9]\\{2\\}\\)_\\([0-9]\\{2\\}\\)\\([0-9]\\{2\\}\\)[0-9]\\{2\\}[@_]\\(.*\\)\\.md$")
-         (short-format-re "^\\([0-9]\\{2\\}\\)-\\([0-9]\\{2\\}\\)-\\([0-9]\\{2\\}\\)_\\([0-9]\\{2\\}\\)\\([0-9]\\{2\\}\\)_\\(.*\\)\\.md$")
-         (files (directory-files dir t "\\.md$" t)) ; Get all markdown files with full paths
-         (move-function (or move-fn #'my/mkdir-and-move))
-         (cutoff-time (time-subtract (current-time) (seconds-to-time (* days 24 3600)))))
+  (let*
+    (
+      (days
+        (if (or (null days-str) (string-empty-p days-str))
+          8 ; Default to 8 if user hits Enter
+          (string-to-number days-str)))
+      (dir (or directory gptel-default-directory))
+      ;; Define two separate regexes for clarity, as you suggested.
+      (long-format-re
+        "^\\([0-9]\\{4\\}\\)\\([0-9]\\{2\\}\\)\\([0-9]\\{2\\}\\)_\\([0-9]\\{2\\}\\)\\([0-9]\\{2\\}\\)[0-9]\\{2\\}[@_]\\(.*\\)\\.md$")
+      (short-format-re
+        "^\\([0-9]\\{2\\}\\)-\\([0-9]\\{2\\}\\)-\\([0-9]\\{2\\}\\)_\\([0-9]\\{2\\}\\)\\([0-9]\\{2\\}\\)_\\(.*\\)\\.md$")
+      (files (directory-files dir t "\\.md$" t)) ; Get all markdown files with full paths
+      (move-function (or move-fn #'my/mkdir-and-move))
+      (cutoff-time (time-subtract (current-time) (seconds-to-time (* days 24 3600)))))
 
     (dolist (file files)
       (when (file-regular-p file)
-        (let (file-time new-basename ; These will be set by the cond block
-              (basename (file-name-nondirectory file)))
+        (let
+          (
+            file-time
+            new-basename ; These will be set by the cond block
+            (basename (file-name-nondirectory file)))
           (cond
-           ;; Case 1: Long format (YYYYMMDD_HHMMSS...)
-           ((string-match long-format-re basename)
-            (let* ((year  (string-to-number (match-string 1 basename)))
-                   (month (string-to-number (match-string 2 basename)))
-                   (day   (string-to-number (match-string 3 basename)))
-                   (hour  (string-to-number (match-string 4 basename)))
-                   (min   (string-to-number (match-string 5 basename)))
-                   (title (replace-regexp-in-string "[@_]" "-" (match-string 6 basename))))
-              (setq file-time (encode-time 0 min hour day month year))
-              (setq new-basename (format "%02d-%02d-%02d_%02d%02d_%s.md"
-                                         (- year 2000) month day hour min title))))
+            ;; Case 1: Long format (YYYYMMDD_HHMMSS...)
+            ((string-match long-format-re basename)
+              (let*
+                (
+                  (year (string-to-number (match-string 1 basename)))
+                  (month (string-to-number (match-string 2 basename)))
+                  (day (string-to-number (match-string 3 basename)))
+                  (hour (string-to-number (match-string 4 basename)))
+                  (min (string-to-number (match-string 5 basename)))
+                  (title (replace-regexp-in-string "[@_]" "-" (match-string 6 basename))))
+                (setq file-time (encode-time 0 min hour day month year))
+                (setq new-basename
+                  (format "%02d-%02d-%02d_%02d%02d_%s.md"
+                    (- year 2000)
+                    month
+                    day
+                    hour
+                    min
+                    title))))
 
-           ;; Case 2: Short format (YY-MM-DD_HHMM...) -- now with robust parsing
-           ((string-match short-format-re basename)
-            (let* ((yy    (string-to-number (match-string 1 basename)))
-                   (month (string-to-number (match-string 2 basename)))
-                   (day   (string-to-number (match-string 3 basename)))
-                   (hour  (string-to-number (match-string 4 basename)))
-                   (min   (string-to-number (match-string 5 basename))))
-              (setq file-time (encode-time 0 min hour day month (+ 2000 yy)))
-              (setq new-basename basename)))) ; No rename needed for this format
+            ;; Case 2: Short format (YY-MM-DD_HHMM...) -- now with robust parsing
+            ((string-match short-format-re basename)
+              (let*
+                (
+                  (yy (string-to-number (match-string 1 basename)))
+                  (month (string-to-number (match-string 2 basename)))
+                  (day (string-to-number (match-string 3 basename)))
+                  (hour (string-to-number (match-string 4 basename)))
+                  (min (string-to-number (match-string 5 basename))))
+                (setq file-time (encode-time 0 min hour day month (+ 2000 yy)))
+                (setq new-basename basename)))) ; No rename needed for this format
 
           ;; --- Take Action ---
           ;; This block runs only if one of the above cond clauses matched.
           (when file-time
-            (let* ((is-old (time-less-p file-time cutoff-time))
-                   (target-dir (if is-old (expand-file-name (format-time-string "%Y-%m" file-time) dir) dir))
-                   (target-file (expand-file-name new-basename target-dir)))
+            (let*
+              (
+                (is-old (time-less-p file-time cutoff-time))
+                (target-dir
+                  (if is-old
+                    (expand-file-name (format-time-string "%Y-%m" file-time) dir)
+                    dir))
+                (target-file (expand-file-name new-basename target-dir)))
               ;; Only call the move function if the path will change.
               (unless (string= file target-file)
                 (funcall move-function file target-file)))))))
     (message "Done organizing LLM chats.")))
-
 
 
 (defun my-gptel-path-match-p (filepath)
@@ -143,15 +188,16 @@ SOURCE and DESTINATION, and handles the file operation."
 Returns t if the path is a markdown/adoc file in an LLM chats directory."
   (and filepath
     (string-match-p "\\.\\(?:md\\|adoc\\)$" filepath)
-    (string-match-p "\\bllm[-[:space:]]chats\\b"
-      (downcase (file-truename filepath)))))
+    (string-match-p "\\bllm[-[:space:]]chats\\b" (downcase (file-truename filepath)))))
 
 (defun my-gptel-test-file (filepath)
   "Test if FILEPATH would activate gptel-mode."
   (interactive "fFile to test: ")
   (message "File %s: gptel would %sbe activated"
-           filepath
-           (if (my-gptel-path-match-p filepath) "" "NOT ")))
+    filepath
+    (if (my-gptel-path-match-p filepath)
+      ""
+      "NOT ")))
 
 (defun my-gptel-activate ()
   "Activate `gptel-mode` for Markdown/AsciiDoc files in LLM chats directories."
@@ -179,24 +225,27 @@ Returns t if the path is a markdown/adoc file in an LLM chats directory."
 (global-set-key (kbd "M-o") gptel-global-prefix-map)
 
 
-(use-package gptel
-  :ensure (:host github :repo "karthink/gptel" )
+(use-package
+  gptel
+  :ensure (:host github :repo "karthink/gptel")
   :config
   (gptel-make-anthropic "Claude" :stream t :key #'read-claude-api-key)
   (gptel-make-gemini "Gemini" :stream t :key #'read-gemini-api-key)
 
   (push 'gemini-2.5-pro-preview-06-05 (gptel-backend-models (gptel-get-backend "Gemini")))
 
-  (gptel-make-anthropic "claude-4-sonnet-thinking"
-	:key #'read-claude-api-key
+  (gptel-make-anthropic
+    "claude-4-sonnet-thinking"
+    :key #'read-claude-api-key
     :stream t
-	:models '(claude-4-sonnet-20250514)
-	:request-params '(:thinking (:type "enabled" :budget_tokens 2048)))
-  (gptel-make-gemini "gemini-2.5-pro-thinking"
-	:key #'read-gemini-api-key
+    :models '(claude-4-sonnet-20250514)
+    :request-params '(:thinking (:type "enabled" :budget_tokens 2048)))
+  (gptel-make-gemini
+    "gemini-2.5-pro-thinking"
+    :key #'read-gemini-api-key
     :stream t
-	:models '(gemini-2.5-pro-preview-06-05)
-	:request-params '(:generationConfig (:thinkingConfig (:thinkingBudget 2048))))
+    :models '(gemini-2.5-pro-preview-06-05)
+    :request-params '(:generationConfig (:thinkingConfig (:thinkingBudget 2048))))
 
   ;; defaults
   (setq
@@ -210,10 +259,8 @@ Returns t if the path is a markdown/adoc file in an LLM chats directory."
   :hook (gptel-mode . visual-fill-column-mode))
 
 
-(use-package posframe
-  :ensure (:host github :repo "tumashu/posframe"))
-(use-package gptel-quick
-  :ensure (:host github :repo "karthink/gptel-quick"))
+(use-package posframe :ensure (:host github :repo "tumashu/posframe"))
+(use-package gptel-quick :ensure (:host github :repo "karthink/gptel-quick"))
 
 
 ;; all of the below comes from
@@ -233,10 +280,11 @@ Returns t if the path is a markdown/adoc file in an LLM chats directory."
 Also replace multiple hyphens with a single one and remove any
 trailing hyphen."
   (replace-regexp-in-string
-   "-$" ""
-   (replace-regexp-in-string
-    "-\\{2,\\}" "-"
-    (replace-regexp-in-string "--+\\|\s+" "-" str))))
+    "-$" ""
+    (replace-regexp-in-string
+      "-\\{2,\\}"
+      "-"
+      (replace-regexp-in-string "--+\\|\s+" "-" str))))
 
 (defun simple-extras-slugify (string)
   "Convert STRING into slug."
@@ -262,16 +310,20 @@ trailing hyphen."
           (gptel--save-state)
 
           ;; 3. Now, save the buffer, which already contains the metadata.
-          (let* ((datetime-prefix (format-time-string "%Y%m%d-%H%M%S-"))
-                 (extension (pcase major-mode
-                              ('org-mode "org")
-                              ((or 'markdown-mode 'gfm-mode) "md")
-                              ('adoc-mode "adoc")
-                              (_ (user-error "Unsupported major mode"))))
-                 (filename (file-name-concat gptel-default-directory
-                                             (file-name-with-extension
-                                              (concat datetime-prefix (simple-extras-slugify name))
-                                              extension))))
+          (let*
+            (
+              (datetime-prefix (format-time-string "%Y%m%d-%H%M%S-"))
+              (extension
+                (pcase major-mode
+                  ('org-mode "org")
+                  ((or 'markdown-mode 'gfm-mode) "md")
+                  ('adoc-mode "adoc")
+                  (_ (user-error "Unsupported major mode"))))
+              (filename
+                (file-name-concat gptel-default-directory
+                  (file-name-with-extension
+                    (concat datetime-prefix (simple-extras-slugify name))
+                    extension))))
             (write-file filename)
             ;; The buffer is now visiting a file and is not modified.
             (set-buffer-modified-p nil)))))))
@@ -297,16 +349,20 @@ to prevent a 'buffer modified' prompt."
           (gptel--save-state)
 
           ;; Generate filename and associate buffer with a file
-          (let* ((datetime-prefix (format-time-string "%Y%m%d-%H%M%S-"))
-                 (extension (pcase major-mode
-                              ('org-mode "org")
-                              ((or 'markdown-mode 'gfm-mode) "md")
-                              ('adoc-mode "adoc")
-                              (_ "txt")))  ; Default to .txt
-                 (filename (file-name-concat gptel-default-directory
-                                             (file-name-with-extension
-                                              (concat datetime-prefix (simple-extras-slugify name))
-                                              extension))))
+          (let*
+            (
+              (datetime-prefix (format-time-string "%Y%m%d-%H%M%S-"))
+              (extension
+                (pcase major-mode
+                  ('org-mode "org")
+                  ((or 'markdown-mode 'gfm-mode) "md")
+                  ('adoc-mode "adoc")
+                  (_ "txt"))) ; Default to .txt
+              (filename
+                (file-name-concat gptel-default-directory
+                  (file-name-with-extension
+                    (concat datetime-prefix (simple-extras-slugify name))
+                    extension))))
             ;; Associate buffer with the generated filename
             (set-visited-file-name filename)
             ;; Now perform the save
@@ -326,14 +382,11 @@ to prevent a 'buffer modified' prompt."
   ;; (add-hook 'gptel-post-response-functions #'gptel-track-cost)
 
   (advice-add
-    'gptel--request-data :around
+    'gptel--request-data
+    :around
     (lambda (orig-fn &rest args)
       (let ((result (apply orig-fn args)))
-        (if (and gptel-anthropic-use-web-search
-              (cl-typep (car args) 'gptel-anthropic))
-		  (cons :tools
-			(cons [(:type "web_search_20250305"
-					 :name "web_search"
-					 :max_uses 5)]
-              result))
-		  result)))))
+        (if (and gptel-anthropic-use-web-search (cl-typep (car args) 'gptel-anthropic))
+          (cons
+            :tools (cons [(:type "web_search_20250305" :name "web_search" :max_uses 5)] result))
+          result)))))
