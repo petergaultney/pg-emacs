@@ -146,7 +146,7 @@
 (defhydra
   hydra-window
   (:timeout
-    2
+    1
     :post
     (progn
       (set-face-background 'mode-line my/hydra-original-mode-line-bg)
@@ -168,6 +168,11 @@
   ("<down>" windmove-down "down")
   ("<up>" windmove-up "up")
   ("<right>" windmove-right "right")
+
+  ("o" windmove-right "right")
+  ("n" windmove-left "left")
+  ("i" windmove-down "down")
+  ("r" windmove-up "up")
 
   ("v" split-window-right "vsplit")
   ("h" split-window-below "hsplit")

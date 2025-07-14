@@ -9,7 +9,7 @@
       (auto-fill-function " ↵")
       (eldoc-mode "" eldoc)
       (color-identifiers-mode " 🍭")
-	  ;; (which-key-mode "") ;; use (setq which-key-lighter nil) instead ??
+      ;; (which-key-mode "") ;; use (setq which-key-lighter nil) instead ??
       (whitespace-mode " _" whitespace)
       (paredit-mode " ()" paredit))))
 
@@ -23,39 +23,51 @@
 (defun my--get-modeline-place-info ()
   "Return the project or directory info as a cons cell (NAME . DIR).
 Returns nil if no suitable name can be found."
-  (let* ((project-name (and (fboundp 'projectile-project-p)
-                            (projectile-project-p)
-                            (projectile-project-name)))
-         (is-real-project (and project-name (not (string= project-name "-")))))
-    (cond (is-real-project
-           (cons project-name (projectile-project-root)))
-          ((buffer-file-name)
-           (cons (file-name-nondirectory (directory-file-name default-directory))
-                 default-directory))
-          (t nil))))
+  (let*
+    (
+      (project-name
+        (and (fboundp 'projectile-project-p)
+          (projectile-project-p)
+          (projectile-project-name)))
+      (is-real-project (and project-name (not (string= project-name "-")))))
+    (cond
+      (is-real-project
+        (cons project-name (projectile-project-root)))
+      ((buffer-file-name)
+        (cons
+          (file-name-nondirectory (directory-file-name default-directory))
+          default-directory))
+      (t
+        nil))))
 
 (defun my--propertize-for-dired (text dir)
   "Propertize TEXT to open DIR in dired on click."
   (let ((map (make-sparse-keymap)))
-    (define-key map [mode-line mouse-1]
-      `(lambda () (interactive) (dired ,dir)))
-    (propertize text
-                'keymap map
-                'help-echo (format "mouse-1: Dired %s" dir))))
+    (define-key
+      map [mode-line mouse-1]
+      `
+      (lambda ()
+        (interactive)
+        (dired ,dir)))
+    (propertize text 'keymap map 'help-echo (format "mouse-1: Dired %s" dir))))
 
 
 (defun my-modeline-place ()
   "Display a clickable, colored project or directory name."
-  (when-let* ((place-info (my--get-modeline-place-info))
-              (name (car place-info))
-              (dir (cdr place-info))
-              ;; Assuming my-pick-fg-bg-color-from-hsl is defined elsewhere
-              (colors (my-pick-fg-bg-color-from-hsl name 0.4))
-              (bg-color (nth 0 colors))
-              (text-color (nth 1 colors)))
-    (let* ((text (format " %s " name))
-           (colored-text (propertize text 'face `(:background ,bg-color
-                                                  :foreground ,text-color))))
+  (when-let*
+    (
+      (place-info (my--get-modeline-place-info))
+      (name (car place-info))
+      (dir (cdr place-info))
+      ;; Assuming my-pick-fg-bg-color-from-hsl is defined elsewhere
+      (colors (my-pick-fg-bg-color-from-hsl name 0.4))
+      (bg-color (nth 0 colors))
+      (text-color (nth 1 colors)))
+    (let*
+      (
+        (text (format " %s " name))
+        (colored-text
+          (propertize text 'face `(:background ,bg-color :foreground ,text-color))))
       (my--propertize-for-dired colored-text dir))))
 
 
@@ -78,4 +90,4 @@ Returns nil if no suitable name can be found."
     (reverse new-format)))
 
 (setq-default mode-line-format
-  (insert-after-mode-line-modes '(:eval (my-modeline))))
+  (insert-after-mode-line-modes '(:eval (my-modeline-place))))

@@ -242,53 +242,84 @@ trailing hyphen."
   "Convert STRING into slug."
   (downcase (simple-extras-slug-hyphenate (simple-extras-slug-no-punct string))))
 
+
+(defun gptel-extras-save-buffer (name _ _ interactivep)
+  "Save the `gptel' buffer with NAME right after it is created."
+  (when interactivep
+    (let ((buffer (get-buffer name)))
+      (when (and buffer (not (buffer-file-name buffer)))
+        (with-current-buffer buffer
+          ;; 1. Prepare the buffer content (e.g., Org title)
+          (when (derived-mode-p 'org-mode)
+            (goto-char (point-min))
+            (org-insert-heading nil nil 1)
+            (insert name)
+            (org-next-visible-heading 1)
+            (end-of-line))
+
+          ;; 2. Manually run gptel's state saving function.
+          ;; This adds the metadata comment block to the buffer content.
+          (gptel--save-state)
+
+          ;; 3. Now, save the buffer, which already contains the metadata.
+          (let* ((datetime-prefix (format-time-string "%Y%m%d-%H%M%S-"))
+                 (extension (pcase major-mode
+                              ('org-mode "org")
+                              ((or 'markdown-mode 'gfm-mode) "md")
+                              ('adoc-mode "adoc")
+                              (_ (user-error "Unsupported major mode"))))
+                 (filename (file-name-concat gptel-default-directory
+                                             (file-name-with-extension
+                                              (concat datetime-prefix (simple-extras-slugify name))
+                                              extension))))
+            (write-file filename)
+            ;; The buffer is now visiting a file and is not modified.
+            (set-buffer-modified-p nil)))))))
+
 (defun gptel-extras-save-buffer (name _ _ interactivep)
   "Save the `gptel' buffer with NAME right after it is created.
-The buffer is saved to a file in `gptel-extras-dir'. INTERACTIVEP is t when
-gptel is called interactively.
-
-This function is meant to be an `:after' advice to `gptel'."
+This version manually adds gptel's metadata BEFORE the first save
+to prevent a 'buffer modified' prompt."
   (when interactivep
-    ;; do not run if the buffer is visiting a file, because that means the user
-    ;; selected an existing buffer
-    (unless (buffer-file-name (get-buffer name))
-      (switch-to-buffer name)
-      (let* ((datetime-prefix (format-time-string gptel-file-datetime-fmt))
-             (extension (pcase major-mode
-                          ('org-mode "org")
-                          ('markdown-mode "md")
-                          ('gfm-mode "md")
-                          ('adoc-mode "adoc")
-                          (_ (user-error "Unsupported major mode"))))
-             (filename (file-name-concat gptel-default-directory
-                                         (file-name-with-extension (concat datetime-prefix
-                                                                           (simple-extras-slugify name))
-                                                                   extension))))
-	(when (derived-mode-p 'org-mode)
-	  (goto-char (point-min))
-	  (org-insert-heading nil nil 1)
-	  (insert name)
-	  (org-next-visible-heading 1)
-	  (end-of-line))
-	;; we temporarily remove the hook because `gptel--save-state' throws an
-	;; error if called at this early stage
-	(remove-hook 'before-save-hook #'gptel--save-state t)
-	(write-file filename 'confirm)
-	(add-hook 'before-save-hook #'gptel--save-state nil t)))))
+    (let ((buffer (get-buffer name)))
+      ;; Only act if the buffer exists and isn't already visiting a file.
+      (when (and buffer (not (buffer-file-name buffer)))
+        (with-current-buffer buffer
+          ;; Prepare your custom content (e.g., Org title)
+          (when (derived-mode-p 'org-mode)
+            (goto-char (point-min))
+            (org-insert-heading nil nil 1)
+            (insert name)
+            (org-next-visible-heading 1)
+            (end-of-line))
 
+          ;; Add gptel's metadata to the buffer
+          (gptel--save-state)
 
-(defun my/gptel-save-state-wrapper (orig-fun &rest args)
-  "Wrap gptel--save-state to prevent modification prompts."
-  (let ((modified-p (buffer-modified-p)))
-    (apply orig-fun args)  ; This calls the ORIGINAL gptel--save-state
-    (set-buffer-modified-p modified-p)))
+          ;; Generate filename and associate buffer with a file
+          (let* ((datetime-prefix (format-time-string "%Y%m%d-%H%M%S-"))
+                 (extension (pcase major-mode
+                              ('org-mode "org")
+                              ((or 'markdown-mode 'gfm-mode) "md")
+                              ('adoc-mode "adoc")
+                              (_ "txt")))  ; Default to .txt
+                 (filename (file-name-concat gptel-default-directory
+                                             (file-name-with-extension
+                                              (concat datetime-prefix (simple-extras-slugify name))
+                                              extension))))
+            ;; Associate buffer with the generated filename
+            (set-visited-file-name filename)
+            ;; Now perform the save
+            (save-buffer)
+            ;; Mark buffer as clean, since it matches file state
+            (set-buffer-modified-p nil)))))))
+
 
 (defvar-local gptel-anthropic-use-web-search nil
   "When non-nil, enable the Anthropic web search tool for the current buffer.")
 
 (with-eval-after-load 'gptel
 
-  (advice-add 'gptel--save-state :around #'my/gptel-save-state-wrapper)
   (advice-add 'gptel :after #'gptel-extras-save-buffer)
 
   ;; (load-file "gptel-pricing.el")
