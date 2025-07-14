@@ -1,4 +1,6 @@
 ;; this is how we try out things on their own.
+;; you need to load specific files at the bottom
+;; and then you need to change .emacs to load this file instead of pg-emacs.el
 
 (setq pg-emacs-dir (file-name-directory (or load-file-name (buffer-file-name))))
 
