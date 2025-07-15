@@ -177,7 +177,9 @@
   ("v" split-window-right "vsplit")
   ("h" split-window-below "hsplit")
   ("d" delete-window "delete")
-  ("q" nil "quit")
+  ("q" delete-other-windows "delete other windows")
+  ("1" delete-other-windows "delete other windows")
+
   ("g" nil "quit")
   ("RET" nil "quit"))
 
