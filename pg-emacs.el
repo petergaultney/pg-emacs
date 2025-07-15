@@ -30,9 +30,14 @@
 ;; (global-set-key (kbd "C-c g") 'abort-recursive-edit)
 
 (global-set-key (kbd "C-x b") 'switch-to-buffer)
+(global-set-key (kbd "C-x C-k") 'kill-buffer) ;; i don't like C-x C-k doing the kmacro stuff
 (global-set-key (kbd "C-d") 'kill-whole-line)
 ; join line from top line
-(global-set-key (kbd "M-j") (lambda () (interactive) (join-line -1)))
+(global-set-key
+  (kbd "M-j")
+  (lambda ()
+    (interactive)
+    (join-line -1)))
 
 ;; MOUSE SCROLL (I know this means I'm weak)
 (unless window-system
@@ -41,16 +46,22 @@
   (defun track-mouse (e))
   (setq mouse-sel-mode t)
 
-  (global-set-key [mouse-4] '(lambda ()
-                               (interactive)
-                               (scroll-down 1)))
-  (global-set-key [mouse-5] '(lambda ()
-                               (interactive)
-                               (scroll-up 1))))
+  (global-set-key
+    [mouse-4]
+    '
+    (lambda ()
+      (interactive)
+      (scroll-down 1)))
+  (global-set-key
+    [mouse-5]
+    '
+    (lambda ()
+      (interactive)
+      (scroll-up 1))))
 
 ;; SET A BUNCH OF VARIABLES - maybe these should someday go into customize?
 (setq truncate-partial-width-windows nil)
-(setq default-truncate-lines t)  ; i hate wrapping lines
+(setq default-truncate-lines t) ; i hate wrapping lines
 (setq inhibit-startup-message t) ; startup screen is useless
 (setq inhibit-splash-screen t)
 (setq initial-scratch-message nil) ;;emacs23
@@ -67,28 +78,27 @@
 
 (load "elpaca.el")
 
-(elpaca elpaca-use-package
+(elpaca
+  elpaca-use-package
   ;; Enable Elpaca support for use-package's :ensure keyword.
   ;; do it in a separate file so this doesn't break every time i upgrade elpaca.
   (elpaca-use-package-mode))
 
-(use-package hydra
-  :ensure (:wait t))
+(use-package hydra :ensure (:wait t))
 
 (load "errors.el")
-(load "colors.el")  ;; i might use this various places.
+(load "colors.el") ;; i might use this various places.
 
 ;; load that custom file
 (load custom-file 'no-error)
 
 ;; (load "treesit-config.el")
 
-(use-package highlight-numbers
-  :ensure t)
-(use-package color-identifiers-mode
+(use-package highlight-numbers :ensure t)
+(use-package
+  color-identifiers-mode
   :ensure t
-  :config
-  (add-hook 'elpaca-after-init-hook 'global-color-identifiers-mode))
+  :config (add-hook 'elpaca-after-init-hook 'global-color-identifiers-mode))
 
 ;; remove annoying prompt http://shreevatsa.wordpress.com/2007/01/06/using-emacsclient/
 ;; (server-start)
@@ -117,7 +127,10 @@
 
 (defun unfill-paragraph (&optional region)
   "Takes a multi-line paragraph and makes it into a single line of text."
-  (interactive (progn (barf-if-buffer-read-only) '(t)))
+  (interactive
+    (progn
+      (barf-if-buffer-read-only)
+      '(t)))
   (let ((fill-column (point-max)))
     (fill-paragraph nil region)))
 
