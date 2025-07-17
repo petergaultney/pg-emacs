@@ -64,7 +64,7 @@ Returns nil if no suitable name can be found."
       (text-color (nth 1 colors)))
     (let*
       (
-        (text (format " %s " name))
+        (text (format "%s " name))
         (colored-text
           (propertize text 'face `(:background ,bg-color :foreground ,text-color))))
       (my--propertize-for-dired colored-text dir))))
@@ -88,18 +88,30 @@ Relies on `my-cached-subproject-root` being set."
 
 ;; warning! this next section is manually overriding the mode-line-format.
 
-;; To remove it if needed:
-;; (setq mode-line-format (delete '(:eval (my-modeline-place)) mode-line-format))
-
-(defun insert-after-mode-line-modes (new-element)
-  "Insert NEW-ELEMENT after mode-line-modes in mode-line-format."
-  (let ((new-format '()))
-    (dolist (element mode-line-format)
-      (push element new-format)
-      (when (equal element 'mode-line-modes)
-        (push new-element new-format)))
-    (reverse new-format)))
+(setq old-mode-line-format mode-line-format)
+;; (setq-default mode-line-format old-mode-line-format)
 
 (setq-default mode-line-format
-  (insert-after-mode-line-modes
-    '((:eval (my-modeline-place)) (:eval (my-modeline-subproject)))))
+  '
+  ("%e"
+    mode-line-front-space
+    (:propertize
+      (""
+        mode-line-mule-info
+        mode-line-client
+        mode-line-modified
+        mode-line-remote
+        mode-line-window-dedicated)
+      display (min-width (6.0)))
+    (:eval (my-modeline-place))
+    (:eval (my-modeline-subproject))
+    " "
+    mode-line-buffer-identification
+    "   "
+    mode-line-position
+    (project-mode-line project-mode-line-format)
+    (vc-mode vc-mode)
+    "  "
+    mode-line-modes
+    mode-line-misc-info
+    mode-line-end-spaces))
