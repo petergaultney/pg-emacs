@@ -119,9 +119,9 @@ SOURCE and DESTINATION, and handles the file operation."
       (dir (or directory gptel-default-directory))
       ;; Define two separate regexes for clarity, as you suggested.
       (long-format-re
-        "^\\([0-9]\\{4\\}\\)\\([0-9]\\{2\\}\\)\\([0-9]\\{2\\}\\)_\\([0-9]\\{2\\}\\)\\([0-9]\\{2\\}\\)[0-9]\\{2\\}[@_]\\(.*\\)\\.md$")
+        "^\\([0-9]\\{4\\}\\)\\([0-9]\\{2\\}\\)\\([0-9]\\{2\\}\\)[_-]\\([0-9]\\{2\\}\\)\\([0-9]\\{2\\}\\)[0-9]\\{2\\}[@_-]\\(.*\\)\\.md$")
       (short-format-re
-        "^\\([0-9]\\{2\\}\\)-\\([0-9]\\{2\\}\\)-\\([0-9]\\{2\\}\\)_\\([0-9]\\{2\\}\\)\\([0-9]\\{2\\}\\)_\\(.*\\)\\.md$")
+        "^\\([0-9]\\{2\\}\\)-\\([0-9]\\{2\\}\\)-\\([0-9]\\{2\\}\\)[_-]\\([0-9]\\{2\\}\\)\\([0-9]\\{2\\}\\)[_-]\\(.*\\)\\.md$")
       (files (directory-files dir t "\\.md$" t)) ; Get all markdown files with full paths
       (move-function (or move-fn #'my/mkdir-and-move))
       (cutoff-time (time-subtract (current-time) (seconds-to-time (* days 24 3600)))))
@@ -351,7 +351,7 @@ to prevent a 'buffer modified' prompt."
           ;; Generate filename and associate buffer with a file
           (let*
             (
-              (datetime-prefix (format-time-string "%Y%m%d-%H%M%S-"))
+              (datetime-prefix (format-time-string "%y-%m-%d_%H%M_"))
               (extension
                 (pcase major-mode
                   ('org-mode "org")
