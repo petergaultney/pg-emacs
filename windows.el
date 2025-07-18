@@ -67,8 +67,6 @@
   "A keymap for window management commands.")
 
 ;; Bind the keymap to C-v w
-;; (global-set-key (kbd "C-v") my-window-commands-map) ;; this is normally scroll-up-command, but i _never_ use that.
-
 ;; Bind 'k' to close-most-recently-created-window
 (define-key my-window-commands-map (kbd "w") 'close-warnings-buffer-window)
 
@@ -79,8 +77,10 @@
 
 (define-key my-window-commands-map (kbd "<left>") 'windmove-left)
 (define-key my-window-commands-map (kbd "a") 'windmove-left) ;; like beginning of line
+(define-key my-window-commands-map (kbd "n") 'windmove-left)
 (define-key my-window-commands-map (kbd "<right>") 'windmove-right)
 (define-key my-window-commands-map (kbd "e") 'windmove-right) ;; like end of line
+(define-key my-window-commands-map (kbd "o") 'windmove-right) ;; like end of line
 (define-key my-window-commands-map (kbd "<up>") 'windmove-up)
 (define-key my-window-commands-map (kbd "<down>") 'windmove-down)
 (define-key my-window-commands-map (kbd "C-<left>") 'windmove-left)
@@ -90,12 +90,13 @@
 
 ;; Use the `display-buffer-alist` in your `init.el` file to control how windows are split.
 ;; You can set `display-buffer-alist` to enforce horizontal splits by default. For example:
-(setq display-buffer-alist
-  '
-  (
-    (".*"
-      (display-buffer-reuse-window display-buffer-same-window)
-      (reusable-frames . nil))))
+;; (setq display-buffer-alist
+;;   '
+;;   (
+;;     (".*"
+;;       (display-buffer-reuse-window display-buffer-same-window)
+;;       (reusable-frames . nil))))
+
 ;; Adjust how Emacs splits windows based on buffer size and ensure it uses side-by-side splits:
 (setq split-height-threshold nil)
 (setq split-width-threshold 200)
@@ -141,12 +142,10 @@
   "Original background color of the mode line before hydra activation.")
 
 ;; (set-face-background 'mode-line nil)  ;; fix the mode line
-(message "defining window hydra")
-
 (defhydra
   hydra-window
-  (:timeout
-    1
+  (:color
+    blue
     :post
     (progn
       (set-face-background 'mode-line my/hydra-original-mode-line-bg)
@@ -162,7 +161,7 @@
 
   ("b" balance-windows "balance")
   ("u" winner-undo "undo")
-  ("r" winner-redo "redo")
+  ;; ("r" winner-redo "redo")
 
   ("<left>" windmove-left "left")
   ("<down>" windmove-down "down")
@@ -183,8 +182,6 @@
   ("g" nil "quit")
   ("RET" nil "quit"))
 
-(message "defined window hydra")
-
 (defun my-window-hydra-entry ()
   (interactive)
   (setq my/hydra-original-mode-line-bg (face-background 'mode-line))
@@ -193,4 +190,5 @@
   (hydra-window/body))
 
 (global-set-key (kbd "C-v") #'my-window-hydra-entry)
-(message "done loading windows.el")
+;; (global-set-key (kbd "C-v") my-window-commands-map) ;; this is normally scroll-up-command, but i _never_ use that.
+;; (global-unset-key (kbd "C-v")) ;; unbind scroll-up-command

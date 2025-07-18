@@ -18,3 +18,7 @@
 ;; for things we want to debug.
 
 ;; (load "magit-conf.el")
+(use-package
+  frog-jump-buffer
+  :ensure t
+  :config (global-set-key (kbd "C-b") 'frog-jump-buffer))

@@ -17,3 +17,5 @@
   (define-key my-avy-commands-map (kbd "l") 'avy-goto-line)
   (define-key my-avy-commands-map (kbd "C-l") 'avy-goto-line)
   (define-key my-avy-commands-map (kbd "c") 'avy-goto-char-2))
+
+(provide 'avy-de)

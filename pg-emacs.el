@@ -84,65 +84,20 @@
   ;; do it in a separate file so this doesn't break every time i upgrade elpaca.
   (elpaca-use-package-mode))
 
-(use-package hydra :ensure (:wait t))
-
 (load "errors.el")
-(load "colors.el") ;; i might use this various places.
+
+(use-package hydra :ensure (:wait t))
 
 ;; load that custom file
 (load custom-file 'no-error)
-
-;; (load "treesit-config.el")
-
-(use-package highlight-numbers :ensure t)
-(use-package
-  color-identifiers-mode
-  :ensure t
-  :config (add-hook 'elpaca-after-init-hook 'global-color-identifiers-mode))
-
-;; remove annoying prompt http://shreevatsa.wordpress.com/2007/01/06/using-emacsclient/
-;; (server-start)
-;; (remove-hook 'kill-buffer-query-functions 'server-kill-buffer-query-function)
-
-(add-to-list 'auto-mode-alist '("\\.ino\\'" . c-mode))
-
-;; TEMP FILES - DON'T LITTER MY WORKSPACE!!
-(load "temp-files.el")
-;; END TEMP FILES
-
-;; CUSTOM FUNCTIONS
-;; (defun switch-to-previous-buffer ()
-;;   "Switch to previously open buffer.
-;; Repeated invocations toggle between the two most recently open buffers."
-;;   (interactive)
-;;   (switch-to-buffer (other-buffer (current-buffer) 1)))
-
-;; DEFINE KEY BINDINGS FOR CUSTOM FUNCTIONS
-(global-set-key (kbd "C-c b") 'switch-to-prev-buffer)
 
 (with-eval-after-load 'minibuffer
   (keymap-set minibuffer-local-completion-map "<down>" #'minibuffer-next-completion)
   (keymap-set minibuffer-local-completion-map "<up>" #'minibuffer-prev-completion))
 
-
-(defun unfill-paragraph (&optional region)
-  "Takes a multi-line paragraph and makes it into a single line of text."
-  (interactive
-    (progn
-      (barf-if-buffer-read-only)
-      '(t)))
-  (let ((fill-column (point-max)))
-    (fill-paragraph nil region)))
-
-(global-set-key "\M-Q" 'unfill-paragraph)
-
-(load "minibuffer.el")
-;; LOAD OTHER FILES WITH CUSTOM FUNCTIONS
+;; LOAD OTHER FILES AND PACKAGES
 (load "load-files.el")
 (load (concat pg-emacs-dir "packages.el")) ;; manual hack to see if packages are working
-(load "pg-replace.el")
-(load "abbrevs.el")
-(load "smerge-deactivate.el")
 
 (add-to-list 'default-frame-alist '(alpha . (90 . 80)))
 ;; do this at the very end as an indicator if something went wrong

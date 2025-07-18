@@ -1,12 +1,23 @@
 ;; local files that need to be loaded
+(load "colors.el") ;; i might use this various places.
+(load "temp-files.el")
 (load "funcs.el")
+(load "minibuffer-conf.el")
 (load "smarter_move_beginning_of_line")
 
 (load "window-half-scroll.el")
 (load "compile-window-placement.el")
 (load "mac-copy.el")
 (load "gptel-conf.el")
+
+(use-package
+  frog-jump-buffer
+  :ensure t
+  :config (global-set-key (kbd "C-b") 'frog-jump-buffer))
+
+
 (load "windows.el") ;; this ABSOLUTELY MUST remain above consult-config.el, because it does a setq on display-buffer-alist
+
 
 ;; (load "find-file-in-project.el")
 
@@ -21,31 +32,17 @@
 ;; (load "vtl")
 (load "dos-eol")
 
-(require 'avy-de)
+
+(load "avy-de.el")
 ; (add-to-list 'custom-theme-load-path "~/.emacs.d/local_config/themes/")
 ; (load-theme 'zenburn t)
-(require 'yaml-mode)
-(add-to-list 'auto-mode-alist '("\\.yml\\'" . yaml-mode))
 
 (load "auto-correct.el")
-(require 'auto-correct)
-(load "github-copilot.el")
-(require 'new-python)
 
-(use-package
-  sqlite-mode-extras
-  ;; :straight nil  ;; this avoids a weird error where straight tries to download something it can't find.
-  :demand ;; not sure what this is for
-  :bind
-  (:map
-    sqlite-mode-map
-    ("n" . next-line)
-    ("p" . previous-line)
-    ("b" . sqlite-mode-extras-backtab-dwim)
-    ("f" . sqlite-mode-extras-tab-dwim)
-    ("<backtab>" . sqlite-mode-extras-backtab-dwim)
-    ("<tab>" . sqlite-mode-extras-tab-dwim)
-    ("RET" . sqlite-mode-extras-ret-dwim)))
+(load "themes.el")
+
+(load "github-copilot.el")
+(load "new-python.el")
 
 (load "magit-conf.el")
 ;; (require 'org-roam-config)
@@ -54,11 +51,10 @@
 (load "consult-config.el")
 (load "better-defaults.el") ;; needs to see that helm/consult/whatever is loaded
 
-;; (load "z-helpful.el")  ;; broken as of 2023-12-08 with Wrong type argument: 1,listp
+(load "z-helpful.el")
 (load "projectile-conf.el")
 (load "javascript.el")
 (load "ansi-color-conf.el")
-(load "themes.el")
 (load "obsidian.el")
 (load "shell-conf.el")
 (load "keyfind.el")
@@ -66,3 +62,6 @@
 (load "elisp-conf.el")
 (load "modeline.el")
 (load "vterm-conf.el")
+(load "pg-replace.el")
+(load "abbrevs.el")
+(load "smerge-deactivate.el")

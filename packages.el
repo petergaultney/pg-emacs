@@ -24,19 +24,17 @@
   ;;  (add-to-list 'package-archives (cons "melpa-stable" (concat proto "://stable.melpa.org/packages/")) t)
   (add-to-list 'package-archives '("org" . "https://orgmode.org/elpa/") t))
 
-;; (package-initialize) ;; "unnecessary call"
-;; (setq package-enable-at-startup nil)
-
-;; use-package is now installed via straight.el
-;; (unless (package-installed-p 'use-package)
-;;   (package-refresh-contents)
-;;   (package-install 'use-package))
-
 (eval-when-compile
   (require 'use-package))
-;; (require 'diminish)
+
 (require 'bind-key)
 ;; end use-package init
+
+(use-package highlight-numbers :ensure t)
+(use-package
+  color-identifiers-mode
+  :ensure t
+  :config (add-hook 'elpaca-after-init-hook 'global-color-identifiers-mode))
 
 ;; (use-package multiple-cursors
 
@@ -55,6 +53,26 @@
 ;;   (global-unset-key (kbd "M-<down-mouse-1>"))
 ;;   :config
 ;;     (require 'mc-extras))
+
+(use-package
+  yaml-mode
+  :ensure t
+  :config (add-to-list 'auto-mode-alist '("\\.yml\\'" . yaml-mode)))
+
+(use-package
+  sqlite-mode-extras
+  ;; :straight nil  ;; this avoids a weird error where straight tries to download something it can't find.
+  :demand ;; not sure what this is for
+  :bind
+  (:map
+    sqlite-mode-map
+    ("n" . next-line)
+    ("p" . previous-line)
+    ("b" . sqlite-mode-extras-backtab-dwim)
+    ("f" . sqlite-mode-extras-tab-dwim)
+    ("<backtab>" . sqlite-mode-extras-backtab-dwim)
+    ("<tab>" . sqlite-mode-extras-tab-dwim)
+    ("RET" . sqlite-mode-extras-ret-dwim)))
 
 
 (use-package scala-mode :interpreter ("scala" . scala-mode))

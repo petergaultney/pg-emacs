@@ -4,7 +4,7 @@
 (defun my/mkdir-and-move (source destination)
   "Move SOURCE to DESTINATION, creating parent directory of DESTINATION if it doesn't exist."
   (let ((target-dir (file-name-directory destination)))
-	(make-directory target-dir t))  ; t makes it idempotent
+    (make-directory target-dir t)) ; t makes it idempotent
   (rename-file source destination t) ;; t means overwrite
   (message "Moved %s -> %s" (file-name-nondirectory source) destination))
 
@@ -12,11 +12,20 @@
 (defun my/fake-mkdir-and-move (source destination)
   "Pretend to move SOURCE to DESTINATION, creating parent directory of DESTINATION if it doesn't exist."
   (let ((target-dir (file-name-directory destination)))
-	(message "Would create directory %s" target-dir))
+    (message "Would create directory %s" target-dir))
   (message "Would moved %s -> %s" source destination))
 
 
 ;; INTERACTIVE FUNCTIONS
+
+(defun unfill-paragraph (&optional region)
+  "Takes a multi-line paragraph and makes it into a single line of text."
+  (interactive
+    (progn
+      (barf-if-buffer-read-only)
+      '(t)))
+  (let ((fill-column (point-max)))
+    (fill-paragraph nil region)))
 
 
 (defun backward-whitespace ()
@@ -53,3 +62,4 @@
     (message "Copied: %s" ident)))
 
 (define-key global-map (kbd "C-c <down>") 'copy-identifier-at-point)
+(global-set-key "\M-Q" 'unfill-paragraph)
