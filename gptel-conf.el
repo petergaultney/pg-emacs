@@ -256,7 +256,24 @@ Returns t if the path is a markdown/adoc file in an LLM chats directory."
   :hook (gfm-mode . my-gptel-activate)
   :hook (gptel-mode . gptel-set-default-directory)
   :hook (gptel-mode . visual-line-mode)
-  :hook (gptel-mode . visual-fill-column-mode))
+  :hook (gptel-mode . visual-fill-column-mode)
+
+  :custom
+  (gptel-default-mode 'gfm-mode)
+  (gptel-prompt-prefix-alist
+    '
+    ((adoc-mode . "== ")
+      (markdown-mode . "## ")
+      (org-mode . "** ")
+      (text-mode . "## ")
+      (gfm-mode . "## ")))
+  (gptel-response-prefix-alist
+    '
+    ((markdown-mode . "### ")
+      (adoc-mode . "=== ")
+      (org-mode . "*** ")
+      (text-mode . "### ")
+      (gfm-mode . "### "))))
 
 
 (use-package posframe :ensure (:host github :repo "tumashu/posframe"))

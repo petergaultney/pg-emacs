@@ -10,14 +10,7 @@
 (load "mac-copy.el")
 (load "gptel-conf.el")
 
-(use-package
-  frog-jump-buffer
-  :ensure t
-  :config (global-set-key (kbd "C-b") 'frog-jump-buffer))
-
-
 (load "windows.el") ;; this ABSOLUTELY MUST remain above consult-config.el, because it does a setq on display-buffer-alist
-
 
 ;; (load "find-file-in-project.el")
 
