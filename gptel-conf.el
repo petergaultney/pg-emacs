@@ -252,6 +252,8 @@ Returns t if the path is a markdown/adoc file in an LLM chats directory."
     gptel-model 'claude-sonnet-4-20250514
     gptel-backend (gptel-make-anthropic "Claude" :stream t :key #'read-claude-api-key))
 
+  (add-to-list gptel-post-response-functions 'save-buffer)
+
   :hook (markdown-mode . my-gptel-activate)
   :hook (gfm-mode . my-gptel-activate)
   :hook (gptel-mode . gptel-set-default-directory)
@@ -329,7 +331,7 @@ trailing hyphen."
           ;; 3. Now, save the buffer, which already contains the metadata.
           (let*
             (
-              (datetime-prefix (format-time-string "%Y%m%d-%H%M%S-"))
+              (datetime-prefix (format-time-string gptel-file-datetime-fmt))
               (extension
                 (pcase major-mode
                   ('org-mode "org")
@@ -343,48 +345,6 @@ trailing hyphen."
                     extension))))
             (write-file filename)
             ;; The buffer is now visiting a file and is not modified.
-            (set-buffer-modified-p nil)))))))
-
-(defun gptel-extras-save-buffer (name _ _ interactivep)
-  "Save the `gptel' buffer with NAME right after it is created.
-This version manually adds gptel's metadata BEFORE the first save
-to prevent a 'buffer modified' prompt."
-  (when interactivep
-    (let ((buffer (get-buffer name)))
-      ;; Only act if the buffer exists and isn't already visiting a file.
-      (when (and buffer (not (buffer-file-name buffer)))
-        (with-current-buffer buffer
-          ;; Prepare your custom content (e.g., Org title)
-          (when (derived-mode-p 'org-mode)
-            (goto-char (point-min))
-            (org-insert-heading nil nil 1)
-            (insert name)
-            (org-next-visible-heading 1)
-            (end-of-line))
-
-          ;; Add gptel's metadata to the buffer
-          (gptel--save-state)
-
-          ;; Generate filename and associate buffer with a file
-          (let*
-            (
-              (datetime-prefix (format-time-string "%y-%m-%d_%H%M_"))
-              (extension
-                (pcase major-mode
-                  ('org-mode "org")
-                  ((or 'markdown-mode 'gfm-mode) "md")
-                  ('adoc-mode "adoc")
-                  (_ "txt"))) ; Default to .txt
-              (filename
-                (file-name-concat gptel-default-directory
-                  (file-name-with-extension
-                    (concat datetime-prefix (simple-extras-slugify name))
-                    extension))))
-            ;; Associate buffer with the generated filename
-            (set-visited-file-name filename)
-            ;; Now perform the save
-            (save-buffer)
-            ;; Mark buffer as clean, since it matches file state
             (set-buffer-modified-p nil)))))))
 
 
