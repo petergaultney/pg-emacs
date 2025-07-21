@@ -261,6 +261,7 @@ Returns t if the path is a markdown/adoc file in an LLM chats directory."
   :hook (gptel-mode . visual-fill-column-mode)
 
   :custom
+  (gptel-log-level 'info)
   (gptel-default-mode 'gfm-mode)
   (gptel-prompt-prefix-alist
     '
