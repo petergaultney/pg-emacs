@@ -15,7 +15,6 @@
       filename-and-process)
     (mark " " (name 16 -1) " " filename)))
 
-
 (setq ibuffer-formats
   '
   (
