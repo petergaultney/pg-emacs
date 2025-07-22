@@ -8,6 +8,7 @@
   :bind
   ( ;; C-c bindings in `mode-specific-map'
     ("C-x C-f" . find-file) ;; I don't understand what is overriding this
+    ("C-b" . consult-buffer)
     ("C-c M-x" . consult-mode-command)
     ("M-p" . consult-projectile-find-file)
     ([remap Info-search] . consult-info)
