@@ -9,7 +9,8 @@
   (setq vterm-shell "xonsh")
   (setq vterm-max-scrollback 100000)
   (setq vterm-kill-buffer-on-exit t)
-  (add-to-list 'vterm-eval-cmds '("update-pwd" vterm-update-pwd))
+  (add-to-list 'vterm-eval-cmds '("update-pwd" vterm-update-pwd)) ;; needs shell support
+  (add-to-list 'vterm-eval-cmds '("e" (lambda (path) (find-file path)))) ;; needs shell support
   ;; unbind some keys where i want them to act like emacs
   (define-key vterm-mode-map (kbd "C-v") nil)
   (define-key vterm-mode-map (kbd "C-f") nil)
