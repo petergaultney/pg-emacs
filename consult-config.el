@@ -132,6 +132,25 @@
   ;;;; 5. No project support
   ;; (setq consult-project-function nil)
 
+  (setq consult--source-buffer
+    `
+    (:name
+      "Buffer"
+      :narrow ?b
+      :category buffer
+      :face consult-buffer
+      :history buffer-name-history
+      :state ,#'consult--buffer-state
+      :default t
+      :items
+      ,
+      (lambda ()
+        ;; disable listing vterm buffers inside normal buffer section
+        (consult--buffer-query
+          :predicate (lambda (buf) (not (eq (buffer-local-value 'major-mode buf) 'vterm-mode)))
+          :sort 'visibility
+          :as #'buffer-name))))
+
   (defvar consult--source-vterm
     `
     (:name

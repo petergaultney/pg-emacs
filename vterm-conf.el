@@ -14,7 +14,8 @@
   (define-key vterm-mode-map (kbd "C-v") nil)
   (define-key vterm-mode-map (kbd "C-f") nil)
   (define-key vterm-mode-map (kbd "C-b") nil)
-  (advice-add 'vterm--set-title :override #'my-vterm-override-set-title))
+  (advice-add 'vterm--set-title :override #'my-vterm-override-set-title)
+  :hook (vterm-mode . (lambda () (setq-local scroll-margin 1))))
 
 
 (defun vterm-update-pwd (path)
