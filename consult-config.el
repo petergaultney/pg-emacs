@@ -163,7 +163,7 @@
       :items ,(lambda () (consult--buffer-query :mode 'vterm-mode :as #'buffer-name))))
 
   ;; Add to consult-buffer-sources
-  (add-to-list 'consult-buffer-sources 'consult--source-vterm))
+  (add-to-list 'consult-buffer-sources 'consult--source-vterm t))
 
 (use-package consult-projectile :ensure t)
 
