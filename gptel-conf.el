@@ -21,6 +21,12 @@
     (insert-file-contents (expand-file-name "~/.keys/gemini-api"))
     (string-trim (buffer-string))))
 
+(defun read-openai-api-key ()
+  "Read the contents of my OpenAI API key file."
+  (with-temp-buffer
+    (insert-file-contents (expand-file-name "~/.keys/openai-api"))
+    (string-trim (buffer-string))))
+
 (defvar gptel-file-datetime-fmt "%y-%m-%d_%H%M_")
 (defvar gptel-default-directory (expand-file-name "~/llm-chats"))
 
@@ -246,6 +252,12 @@ Returns t if the path is a markdown/adoc file in an LLM chats directory."
     :stream t
     :models '(gemini-2.5-pro-preview-06-05)
     :request-params '(:generationConfig (:thinkingConfig (:thinkingBudget 2048))))
+
+  (gptel-make-openai
+    "gpt-5"
+    :stream t
+    :key #'read-openai-api-key
+    :models '(gpt-5 gpt-5-mini gpt-5-nano))
 
   ;; defaults
   (setq
