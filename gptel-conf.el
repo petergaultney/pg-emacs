@@ -262,8 +262,13 @@ Returns t if the path is a markdown/adoc file in an LLM chats directory."
   ;; defaults
   (setq
     gptel-model 'claude-sonnet-4-20250514
-    gptel-backend (gptel-make-anthropic "Claude" :stream t :key #'read-claude-api-key))
-
+    gptel-backend (gptel-make-anthropic "Claude" :stream t :key #'read-claude-api-key)
+    gptel--system-message
+    (concat
+      "You are a large language model living in Emacs and a helpful assistant. Respond concisely.\n\n"
+      "When using markdown formatting in responses, start headers at level 4 (####) "
+      "and use deeper levels as needed (##### for subsections, etc.). Never use # or ## or ### headers."
+      "Never put Markdown of any kind on the first line of your response - if necessary, start answering after a single newline."))
   (add-to-list gptel-post-response-functions 'save-buffer)
 
   :hook (markdown-mode . my-gptel-activate)
