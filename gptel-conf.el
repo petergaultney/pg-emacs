@@ -351,6 +351,7 @@ trailing hyphen."
 
 (defvar-local gptel-anthropic-use-web-search nil
   "When non-nil, enable the Anthropic web search tool for the current buffer.")
+;; how to set this for my current buffer?
 
 (with-eval-after-load 'gptel
 
