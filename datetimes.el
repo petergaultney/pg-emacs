@@ -198,7 +198,7 @@ Returns a list (NEW-PREFIX ORIGINAL-PREFIX REST) on success, or nil.
       (insert "\n-----\n")
       (insert (format "Summary: %d passed, %d failed.\n" passes failures))
       (pop-to-buffer (current-buffer)))))
-`
+
 ;; (my/test-parse-filename-prefix)
 
 (provide 'datetimes)
