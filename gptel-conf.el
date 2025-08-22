@@ -1,3 +1,5 @@
+(require 'files)
+
 (use-package
   markdown-mode
   :ensure t
@@ -31,10 +33,80 @@
 (defvar gptel-default-directory (expand-file-name "~/llm-chats"))
 
 
+(require 'datetimes)
+
+(defun gptel-rename-chat ()
+  "Suggest a new filename for the current buffer and rename it.
+Can be used on non-gptel files after confirmation."
+  (interactive)
+  ;; --- Pre-computation and Sanity Checks ---
+  (when
+    (and (not gptel-mode) (not (yes-or-no-p "Not a gptel chat. Continue with rename? ")))
+    (user-error "Aborted"))
+
+  (let*
+    (
+      (gptel-model 'claude-3-5-haiku-20241022)
+      (current-name (buffer-file-name))
+      ;; Fail early if buffer is not visiting a file.
+      (_
+        (unless current-name
+          (user-error "Buffer is not visiting a file")))
+      (current-basename (file-name-nondirectory current-name))
+      (file-ext (file-name-extension current-basename))
+      (prefix-info (my/parse-filename-prefix current-basename))
+      (date-prefix
+        (if prefix-info
+          (nth 0 prefix-info) ; Use parsed/reformatted prefix
+          (format-time-string gptel-file-datetime-fmt))) ; Or generate new
+      (code-lang
+        (pcase major-mode
+          ('org-mode "org")
+          ('adoc-mode "asciidoc")
+          (_ "markdown"))))
+
+    ;; --- API Request ---
+    (gptel-request
+      (concat
+        "What is the chat content?\n\n"
+        "```"
+        code-lang
+        "\n"
+        (buffer-substring-no-properties (point-min) (point-max))
+        "\n```")
+      :system
+      (format
+        (concat
+          "Suggest a short filename for this transcript. "
+          "Return ONLY the filename, with no extension. "
+          "It must be 5-7 words, specific, dash-separated, "
+          "and contain no generic words like 'chat' or 'summary'."))
+
+      ;; --- Callback with captured variables ---
+      :callback
+      `
+      (lambda (resp info)
+        (if (stringp resp)
+          (let*
+            (
+              (buf (plist-get info :buffer))
+              (new-name
+                (concat
+                  ,date-prefix ; <-- Captured value
+                  "_" resp
+                  (when ,file-ext
+                    (concat "." ,file-ext))))) ; <-- Captured value
+            (when (and (buffer-live-p buf) (y-or-n-p (format "Rename to %s? " new-name)))
+              (with-current-buffer buf
+                (rename-visited-file new-name))))
+          (message "Error(%s): %s" (plist-get info :status) (plist-get info :error)))))))
+
+
 (defun gptel-rename-chat ()
   (interactive)
-  (unless gptel-mode
-    (user-error "This command is intended to be used in gptel chat buffers."))
+  (when
+    (and (not gptel-mode) (not (yes-or-no-p "Not a gptel chat. Continue with rename? ")))
+    (user-error "Aborted"))
   (let
     (
       (gptel-model 'claude-3-5-haiku-20241022)
@@ -72,120 +144,61 @@
       (lambda (resp info)
         (if (stringp resp)
           (let ((buf (plist-get info :buffer)))
-            (when (and (buffer-live-p buf))
+            (when (and buf (buffer-live-p buf))
               (let*
                 (
                   (current-name (buffer-file-name buf))
                   (current-basename
                     (when current-name
                       (file-name-nondirectory current-name)))
-                  ;; Extract existing timestamp with debug message
-                  (existing-timestamp
-                    (progn
-                      (when current-basename
-                        (message "Current filename: %s" current-basename)
-                        (if
-                          (string-match
-                            "^\\([0-9]\\{2\\}-[0-9]\\{2\\}-[0-9]\\{2\\}_[0-9]\\{4\\}\\)"
-                            current-basename)
-                          (match-string 1 current-basename)
-                          (message "Regex didn't match timestamp in: %s" current-basename)
-                          nil))))
-                  ;; Use existing timestamp or generate new one
+                  (file-ext
+                    (when current-basename
+                      (file-name-extension current-basename)))
+                  (prefix-info
+                    (when current-basename
+                      (my/parse-filename-prefix current-basename)))
+                  ;; 1. Get the date prefix, either parsed or brand new
                   (date-prefix
-                    (or existing-timestamp (format-time-string gptel-file-datetime-fmt)))
-                  (new-name (concat date-prefix "_" resp)))
-                (message "Using timestamp: %s" date-prefix)
+                    (if prefix-info
+                      (nth 0 prefix-info) ; Use parsed/reformatted prefix
+                      (format-time-string gptel-file-datetime-fmt))) ; Generate new
+                  ;; 2. Construct the full new name
+                  (new-name
+                    (concat
+                      date-prefix "_" resp
+                      (if file-ext
+                        (concat "." file-ext)
+                        ""))))
                 (when
-                  (y-or-n-p
-                    (format "Rename buffer %s to %s? "
-                      (or current-basename (buffer-name buf))
-                      new-name))
+                  (and new-name
+                    (y-or-n-p
+                      (format "Rename buffer %s to %s? "
+                        (or current-basename (buffer-name buf))
+                        new-name)))
                   (with-current-buffer buf
                     (rename-visited-file new-name))))))
+          ;; Handle GPT error case
           (message "Error(%s): %s" (plist-get info :status) (plist-get info :error)))))))
 
 
-(defun my/organize-llm-chats (&optional days-str directory move-fn)
-  "Organize and rename LLM chat files.
+;;;; #### User-Facing Wrapper Function
+(defun my/organize-llm-chats (&optional days-str)
+  "Interactively organize chats in `gptel-default-directory`.
 
-Renames files from 'YYYYMMDD...' format to 'YY-MM-DD...'.
-Moves files older than a specified number of days into 'YYYY-MM'
-subdirectories. Interactively prompts for days, defaulting to 8.
-
-The MOVE-FN must be a function that accepts two arguments,
-SOURCE and DESTINATION, and handles the file operation."
-  (interactive "sDays to keep (default 8): ")
-  (let*
+This is a wrapper around `my/organize-files-by-date`. It
+prompts for the number of days of recent files to keep in the
+main directory and ignores 'index.md'."
+  (interactive "sDays to keep (default 2): ")
+  (let
     (
       (days
         (if (or (null days-str) (string-empty-p days-str))
-          8 ; Default to 8 if user hits Enter
-          (string-to-number days-str)))
-      (dir (or directory gptel-default-directory))
-      ;; Define two separate regexes for clarity, as you suggested.
-      (long-format-re
-        "^\\([0-9]\\{4\\}\\)\\([0-9]\\{2\\}\\)\\([0-9]\\{2\\}\\)[_-]\\([0-9]\\{2\\}\\)\\([0-9]\\{2\\}\\)[0-9]\\{2\\}[@_-]\\(.*\\)\\.md$")
-      (short-format-re
-        "^\\([0-9]\\{2\\}\\)-\\([0-9]\\{2\\}\\)-\\([0-9]\\{2\\}\\)[_-]\\([0-9]\\{2\\}\\)\\([0-9]\\{2\\}\\)[_-]\\(.*\\)\\.md$")
-      (files (directory-files dir t "\\.md$" t)) ; Get all markdown files with full paths
-      (move-function (or move-fn #'my/mkdir-and-move))
-      (cutoff-time (time-subtract (current-time) (seconds-to-time (* days 24 3600)))))
-
-    (dolist (file files)
-      (when (file-regular-p file)
-        (let
-          (
-            file-time
-            new-basename ; These will be set by the cond block
-            (basename (file-name-nondirectory file)))
-          (cond
-            ;; Case 1: Long format (YYYYMMDD_HHMMSS...)
-            ((string-match long-format-re basename)
-              (let*
-                (
-                  (year (string-to-number (match-string 1 basename)))
-                  (month (string-to-number (match-string 2 basename)))
-                  (day (string-to-number (match-string 3 basename)))
-                  (hour (string-to-number (match-string 4 basename)))
-                  (min (string-to-number (match-string 5 basename)))
-                  (title (replace-regexp-in-string "[@_]" "-" (match-string 6 basename))))
-                (setq file-time (encode-time 0 min hour day month year))
-                (setq new-basename
-                  (format "%02d-%02d-%02d_%02d%02d_%s.md"
-                    (- year 2000)
-                    month
-                    day
-                    hour
-                    min
-                    title))))
-
-            ;; Case 2: Short format (YY-MM-DD_HHMM...) -- now with robust parsing
-            ((string-match short-format-re basename)
-              (let*
-                (
-                  (yy (string-to-number (match-string 1 basename)))
-                  (month (string-to-number (match-string 2 basename)))
-                  (day (string-to-number (match-string 3 basename)))
-                  (hour (string-to-number (match-string 4 basename)))
-                  (min (string-to-number (match-string 5 basename))))
-                (setq file-time (encode-time 0 min hour day month (+ 2000 yy)))
-                (setq new-basename basename)))) ; No rename needed for this format
-
-          ;; --- Take Action ---
-          ;; This block runs only if one of the above cond clauses matched.
-          (when file-time
-            (let*
-              (
-                (is-old (time-less-p file-time cutoff-time))
-                (target-dir
-                  (if is-old
-                    (expand-file-name (format-time-string "%Y-%m" file-time) dir)
-                    dir))
-                (target-file (expand-file-name new-basename target-dir)))
-              ;; Only call the move function if the path will change.
-              (unless (string= file target-file)
-                (funcall move-function file target-file)))))))
+          2 ; Default to 2 if user hits Enter
+          (string-to-number days-str))))
+    (my/organize-files-by-date
+      gptel-default-directory days
+      '("index.md" "llm-chats.md" "14.51 LLM chats.md") ; Files to never rename or move
+      #'my/mkdir-and-move) ;; change to my/fake-mkdir-and-move to test without actual file ops
     (message "Done organizing LLM chats.")))
 
 

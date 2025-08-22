@@ -1,20 +1,5 @@
 ;; non-interactive
 
-;; The helper function that performs the actual file system mutation.
-(defun my/mkdir-and-move (source destination)
-  "Move SOURCE to DESTINATION, creating parent directory of DESTINATION if it doesn't exist."
-  (let ((target-dir (file-name-directory destination)))
-    (make-directory target-dir t)) ; t makes it idempotent
-  (rename-file source destination t) ;; t means overwrite
-  (message "Moved %s -> %s" (file-name-nondirectory source) destination))
-
-;; The helper function that performs the actual file system mutation.
-(defun my/fake-mkdir-and-move (source destination)
-  "Pretend to move SOURCE to DESTINATION, creating parent directory of DESTINATION if it doesn't exist."
-  (let ((target-dir (file-name-directory destination)))
-    (message "Would create directory %s" target-dir))
-  (message "Would moved %s -> %s" source destination))
-
 
 ;; INTERACTIVE FUNCTIONS
 

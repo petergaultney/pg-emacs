@@ -2,6 +2,8 @@
 (load "colors.el") ;; i might use this various places.
 (load "temp-files.el")
 (load "funcs.el")
+(load "files.el")
+(load "datetimes.el")
 (load "minibuffer-conf.el")
 (load "smarter_move_beginning_of_line")
 
@@ -51,7 +53,6 @@
 (load "obsidian.el")
 (load "shell-conf.el")
 (load "keyfind.el")
-(load "files.el")
 (load "elisp-conf.el")
 (load "modeline.el")
 (load "vterm-conf.el")
