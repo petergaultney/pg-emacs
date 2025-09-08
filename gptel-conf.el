@@ -97,12 +97,7 @@
                       (nth 0 prefix-info) ; Use parsed/reformatted prefix
                       (format-time-string gptel-file-datetime-fmt))) ; Generate new
                   ;; 2. Construct the full new name
-                  (new-name
-                    (concat
-                      date-prefix "_" resp
-                      (if file-ext
-                        (concat "." file-ext)
-                        ""))))
+                  (new-name (concat date-prefix "_" resp)))
                 (when
                   (and new-name
                     (y-or-n-p
