@@ -29,6 +29,12 @@
     (insert-file-contents (expand-file-name "~/.keys/openai-api"))
     (string-trim (buffer-string))))
 
+(defun read-openrouter-api-key ()
+  "Read the contents of my OpenRouter API key file."
+  (with-temp-buffer
+    (insert-file-contents (expand-file-name "~/.keys/openrouter-api"))
+    (string-trim (buffer-string))))
+
 (defvar gptel-file-datetime-fmt "%y-%m-%d_%H%M_")
 (defvar gptel-default-directory (expand-file-name "~/llm-chats"))
 
@@ -201,6 +207,14 @@ Returns t if the path is a markdown/adoc file in an LLM chats directory."
     :key #'read-openai-api-key
     :models '(gpt-5 gpt-5-mini gpt-5-nano))
 
+  (gptel-make-openai
+    "OpenRouter"
+    :host "openrouter.ai"
+    :endpoint "/api/v1/chat/completions"
+    :stream t
+    :key #'read-openrouter-api-key
+    :models '(perplexity/sonar-pro perplexity/sonar-pro:online perplexity/r1-1776))
+
   ;; defaults
   (setq
     gptel-model 'claude-sonnet-4-20250514
@@ -240,6 +254,30 @@ Returns t if the path is a markdown/adoc file in an LLM chats directory."
 
 (use-package posframe :ensure (:host github :repo "tumashu/posframe"))
 (use-package gptel-quick :ensure (:host github :repo "karthink/gptel-quick"))
+
+;; a handy script for calling gptel from the command line.
+;; #!/bin/bash
+;; # eclaude script
+;;
+;; query="$*"
+;; temp_file="/tmp/gptel_response_$$"
+;;
+;; emacsclient --eval "(progn
+;;   (require 'gptel)
+;;   (gptel-request
+;;     \"$query\"
+;;     :callback (lambda (response info)
+;;                 (with-temp-file \"$temp_file\"
+;;                   (insert response)))))"  > /dev/null 2>&1
+;;
+;; # Wait for response file to appear and have content
+;; while [ ! -s "$temp_file" ]; do
+;;     sleep 0.1
+;; done
+;;
+;; cat "$temp_file"
+;; echo ""
+;; rm "$temp_file"
 
 
 ;; all of the below comes from
