@@ -184,9 +184,14 @@ Returns t if the path is a markdown/adoc file in an LLM chats directory."
   :ensure (:host github :repo "karthink/gptel")
   :config
   (gptel-make-anthropic "Claude" :stream t :key #'read-claude-api-key)
-  (gptel-make-gemini "Gemini" :stream t :key #'read-gemini-api-key)
+  (cl-pushnew
+    'claude-sonnet-4-5-20250929
+    (gptel-backend-models (gptel-get-backend "Claude")))
 
-  (push 'gemini-2.5-pro-preview-06-05 (gptel-backend-models (gptel-get-backend "Gemini")))
+  (gptel-make-gemini "Gemini" :stream t :key #'read-gemini-api-key)
+  (cl-pushnew
+    'gemini-2.5-pro-preview-06-05
+    (gptel-backend-models (gptel-get-backend "Gemini")))
 
   (gptel-make-anthropic
     "claude-4-sonnet-thinking"
@@ -217,8 +222,8 @@ Returns t if the path is a markdown/adoc file in an LLM chats directory."
 
   ;; defaults
   (setq
-    gptel-model 'claude-sonnet-4-20250514
-    gptel-backend (gptel-make-anthropic "Claude" :stream t :key #'read-claude-api-key)
+    gptel-backend (gptel-get-backend "Claude")
+    gptel-model 'claude-sonnet-4-5-20250929
     gptel--system-message
     (concat
       "You are a large language model living in Emacs and a helpful assistant. Respond concisely.\n\n"
