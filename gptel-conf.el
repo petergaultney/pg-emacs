@@ -47,8 +47,9 @@
   (when
     (and (not gptel-mode) (not (yes-or-no-p "Not a gptel chat. Continue with rename? ")))
     (user-error "Aborted"))
-  (let
+  (let*
     (
+      (gptel-backend (gptel-get-backend "Claude"))
       (gptel-model 'claude-3-5-haiku-20241022)
       (file-ext
         (pcase major-mode
