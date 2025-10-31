@@ -11,6 +11,9 @@
 ;; the or buffer-file-name is for when you're using eval-buffer or some other form of eval
 (buffer-file-name)
 (setq pg-emacs-config-file load-file-name) ;; save for later use
+
+;; (load "pg-debug.el") ;; to debug stuff - should be commented out usually
+
 (setq custom-file (concat pg-emacs-dir "custom.el"))
 ;; (menu-bar-mode 0)
 (global-font-lock-mode t)

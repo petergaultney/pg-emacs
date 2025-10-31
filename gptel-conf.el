@@ -133,7 +133,7 @@ main directory and ignores 'index.md'."
           (string-to-number days-str))))
     (my/organize-files-by-date
       gptel-default-directory days
-      '("index.md" "llm-chats.md" "14.51 LLM chats.md") ; Files to never rename or move
+      '("index.md" "llm-chats.md" "91.11-llm-chats.md") ; Files to never rename or move
       #'my/mkdir-and-move) ;; change to my/fake-mkdir-and-move to test without actual file ops
     (message "Done organizing LLM chats.")))
 

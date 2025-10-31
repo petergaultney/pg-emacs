@@ -8,70 +8,75 @@
    apparently markdown mode customizes its face backgrounds, but i never want that."
   (interactive)
   (dolist (level '(1 2 3 4 5 6))
-    (let ((md-face (intern (format "markdown-header-face-%d" level)))
-          (outline-face (intern (format "outline-%d" level))))
+    (let
+      (
+        (md-face (intern (format "markdown-header-face-%d" level)))
+        (outline-face (intern (format "outline-%d" level))))
       (set-face-attribute md-face nil :inherit outline-face))))
 
 (defun remove-all-backgrounds ()
   "Remove background colors from all faces except crucial UI elements."
   (interactive)
-  (let ((preserve-bg-faces
-          '(
-			 ;; Selection and completion UI
-			 vertico-current           ; Currently selected item in vertico
-			 consult-preview-match     ; Preview matches in consult
-			 completions-highlight     ; Standard completion highlighting
+  (let
+    (
+      (preserve-bg-faces
+        '
+        (
+          ;; Selection and completion UI
+          vertico-current ; Currently selected item in vertico
+          consult-preview-match ; Preview matches in consult
+          completions-highlight ; Standard completion highlighting
 
-			 ;; Region and search
-			 region                    ; Selected text
-			 isearch                   ; Incremental search matches
-			 lazy-highlight            ; Other search matches
+          ;; Region and search
+          region ; Selected text
+          isearch ; Incremental search matches
+          lazy-highlight ; Other search matches
 
-			 ;; Diff/magit
-			 diff-added
-			 diff-removed
-			 magit-diff-added-highlight
-			 magit-diff-removed-highlight
+          ;; Diff/magit
+          diff-added
+          diff-removed
+          magit-diff-added-highlight
+          magit-diff-removed-highlight
 
-			 show-paren-match          ; The matching parenthesis
-			 show-paren-mismatch       ; Mismatched parenthesis
+          show-paren-match ; The matching parenthesis
+          show-paren-mismatch ; Mismatched parenthesis
 
-			 ;; Org mode
-			 org-block                 ; Code blocks need backgrounds
-			 org-code                  ; Inline code
-			 org-table                 ; Tables
+          ;; Org mode
+          org-block ; Code blocks need backgrounds
+          org-code ; Inline code
+          org-table ; Tables
 
-			 ;; Markdown
-			 markdown-header-face
-			 markdown-header-face-1
-			 markdown-header-face-2
-			 markdown-header-face-3
-			 markdown-header-face-4
-			 markdown-header-face-5
-			 markdown-header-face-6
-			 markdown-code-face  ;; because it turns out it's nice to have code blocks look very distinct.
+          ;; Markdown
+          markdown-header-face
+          markdown-header-face-1
+          markdown-header-face-2
+          markdown-header-face-3
+          markdown-header-face-4
+          markdown-header-face-5
+          markdown-header-face-6
+          markdown-code-face ;; because it turns out it's nice to have code blocks look very distinct.
 
-			 ;; UI elements
-			 header-line
+          ;; UI elements
+          header-line
 
-			 ;; Others
-			 hl-line                   ; Line highlighting
-			 highlight                 ; Generic highlighting
-			 highlight-numbers-number  ;Number highlighting
-			 secondary-selection       ; Secondary selection
-			 which-key-highlighted-command-face ; Which-key highlighting
+          ;; Others
+          hl-line ; Line highlighting
+          highlight ; Generic highlighting
+          highlight-numbers-number ;Number highlighting
+          secondary-selection ; Secondary selection
+          which-key-highlighted-command-face ; Which-key highlighting
 
-			 ;; avy
-			 avy-lead-face            ; Avy lead face
-			 avy-lead-face-0          ; Avy lead face for first candidate
-			 avy-lead-face-1          ; Avy lead face for second candidate
-			 avy-lead-face-2          ; Avy lead face for third candidate
-			 )))
+          ;; avy
+          avy-lead-face ; Avy lead face
+          avy-lead-face-0 ; Avy lead face for first candidate
+          avy-lead-face-1 ; Avy lead face for second candidate
+          avy-lead-face-2 ; Avy lead face for third candidate
+          )))
 
-    (mapc (lambda (face)
-            (when (and (face-background face)
-                    (not (memq face preserve-bg-faces)))
-              (set-face-background face "unspecified-bg")))
+    (mapc
+      (lambda (face)
+        (when (and (face-background face) (not (memq face preserve-bg-faces)))
+          (set-face-background face "unspecified-bg")))
       (face-list))))
 
 
@@ -79,20 +84,16 @@
   "Invert modeline colors using foreground as background and vice versa."
   (interactive)
   ;; Get foreground and set as modeline background
-  (let ((fg (face-foreground 'default))
-         (bg (face-background 'default nil t))) ;; fallback to terminal bg if needed
+  (let
+    (
+      (fg (face-foreground 'default))
+      (bg (face-background 'default nil t))) ;; fallback to terminal bg if needed
 
     ;; Set mode-line and mode-line-inactive with inverted colors
-    (set-face-attribute 'mode-line nil
-      :background fg
-      :foreground bg
-      :box nil)
+    (set-face-attribute 'mode-line nil :background fg :foreground bg :box nil)
 
     ;; Slightly dimmer for inactive modelines
-    (set-face-attribute 'mode-line-inactive nil
-      :background fg
-      :foreground bg
-      :box nil)))
+    (set-face-attribute 'mode-line-inactive nil :background fg :foreground bg :box nil)))
 
 
 (defun load-theme-tweaks (theme &optional no-bg invert-mode)
@@ -100,8 +101,11 @@
 When NO-BG is non-nil (default t), remove all background colors.
 When INVERT-MODE is non-nil (default t), invert modeline colors."
   (interactive
-   (list (intern (completing-read "Load custom theme: "
-                   (mapcar 'symbol-name (custom-available-themes))))))
+    (list
+      (intern
+        (completing-read
+          "Load custom theme: "
+          (mapcar 'symbol-name (custom-available-themes))))))
   (load-theme theme t)
   ;; Default both to t when not specified
   (when (or (eq no-bg t) (null no-bg))
@@ -112,22 +116,30 @@ When INVERT-MODE is non-nil (default t), invert modeline colors."
   )
 
 
-
 (defun print-names-of-visible-faces ()
   "Print all unique faces currently visible on screen to a buffer."
   (interactive)
-  (let ((visible-faces '())
-        (line-count (count-lines (window-start) (window-end))))
+  (let
+    (
+      (visible-faces '())
+      (line-count (count-lines (window-start) (window-end))))
 
     ;; Collect faces from visible text
     (save-excursion
       (goto-char (window-start))
       (dotimes (_ line-count)
-        (let ((line-start (line-beginning-position))
-              (line-end (line-end-position)))
+        (let
+          (
+            (line-start (line-beginning-position))
+            (line-end (line-end-position)))
           (while (< line-start line-end)
-            (let* ((face-prop (get-text-property line-start 'face))
-                   (faces (if (listp face-prop) face-prop (list face-prop))))
+            (let*
+              (
+                (face-prop (get-text-property line-start 'face))
+                (faces
+                  (if (listp face-prop)
+                    face-prop
+                    (list face-prop))))
               (dolist (face faces)
                 (when (and face (facep face))
                   (cl-pushnew face visible-faces :test #'eq))))
@@ -148,11 +160,18 @@ When INVERT-MODE is non-nil (default t), invert modeline colors."
             (save-excursion
               (goto-char (window-start window))
               (dotimes (_ line-count)
-                (let ((line-start (line-beginning-position))
-                      (line-end (line-end-position)))
+                (let
+                  (
+                    (line-start (line-beginning-position))
+                    (line-end (line-end-position)))
                   (while (< line-start line-end)
-                    (let* ((face-prop (get-text-property line-start 'face))
-                           (faces (if (listp face-prop) face-prop (list face-prop))))
+                    (let*
+                      (
+                        (face-prop (get-text-property line-start 'face))
+                        (faces
+                          (if (listp face-prop)
+                            face-prop
+                            (list face-prop))))
                       (dolist (face faces)
                         (when (and face (facep face))
                           (cl-pushnew face visible-faces :test #'eq))))
@@ -169,21 +188,21 @@ When INVERT-MODE is non-nil (default t), invert modeline colors."
       (message "Found %d visible faces" (length visible-faces)))))
 
 
-(add-hook 'elpaca-after-init-hook
+(add-hook
+  'elpaca-after-init-hook
   (lambda ()
 
-	(defvar my-preferred-dark-theme
-	  'ef-autumn
-	  ;; 'ef-dark
-	  ;;'ef-night
-	  ;; 'spacemacs-dark
-	  "The dark theme to use when toggling themes.")
+    (defvar my-preferred-dark-theme
+      ;; 'ef-autumn
+      'ef-bio ;; this is a bit greenish and doesn't have much red.
+      ;;'ef-night
+      ;; 'spacemacs-dark
+      "The dark theme to use when toggling themes.")
 
-	(defvar my-preferred-light-theme
-	  'ef-light
-	  "The light theme to use when toggling themes.")
+    (defvar my-preferred-light-theme 'ef-light
+      "The light theme to use when toggling themes.")
 
-	(load-theme-tweaks my-preferred-dark-theme)))
+    (load-theme-tweaks my-preferred-dark-theme)))
 
 (defun toggle-light-dark-theme ()
   "Toggle between preferred light and dark themes."
@@ -212,11 +231,11 @@ When INVERT-MODE is non-nil (default t), invert modeline colors."
   "Switch themes interactively with customized tweaks.
 When USE-DEFAULTS is non-nil, apply default tweaks without prompting."
   (interactive "P")
-  (let* ((themes (custom-available-themes))
-         (theme-name (completing-read "Choose theme: "
-                                     (mapcar #'symbol-name themes)
-                                     nil t))
-         (theme-symbol (intern theme-name)))
+  (let*
+    (
+      (themes (custom-available-themes))
+      (theme-name (completing-read "Choose theme: " (mapcar #'symbol-name themes) nil t))
+      (theme-symbol (intern theme-name)))
 
     ;; Disable currently enabled themes
     (mapc #'disable-theme custom-enabled-themes)
