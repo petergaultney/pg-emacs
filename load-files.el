@@ -59,3 +59,4 @@
 (load "pg-replace.el")
 (load "abbrevs.el")
 (load "smerge-deactivate.el")
+(load "meow-c.el")
