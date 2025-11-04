@@ -99,21 +99,7 @@
       '("<escape>" . ignore))
     (meow-motion-overwrite-define-key
       ;; basic movement
-      '("a" . smarter-move-beginning-of-line)
-      '("e" . end-of-line)
-      '("i" . meow-next)
-      '("r" . meow-prev)
-      '("n" . backward-char)
-      '("o" . forward-char)
-
-      '("l" . meow-line)
-      '("N" . meow-left-expand)
-      '("O" . meow-right-expand)
-
-      '("u" . meow-save)
-      '("v" . my-window-hydra-entry)
-      '("w" . meow-save)
-      '("<escape>" . ignore)))
+      '("h" . meow-motion-mode) '("<escape>" . meow-normal-mode)))
   (meow-setup-norman)
   (meow-global-mode 1)
 
