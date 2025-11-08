@@ -14,11 +14,19 @@
   (defun meow-setup-norman ()
     (setq meow-cheatsheet-layout meow-cheatsheet-layout-qwerty)
 
+    (defun my/meow-enter-means-insert-mode ()
+      (interactive)
+      (insert-char ?\n)
+      (meow-insert-mode 1))
+
     (meow-leader-define-key
       ;; '("SPC" . set-mark-command)
+
+      '("RET" . my/meow-enter-means-insert-mode)
       '("e" . elisp-prefix-map)
       '("f" . find-file)
       '("b" . consult-buffer)
+      '("k" . kill-buffer)
       '("1" . meow-digit-argument)
       '("2" . meow-digit-argument)
       '("3" . meow-digit-argument)
@@ -36,6 +44,11 @@
       ;; '("C-b" . backward-char)
 
       ;; '("SPC" . set-mark-command)
+
+      '("RET" . my/meow-enter-means-insert-mode)
+
+      '("M-," . beginning-of-buffer)
+      '("M-." . end-of-buffer)
       '("0" . meow-expand-0)
       '("9" . meow-expand-9)
       '("8" . meow-expand-8)
@@ -78,7 +91,7 @@
       '("N" . meow-left-expand)
       '("o" . forward-char)
       '("O" . meow-right-expand)
-      '("p" . meow-yank)
+      ;; '("p" . meow-yank)
       '("q" . meow-quit)
       '("Q" . meow-goto-line)
       '("r" . previous-line)

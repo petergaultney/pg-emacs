@@ -152,6 +152,11 @@
   '
   (helm-selection
     ((t (:extend t :background "lightseagreen" :distant-foreground "black"))))
+  '
+  (meow-beacon-fake-cursor
+    ((t (:inherit region :extend nil :distant-foreground "#b8c6d5"))))
+  '(meow-beacon-fake-selection ((t (:background "lightgray" :foreground "brightblue"))))
+  '(meow-position-highlight-number ((t (:foreground "deepskyblue" :underline t))))
   '(outline-1 ((t (:inherit nil :foreground "blue" :weight bold))))
   '(outline-2 ((t (:foreground "green" :weight bold))))
   '(outline-3 ((t (:foreground "yellow" :weight bold))))
