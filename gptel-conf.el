@@ -211,7 +211,7 @@ Returns t if the path is a markdown/adoc file in an LLM chats directory."
     "gpt-5"
     :stream t
     :key #'read-openai-api-key
-    :models '(gpt-5 gpt-5-mini gpt-5-nano))
+    :models '(gpt-5 gpt-5-mini gpt-5-nano gpt-5.1 gpt-5-1-chat-latest))
 
   (gptel-make-openai
     "OpenRouter"
@@ -219,7 +219,7 @@ Returns t if the path is a markdown/adoc file in an LLM chats directory."
     :endpoint "/api/v1/chat/completions"
     :stream t
     :key #'read-openrouter-api-key
-    :models '(perplexity/sonar-pro perplexity/sonar-pro:online perplexity/r1-1776))
+    :models '(openai/gpt-5.1 perplexity/sonar-pro perplexity/sonar-pro:online perplexity/r1-1776))
 
   ;; defaults
   (setq
