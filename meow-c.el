@@ -1,7 +1,6 @@
 (use-package
   meow
   :ensure t
-  :init (setq meow-cheatsheet-layout meow-cheatsheet-layout-qwerty)
   :config
   ;; define custom keybinding using Norman keyboard layout rather than QWERTY
   ;; qwdfkjurl;[]\
@@ -12,7 +11,6 @@
   (setq meow--kbd-forward-char #'forward-char)
   (setq meow--kbd-backward-char #'backward-char)
   (defun meow-setup-norman ()
-    (setq meow-cheatsheet-layout meow-cheatsheet-layout-qwerty)
 
     (defun my/meow-enter-means-insert-mode ()
       (interactive)

@@ -190,28 +190,12 @@ Returns t if the path is a markdown/adoc file in an LLM chats directory."
     (gptel-backend-models (gptel-get-backend "Claude")))
 
   (gptel-make-gemini "Gemini" :stream t :key #'read-gemini-api-key)
-  (cl-pushnew
-    'gemini-2.5-pro-preview-06-05
-    (gptel-backend-models (gptel-get-backend "Gemini")))
-
-  (gptel-make-anthropic
-    "claude-4-sonnet-thinking"
-    :key #'read-claude-api-key
-    :stream t
-    :models '(claude-4-sonnet-20250514)
-    :request-params '(:thinking (:type "enabled" :budget_tokens 2048)))
-  (gptel-make-gemini
-    "gemini-2.5-pro-thinking"
-    :key #'read-gemini-api-key
-    :stream t
-    :models '(gemini-2.5-pro-preview-06-05)
-    :request-params '(:generationConfig (:thinkingConfig (:thinkingBudget 2048))))
 
   (gptel-make-openai
-    "gpt-5"
+    "OpenAI"
     :stream t
     :key #'read-openai-api-key
-    :models '(gpt-5 gpt-5-mini gpt-5-nano gpt-5.1 gpt-5-1-chat-latest))
+    :models '(gpt-5.1 gpt-5-1-chat-latest))
 
   (gptel-make-openai
     "OpenRouter"
@@ -231,7 +215,7 @@ Returns t if the path is a markdown/adoc file in an LLM chats directory."
       "When using markdown formatting in responses, start headers at level 4 (####) "
       "and use deeper levels as needed (##### for subsections, etc.). Never use # or ## or ### headers."
       "Never put Markdown of any kind on the first line of your response - if necessary, start answering after a single newline."))
-  (add-to-list gptel-post-response-functions 'save-buffer)
+  (add-to-list 'gptel-post-response-functions 'save-buffer)
 
   :hook (markdown-mode . my-gptel-activate)
   :hook (gfm-mode . my-gptel-activate)
@@ -357,18 +341,20 @@ trailing hyphen."
 ;; how to set this for my current buffer?
 
 (with-eval-after-load 'gptel
-
-  (advice-add 'gptel :after #'gptel-extras-save-buffer)
-
-  ;; (load-file "gptel-pricing.el")
-  ;; (add-hook 'gptel-post-response-functions #'gptel-track-cost)
-
+  (advice-add 'gptel :after #'gptel-extras-save-buffer) ;; make datetime names on start
   (advice-add
     'gptel--request-data
     :around
     (lambda (orig-fn &rest args)
-      (let ((result (apply orig-fn args)))
-        (if (and gptel-anthropic-use-web-search (cl-typep (car args) 'gptel-anthropic))
+      (let*
+        (
+          (backend (car args))
+          ;; For gptel ≥ 0.9x this should work:
+          (bname (gptel-backend-name backend))
+          (result (apply orig-fn args)))
+        (if
+          (and gptel-anthropic-use-web-search
+            (string= bname "Claude")) ; or whatever you named it
           (cons
             :tools (cons [(:type "web_search_20250305" :name "web_search" :max_uses 5)] result))
           result)))))

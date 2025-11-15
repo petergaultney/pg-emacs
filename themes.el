@@ -4,15 +4,15 @@
 (use-package spacemacs-theme :ensure t)
 
 (defun fix-markdown-headers ()
-  "Fix markdown headers to be readable in dark themes -
-   apparently markdown mode customizes its face backgrounds, but i never want that."
-  (interactive)
-  (dolist (level '(1 2 3 4 5 6))
-    (let
-      (
-        (md-face (intern (format "markdown-header-face-%d" level)))
-        (outline-face (intern (format "outline-%d" level))))
-      (set-face-attribute md-face nil :inherit outline-face))))
+  "Make markdown headers inherit outline faces, if available."
+  (when (require 'markdown-mode nil 'noerror) ; don’t error if missing
+    (dolist (level '(1 2 3 4 5 6))
+      (let*
+        (
+          (md-face (intern (format "markdown-header-face-%d" level)))
+          (outline-face (intern (format "outline-%d" level))))
+        (when (facep md-face)
+          (set-face-attribute md-face nil :inherit outline-face))))))
 
 (defun remove-all-backgrounds ()
   "Remove background colors from all faces except crucial UI elements."
@@ -91,9 +91,12 @@
 
     ;; Set mode-line and mode-line-inactive with inverted colors
     (set-face-attribute 'mode-line nil :background fg :foreground bg :box nil)
+    (set-face-attribute 'mode-line-active nil :background fg :foreground bg :box nil)
+    ;; apparently mode-line-active is a new face that some themes are using...
 
     ;; Slightly dimmer for inactive modelines
-    (set-face-attribute 'mode-line-inactive nil :background fg :foreground bg :box nil)))
+    ;; (set-face-attribute 'mode-line-inactive nil :background fg :foreground bg :box nil)))
+    ))
 
 
 (defun load-theme-tweaks (theme &optional no-bg invert-mode)
@@ -194,7 +197,7 @@ When INVERT-MODE is non-nil (default t), invert modeline colors."
 
     (defvar my-preferred-dark-theme
       ;; 'ef-autumn
-      'ef-bio ;; this is a bit greenish and doesn't have much red.
+      'ef-winter ;; this is a bit greenish and doesn't have much red.
       ;;'ef-night
       ;; 'spacemacs-dark
       "The dark theme to use when toggling themes.")
