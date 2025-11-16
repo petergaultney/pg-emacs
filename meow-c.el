@@ -21,6 +21,9 @@
       ;; '("SPC" . set-mark-command)
 
       '("RET" . my/meow-enter-means-insert-mode)
+      '("SPC" . meow-insert)
+
+      '("h" . meow-insert) ;; because i keep forgetting to type h before pressing space.
       '("e" . elisp-prefix-map)
       '("f" . find-file)
       '("b" . consult-buffer)
