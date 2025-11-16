@@ -118,13 +118,15 @@ This is a pure function for constructing the full prompt data."
                     (rename-visited-file new-name))))))
           (message "Error(%s): %s" (plist-get info :status) (plist-get info :error)))))))
 
+
 (defun gptel-rename-chat-file (filename)
   "Suggest and apply a new name for the chat transcript in FILENAME."
   (interactive "fRename chat file: ")
   (let*
     (
       (full-path (expand-file-name filename))
-      (buffer (find-file-noselect full-path)))
+      (buffer (find-file-noselect full-path))
+      (interactive-p (called-interactively-p 'interactive)))
     (with-current-buffer buffer
       (let*
         (
@@ -143,7 +145,7 @@ This is a pure function for constructing the full prompt data."
           user-prompt
           :system system-prompt
           :buffer buffer
-          :context `(:file ,full-path) ; Pass file path via :context
+          :context `(:file ,full-path :interactive ,interactive-p)
           :callback
           (lambda (resp info)
             (if (stringp resp)
@@ -151,7 +153,8 @@ This is a pure function for constructing the full prompt data."
                 (
                   (buf (plist-get info :buffer))
                   (ctx (plist-get info :context))
-                  (path (plist-get ctx :file))) ; Extract from :context
+                  (path (plist-get ctx :file))
+                  (interactive-p (plist-get ctx :interactive)))
                 (when (and buf (buffer-live-p buf) path)
                   (let*
                     (
@@ -165,10 +168,13 @@ This is a pure function for constructing the full prompt data."
                       (new-path (expand-file-name new-name (file-name-directory path))))
                     (when
                       (and new-path
-                        (y-or-n-p (format "Rename %s to %s? " current-basename new-name)))
+                        (or (not interactive-p)
+                          (y-or-n-p
+                            (format "Rename %s to %s? " current-basename new-name))))
                       (rename-file path new-path 1)
                       (with-current-buffer buf
-                        (set-visited-file-name new-path t t))))))
+                        (set-visited-file-name new-path t t))
+                      (message "Renamed: %s -> %s" current-basename new-name)))))
               (message "Error(%s): %s"
                 (plist-get info :status)
                 (plist-get info :error)))))))))
