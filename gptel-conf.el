@@ -41,8 +41,34 @@
 
 (require 'datetimes)
 
+;;;;; RENAME CHAT STUFF
+
+(defun my/gptel-rename-chat--build-prompts (content major-mode file-ext)
+  "Return a list containing the user prompt and the system prompt.
+This is a pure function for constructing the full prompt data."
+  (let*
+    (
+      (code-lang
+        (pcase major-mode
+          ('org-mode "org")
+          ('adoc-mode "asciidoc")
+          (_ "markdown")))
+      (user-prompt
+        (concat "What is the chat content?\n\n" "```" code-lang "\n" content "\n```"))
+      (system-prompt
+        (format
+          "Suggest a short filename for this chat transcript.
+- Return ONLY the filename
+- It must be very short - no more than 7 words!!
+- Be specific about the topic discussed
+- No generic names: avoid 'chat', 'LLM', 'conversation', 'transcript', 'summary'
+- Use dashes, no spaces
+- End with .%s"
+          file-ext)))
+    (list user-prompt system-prompt)))
 
 (defun gptel-rename-chat ()
+  "Suggest and apply a new name for the current chat buffer."
   (interactive)
   (when
     (and (not gptel-mode) (not (yes-or-no-p "Not a gptel chat. Continue with rename? ")))
@@ -56,66 +82,98 @@
           ('org-mode "org")
           ('adoc-mode "adoc")
           (_ "md")))
-      (code-lang
-        (pcase major-mode
-          ('org-mode "org")
-          ('adoc-mode "asciidoc")
-          (_ "markdown"))))
-
+      (content (buffer-substring-no-properties (point-min) (point-max)))
+      (prompts (my/gptel-rename-chat--build-prompts content major-mode file-ext))
+      (user-prompt (car prompts))
+      (system-prompt (cadr prompts)))
     (gptel-request
-      (concat
-        "What is the chat content?\n\n"
-        "```"
-        code-lang
-        "\n"
-        (buffer-substring-no-properties (point-min) (point-max))
-        "\n```")
-      :system
-      (format
-        "Suggest a short filename for this chat transcript.
-- Return ONLY the filename
-- It must be very short - no more than 7 words!!
-- Be specific about the topic discussed
-- No generic names: avoid 'chat', 'LLM', 'conversation', 'transcript', 'summary'
-- Use dashes, no spaces
-- End with .%s"
-        file-ext)
-
+      user-prompt
+      :system system-prompt
       :callback
       (lambda (resp info)
         (if (stringp resp)
           (let ((buf (plist-get info :buffer)))
             (when (and buf (buffer-live-p buf))
-              (let*
-                (
-                  (current-name (buffer-file-name buf))
-                  (current-basename
-                    (when current-name
-                      (file-name-nondirectory current-name)))
-                  (file-ext
-                    (when current-basename
-                      (file-name-extension current-basename)))
-                  (prefix-info
-                    (when current-basename
-                      (my/parse-filename-prefix current-basename)))
-                  ;; 1. Get the date prefix, either parsed or brand new
-                  (date-prefix
-                    (if prefix-info
-                      (nth 0 prefix-info) ; Use parsed/reformatted prefix
-                      (format-time-string gptel-file-datetime-fmt))) ; Generate new
-                  ;; 2. Construct the full new name
-                  (new-name (concat date-prefix "_" resp)))
-                (when
-                  (and new-name
-                    (y-or-n-p
-                      (format "Rename buffer %s to %s? "
-                        (or current-basename (buffer-name buf))
-                        new-name)))
-                  (with-current-buffer buf
+              (with-current-buffer buf
+                (let*
+                  (
+                    (current-name (buffer-file-name))
+                    (current-basename
+                      (when current-name
+                        (file-name-nondirectory current-name)))
+                    (prefix-info
+                      (when current-basename
+                        (my/parse-filename-prefix current-basename)))
+                    (date-prefix
+                      (if prefix-info
+                        (nth 0 prefix-info)
+                        (format-time-string gptel-file-datetime-fmt)))
+                    (new-name (concat date-prefix "_" resp)))
+                  (when
+                    (and new-name
+                      (y-or-n-p
+                        (format "Rename %s to %s? "
+                          (or current-basename (buffer-name))
+                          new-name)))
                     (rename-visited-file new-name))))))
-          ;; Handle GPT error case
           (message "Error(%s): %s" (plist-get info :status) (plist-get info :error)))))))
 
+(defun gptel-rename-chat-file (filename)
+  "Suggest and apply a new name for the chat transcript in FILENAME."
+  (interactive "fRename chat file: ")
+  (let*
+    (
+      (full-path (expand-file-name filename))
+      (buffer (find-file-noselect full-path)))
+    (with-current-buffer buffer
+      (let*
+        (
+          (gptel-backend (gptel-get-backend "Claude"))
+          (gptel-model 'claude-3-5-haiku-20241022)
+          (file-ext
+            (pcase major-mode
+              ('org-mode "org")
+              ('adoc-mode "adoc")
+              (_ "md")))
+          (content (buffer-substring-no-properties (point-min) (point-max)))
+          (prompts (my/gptel-rename-chat--build-prompts content major-mode file-ext))
+          (user-prompt (car prompts))
+          (system-prompt (cadr prompts)))
+        (gptel-request
+          user-prompt
+          :system system-prompt
+          :buffer buffer
+          :context `(:file ,full-path) ; Pass file path via :context
+          :callback
+          (lambda (resp info)
+            (if (stringp resp)
+              (let*
+                (
+                  (buf (plist-get info :buffer))
+                  (ctx (plist-get info :context))
+                  (path (plist-get ctx :file))) ; Extract from :context
+                (when (and buf (buffer-live-p buf) path)
+                  (let*
+                    (
+                      (current-basename (file-name-nondirectory path))
+                      (prefix-info (my/parse-filename-prefix current-basename))
+                      (date-prefix
+                        (if prefix-info
+                          (nth 0 prefix-info)
+                          (format-time-string gptel-file-datetime-fmt)))
+                      (new-name (concat date-prefix "_" resp))
+                      (new-path (expand-file-name new-name (file-name-directory path))))
+                    (when
+                      (and new-path
+                        (y-or-n-p (format "Rename %s to %s? " current-basename new-name)))
+                      (rename-file path new-path 1)
+                      (with-current-buffer buf
+                        (set-visited-file-name new-path t t))))))
+              (message "Error(%s): %s"
+                (plist-get info :status)
+                (plist-get info :error)))))))))
+
+;;;; END RENAME CHAT STUFF
 
 ;;;; #### User-Facing Wrapper Function
 (defun my/organize-llm-chats (&optional days-str)
@@ -215,7 +273,9 @@ Returns t if the path is a markdown/adoc file in an LLM chats directory."
       "When using markdown formatting in responses, start headers at level 4 (####) "
       "and use deeper levels as needed (##### for subsections, etc.). Never use # or ## or ### headers."
       "Never put Markdown of any kind on the first line of your response - if necessary, start answering after a single newline."))
-  (add-to-list 'gptel-post-response-functions 'save-buffer)
+  (defun my/gptel-save-buffer (begin end)
+    (save-buffer))
+  (add-to-list 'gptel-post-response-functions 'my/gptel-save-buffer)
 
   :hook (markdown-mode . my-gptel-activate)
   :hook (gfm-mode . my-gptel-activate)

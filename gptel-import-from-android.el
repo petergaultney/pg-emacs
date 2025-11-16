@@ -1,6 +1,6 @@
 ;;; gptel-import-from-android.el --- Convert chat export to gptel format  -*- lexical-binding: t; -*-
 
-(defun gptel-convert-chat-export (&optional filename)
+(defun my/gptel-import-android-chat (&optional filename)
   "Convert a chat export buffer or FILE to gptel-style transcript.
 
 If called interactively with prefix or when visiting FILE, operates on
@@ -253,6 +253,50 @@ Uses the buffer-local variable `gptel--bounds` (set earlier) and writes:
         (insert "<!-- gptel--backend-name: \"OpenAI\" -->\n")
         (insert (format "<!-- gptel--bounds: %s -->\n" bounds-str))
         (insert "<!-- End: -->\n")))))
+
+
+;;-------- do all files automatically --------
+(defcustom my/gptel-import-source-directory (expand-file-name "~/sync")
+  "Directory where exported chat markdown files (export_*.md) are stored."
+  :type 'directory)
+
+(defun my/gptel-import-exported-chats ()
+  "Import exported chat markdown files from `my/gptel-import-source-directory`.
+
+Looks for files named export_*.md, moves them into `gptel-default-directory`
+with the export_ prefix stripped, opens them, and runs `gptel-rename-chat-file`."
+  (interactive)
+  (unless (and (boundp 'gptel-default-directory) gptel-default-directory)
+    (user-error "gptel-default-directory is not set"))
+
+  (let*
+    (
+      (src-dir (file-name-as-directory my/gptel-import-source-directory))
+      (dst-dir (file-name-as-directory gptel-default-directory))
+      (files (directory-files src-dir t "^export_.*\\.md$")))
+
+    (if (null files)
+      (message "No export_*.md files found in %s" src-dir)
+      (dolist (f files)
+        (let*
+          (
+            (base (file-name-nondirectory f))
+            (stripped (string-remove-prefix "export_" base))
+            (dest (expand-file-name stripped dst-dir)))
+          (when (file-exists-p dest)
+            ;; Avoid clobbering: append a timestamp
+            (setq dest
+              (expand-file-name
+                (concat
+                  (file-name-sans-extension stripped)
+                  "_"
+                  (format-time-string "%Y%m%d%H%M%S")
+                  ".md")
+                dst-dir)))
+          (message "Moving %s -> %s" base dest)
+          (rename-file f dest)
+          ;; Now run GPT-based rename on the newly moved file
+          (gptel-rename-chat-file dest))))))
 
 
 (provide 'gptel-import-from-android)
