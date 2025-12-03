@@ -117,6 +117,17 @@
   (meow-setup-norman)
   (meow-global-mode 1)
 
+  (defun my/meow-insert-mode-maybe ()
+    "Enter Meow insert mode if the buffer is editable."
+    (when (and (not buffer-read-only) (not (minibufferp)) (buffer-file-name))
+      (meow-insert-mode 1)))
+
+  ;; add a hook so that when i open a new file and it's editable (not read-only)
+  ;; we start in insert-mode rather than normal mode
+  (add-hook
+    'find-file-hook
+    (lambda () (run-with-idle-timer 0.1 nil #'my/meow-insert-mode-maybe)))
+
   (defun my/set-mark-and-normal-mode ()
     (interactive)
     (set-mark-command nil)

@@ -60,3 +60,4 @@
 (load "abbrevs.el")
 (load "smerge-deactivate.el")
 (load "meow-c.el")
+(load "override-shortcuts.el")
