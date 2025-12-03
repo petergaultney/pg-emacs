@@ -253,7 +253,11 @@ Returns t if the path is a markdown/adoc file in an LLM chats directory."
     'claude-sonnet-4-5-20250929
     (gptel-backend-models (gptel-get-backend "Claude")))
 
-  (gptel-make-gemini "Gemini" :stream t :key #'read-gemini-api-key)
+  (gptel-make-gemini
+    "Gemini"
+    :stream t
+    :key #'read-gemini-api-key
+    :models '(gemini-3-pro-preview gemini-2-5-pro))
 
   (gptel-make-openai
     "OpenAI"
