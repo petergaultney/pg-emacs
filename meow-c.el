@@ -7,9 +7,27 @@
   ;; asetgynioh'
   ;; zxcvbpm,./
   (setq meow-expand-hint-remove-delay 3.0) ; default is 1.0
-  (setq delete-active-region t)
+  (delete-selection-mode 1)
+  ;; meow--enable-shims forcibly sets delete-active-region to nil so that
+  ;; entering insert mode doesn't cancel the selection.  Unfortunately this
+  ;; also breaks backspace-deletes-region (delete-backward-char checks this
+  ;; var in C).  Re-enable it after meow finishes setup.
+  (add-hook 'meow-global-mode-hook
+            (lambda () (setq delete-active-region t)))
+  (setq delete-active-region t)            ; in case the hook already fired
   (setq meow--kbd-forward-char #'forward-char)
   (setq meow--kbd-backward-char #'backward-char)
+
+  (defun meow-backspace-dwim ()
+    "Delete region if active, else delete char backward.
+Always switches to insert mode after."
+    (interactive)
+    (if (region-active-p)
+        (delete-region (region-beginning) (region-end))
+      (backward-delete-char 1))
+    (unless (meow-insert-mode-p)
+      (meow-insert)))
+
   (defun meow-setup-norman ()
 
     (defun my/meow-enter-means-insert-mode ()
@@ -110,6 +128,7 @@
       '("Y" . meow-sync-grab)
       '("z" . meow-pop-selection)
       '("'" . repeat)
+      '("<backspace>" . meow-backspace-dwim)
       '("<escape>" . ignore))
     (meow-motion-overwrite-define-key
       ;; basic movement
