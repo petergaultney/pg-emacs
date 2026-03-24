@@ -1,3 +1,10 @@
+;; Use bash for emacs subprocesses (shell-command, projectile, etc.)
+;; xonsh calls stty on startup even non-interactively, which spams
+;; "stty: stdin isn't a terminal" in subprocess output. Bash doesn't.
+;; This doesn't affect vterm (which uses vterm-shell, set to "xonsh").
+;; PATH is inherited from the emacs process, so everything is still found.
+(setq shell-file-name "/bin/bash")
+
 ;; from Mastering EShell -- https://www.masteringemacs.org/article/complete-guide-mastering-eshell
 (with-eval-after-load 'em-term
   (add-to-list 'eshell-visual-options '("git" "--help" "--paginate"))

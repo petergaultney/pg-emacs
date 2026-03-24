@@ -1,5 +1,6 @@
 ;; requires node v18+ to be installed!
 (message "Loading github copilot... sometimes this breaks randomly")
+(use-package track-changes :ensure (:wait t) :demand t) ;; copilot needs >= 1.4, emacs 30.1 ships 1.2
 (use-package copilot
   :ensure (:host github :repo "copilot-emacs/copilot.el" :files ("dist" "*.el"))
   :config
