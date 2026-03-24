@@ -135,3 +135,10 @@
   :ensure t
   :init (setq which-key-lighter "")
   :config (which-key-mode 1))
+
+(use-package acp :ensure (:host github :repo "xenodium/acp.el"))
+(use-package
+  agent-shell
+  :ensure (:host github :repo "xenodium/agent-shell")
+  :config
+  (add-hook 'agent-shell-mode-hook (lambda () (meow-mode -1))))
