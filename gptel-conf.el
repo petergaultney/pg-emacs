@@ -206,7 +206,7 @@ main directory and ignores 'index.md'."
   "Test if FILEPATH matches LLM chats criteria.
 Returns t if the path is a markdown/adoc file in an LLM chats directory."
   (and filepath
-    (string-match-p "\\.\\(?:md\\|adoc\\)$" filepath)
+    (string-match-p "\\.\\(?:md\\|adoc\\|org\\)$" filepath)
     (string-match-p "\\bllm[-[:space:]]chats\\b" (downcase (file-truename filepath)))))
 
 (defun my-gptel-test-file (filepath)
@@ -275,14 +275,17 @@ Returns t if the path is a markdown/adoc file in an LLM chats directory."
 
   ;; defaults
   (setq
-    gptel-backend (gptel-get-backend "Claude")
-    gptel-model 'claude-sonnet-4-5-20250929
+    gptel-backend (gptel-get-backend "OpenAI")
+    gptel-model 'gpt-5.1
     gptel--system-message
     (concat
       "You are a large language model living in Emacs and a helpful assistant. Respond concisely.\n\n"
-      "When using markdown formatting in responses, start headers at level 4 (####) "
-      "and use deeper levels as needed (##### for subsections, etc.). Never use # or ## or ### headers."
-      "Never put Markdown of any kind on the first line of your response - if necessary, start answering after a single newline."))
+      " Use Markdown or org formatting based on what the input text is formatted using, or the major mode of the buffer if available."
+      " When using markdown formatting in responses, start headers at level 4 (####)"
+      " and use deeper levels as needed (##### for subsections, etc.). Never use # or ## or ### headers."
+      " When using org formatting in responses, start top-level headings with *** and use deeper levels as needed (**** for subsections, etc.). "
+      " Never put Markdown or org syntax of any kind on the first line of your response, because it will have a heading prepended to it already."
+      " If necessary, start answering after a single newline."))
   (defun my/gptel-save-buffer (begin end)
     (save-buffer))
   (add-to-list 'gptel-post-response-functions 'my/gptel-save-buffer)
@@ -300,14 +303,14 @@ Returns t if the path is a markdown/adoc file in an LLM chats directory."
     '
     ((adoc-mode . "== ")
       (markdown-mode . "## ")
-      (org-mode . "** ")
+      (org-mode . "* ")
       (text-mode . "## ")
       (gfm-mode . "## ")))
   (gptel-response-prefix-alist
     '
     ((markdown-mode . "### ")
       (adoc-mode . "=== ")
-      (org-mode . "*** ")
+      (org-mode . "** ")
       (text-mode . "### ")
       (gfm-mode . "### "))))
 
