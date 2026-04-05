@@ -1,5 +1,18 @@
 clone this repository into a directory within your .emacs.d, e.g., `~/.emacs.d/pg-emacs`
 
+## External dependencies
+
+These must be installed separately before Emacs will work correctly:
+
+### Python (new-python.el)
+
+```
+uv tool install basedpyright   # LSP server: types, completions, go-to-def
+uv tool install ruff            # formatter + import sorting (runs on save)
+```
+
+(`uv` itself can be installed via `brew install uv` or `curl -LsSf https://astral.sh/uv/install.sh | sh`)
+
 add this to `~/.emacs.d/early-init.el`:
 
 ```

@@ -37,6 +37,7 @@
 (load "themes.el")
 
 (load "github-copilot.el")
+(load "eca-conf.el")
 (load "new-python.el")
 
 (load "magit-conf.el")
@@ -61,3 +62,4 @@
 (load "smerge-deactivate.el")
 (load "meow-c.el")
 (load "override-shortcuts.el")
+(load "warnings.el")
