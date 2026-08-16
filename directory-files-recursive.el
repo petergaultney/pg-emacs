@@ -40,5 +40,3 @@
        files-list
      )
   )
-
-(provide 'directory-files-recursive)

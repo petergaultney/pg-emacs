@@ -4,7 +4,7 @@
 
 (setq pg-emacs-dir (file-name-directory (or load-file-name (buffer-file-name))))
 
-(load "elpaca.el")
+(pg-load "elpaca.el")
 
 
 (elpaca
@@ -17,7 +17,7 @@
 ;; down here, we load whichever very specific files contain the use-package declarations
 ;; for things we want to debug.
 
-;; (load "magit-conf.el")
+;; (pg-load "magit-conf.el")
 (use-package
   frog-jump-buffer
   :ensure t

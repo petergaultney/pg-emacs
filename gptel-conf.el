@@ -39,7 +39,7 @@
 (defvar gptel-default-directory (expand-file-name "~/llm-chats"))
 
 
-(require 'datetimes)
+(pg-load "datetimes.el")
 
 ;;;;; RENAME CHAT STUFF
 

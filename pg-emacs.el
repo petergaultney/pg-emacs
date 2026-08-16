@@ -12,7 +12,26 @@
 (buffer-file-name)
 (setq pg-emacs-config-file load-file-name) ;; save for later use
 
-;; (load "pg-debug.el") ;; to debug stuff - should be commented out usually
+;; This directory is deliberately NOT on `load-path'. If it were, every file in
+;; here would compete with Emacs' own libraries for a flat, global namespace of
+;; file basenames -- and win, silently. That's how warnings.el once shadowed
+;; emacs-lisp/warnings.el and killed startup outright. Loading by resolved path
+;; means our filenames are just filenames; nothing is ever searching for them.
+;;
+;; `pg-load' is idempotent, so it doubles as `require' for our own files: a file
+;; that needs another one calls (pg-load "other.el") at the top instead of
+;; relying on its position in load-files.el. Marking loaded BEFORE loading means
+;; a dependency cycle returns early rather than recursing forever.
+(defvar pg--loaded nil "Absolute paths already loaded by `pg-load'.")
+
+(defun pg-load (file)
+  "Load FILE, relative to `pg-emacs-dir', exactly once."
+  (let ((path (expand-file-name file pg-emacs-dir)))
+    (unless (member path pg--loaded)
+      (push path pg--loaded)
+      (load path))))
+
+;; (pg-load "pg-debug.el") ;; to debug stuff - should be commented out usually
 
 (setq custom-file (concat pg-emacs-dir "custom.el"))
 ;; (menu-bar-mode 0)
@@ -79,7 +98,7 @@
 
 ;; END "VERY SAFE" config
 
-(load "elpaca.el")
+(pg-load "elpaca.el")
 
 (elpaca
   elpaca-use-package
@@ -87,7 +106,7 @@
   ;; do it in a separate file so this doesn't break every time i upgrade elpaca.
   (elpaca-use-package-mode))
 
-(load "errors.el")
+(pg-load "errors.el")
 
 (use-package hydra :ensure (:wait t))
 
@@ -99,8 +118,8 @@
   (keymap-set minibuffer-local-completion-map "<up>" #'minibuffer-prev-completion))
 
 ;; LOAD OTHER FILES AND PACKAGES
-(load "load-files.el")
-(load (concat pg-emacs-dir "packages.el")) ;; manual hack to see if packages are working
+(pg-load "load-files.el")
+(pg-load "packages.el")
 
 (add-to-list 'default-frame-alist '(alpha . (90 . 80)))
 ;; do this at the very end as an indicator if something went wrong

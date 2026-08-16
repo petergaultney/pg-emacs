@@ -268,6 +268,3 @@ Shows a list of buffers and asks for confirmation before killing."
       '("index.md" "llm-chats.md" "91.11-llm-chats.md") ; Files to never rename or move
       #'my/mkdir-and-move) ;; change to my/fake-mkdir-and-move to test without actual file ops
     (message "Done organizing LLM chats.")))
-
-
-(provide 'files)

@@ -200,5 +200,3 @@ Returns a list (NEW-PREFIX ORIGINAL-PREFIX REST) on success, or nil.
       (pop-to-buffer (current-buffer)))))
 
 ;; (my/test-parse-filename-prefix)
-
-(provide 'datetimes)

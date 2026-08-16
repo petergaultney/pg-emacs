@@ -59,6 +59,10 @@
   :ensure t
   :config (add-to-list 'auto-mode-alist '("\\.yml\\'" . yaml-mode)))
 
+;; vendored locally, so load it by path -- use-package's implicit `require'
+;; is then satisfied from `features' rather than by searching `load-path'.
+(pg-load "sqlite-mode-extras.el")
+
 (use-package
   sqlite-mode-extras
   ;; :straight nil  ;; this avoids a weird error where straight tries to download something it can't find.
