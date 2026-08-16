@@ -10,6 +10,4 @@
   (js2-minor-mode))
 
 (add-hook 'web-mode-hook  'web-mode-init-hook)
-
-(provide 'javascript)
 ;;; javascript.el ends here

@@ -37,5 +37,3 @@
 ;;       (string-to-list (upcase "asethoin"))
 ;;       (string-to-list (upcase "qwdfurl;"))
 ;;       (string-to-list (upcase "zxcvm,./")))))
-
-(provide 'avy-de)

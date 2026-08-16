@@ -297,7 +297,4 @@ with the export_ prefix stripped, opens them, and runs `gptel-rename-chat-file`.
           (rename-file f dest)
           ;; Now run GPT-based rename on the newly moved file
           (gptel-rename-chat-file dest))))))
-
-
-(provide 'gptel-import-from-android)
 ;;; gptel-import-from-android.el ends here

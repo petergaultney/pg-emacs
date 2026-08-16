@@ -1,6 +1,6 @@
 (setq lexical-binding t)
 
-(load "consult-ripgrep-conf.el")
+(pg-load "consult-ripgrep-conf.el")
 
 (use-package
   consult
@@ -174,7 +174,7 @@
   :init (vertico-mode)
   (vertico-buffer-mode) ;; this makes it like helm, with a full buffer for completions.
   (vertico-mouse-mode) (vertico-multiform-mode)
-  :config (load "vertico-nice-fonts.el")
+  :config (pg-load "vertico-nice-fonts.el")
   (add-to-list
     'display-buffer-alist
     '("\\*Vertico\\*" (display-buffer-reuse-window display-buffer-same-window)))

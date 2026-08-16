@@ -91,5 +91,3 @@
   :after eglot
   :ensure (:host github :repo "jdtsmith/eglot-booster")
   :config (eglot-booster-mode))
-
-(provide 'new-python)

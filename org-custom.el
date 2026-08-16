@@ -32,7 +32,7 @@
   (interactive)
   (find-file "~/org/gtd.org"))
 
-(require 'org-bullets)
+(pg-load "org-bullets.el")
 (add-hook 'org-mode-hook (lambda () (org-bullets-mode 1)))
 
 (use-package org-fancy-priorities
@@ -48,6 +48,6 @@
 (add-hook 'org-shiftdown-final-hook 'windmove-down)
 (add-hook 'org-shiftright-final-hook 'windmove-right)
 
-(require 'directory-files-recursive)
+(pg-load "directory-files-recursive.el")
 
 (setq org-agenda-files (directory-files-recursive "~/org/" "\\.org$" 3 "\\(stversions\\|stfolder\\)"))
