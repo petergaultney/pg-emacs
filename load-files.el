@@ -62,4 +62,4 @@
 (load "smerge-deactivate.el")
 (load "meow-c.el")
 (load "override-shortcuts.el")
-(load "warnings.el")
+(load "warnings-conf.el")
