@@ -68,6 +68,7 @@
 
 ;; Bind the keymap to C-v w
 ;; Bind 'k' to close-most-recently-created-window
+(define-key my-window-commands-map (kbd "C-v") #'ignore) ;; swallow accidental re-entry
 (define-key my-window-commands-map (kbd "w") 'close-warnings-buffer-window)
 
 ;; Bind 'v' to your custom 'delete-adjacent-window-and-expand' function
@@ -179,6 +180,7 @@
   ("q" delete-other-windows "delete other windows")
   ("1" delete-other-windows "delete other windows")
 
+  ("C-v" nil :color red) ;; swallow accidental re-entry
   ("g" nil "quit")
   ("RET" nil "quit"))
 
