@@ -144,5 +144,4 @@
 (use-package
   agent-shell
   :ensure (:host github :repo "xenodium/agent-shell")
-  :config
-  (add-hook 'agent-shell-mode-hook (lambda () (meow-mode -1))))
+  )

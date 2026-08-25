@@ -254,9 +254,9 @@ Shows a list of buffers and asks for confirmation before killing."
         (message "Killed %d buffers." (length candidates))))))
 
 
-(defun my/organize-notes-in-dir ()
+(defun my/organize-notes-in-dir (dir days-str)
   "Organize and rename markdown files in DIR based on date."
-  (interactive "DDirectory: " "sDays to keep (default 2): ")
+  (interactive "DDirectory: \nsDays to keep (default 2): ")
   (let*
     (
       (dir (expand-file-name dir))
@@ -268,3 +268,46 @@ Shows a list of buffers and asks for confirmation before killing."
       '("index.md" "llm-chats.md" "91.11-llm-chats.md") ; Files to never rename or move
       #'my/mkdir-and-move) ;; change to my/fake-mkdir-and-move to test without actual file ops
     (message "Done organizing LLM chats.")))
+
+
+(defun my/organize-daily-notes-in-dir (dir days-str)
+  "Move YYYY-MM-DD.md files older than DAYS into YYYY-MM/ subdirs.
+Never renames files. Completed years get nested under YYYY/YYYY-MM/."
+  (interactive "DDirectory: \nsDays to keep flat (default 14): ")
+  (let*
+    (
+      (dir (expand-file-name (file-name-as-directory dir)))
+      (days
+        (if (or (null days-str) (string-empty-p days-str))
+          14
+          (string-to-number days-str)))
+      (cutoff-time (time-subtract (current-time) (seconds-to-time (* days 24 3600))))
+      (current-year (string-to-number (format-time-string "%Y")))
+      (date-re "^\\([0-9]\\{4\\}\\)-\\([0-9]\\{2\\}\\)-\\([0-9]\\{2\\}\\)\\.md$")
+      (files (directory-files dir t "\\.md$" t))
+      (moved 0))
+
+    (dolist (file files)
+      (let ((basename (file-name-nondirectory file)))
+        (when (and (file-regular-p file) (string-match date-re basename))
+          (let*
+            (
+              (year (string-to-number (match-string 1 basename)))
+              (month (string-to-number (match-string 2 basename)))
+              (day (string-to-number (match-string 3 basename)))
+              (file-time (encode-time 0 0 12 day month year))
+              (month-dir (format "%04d-%02d" year month))
+              (target-subdir
+                (if (< year current-year)
+                  (expand-file-name month-dir (expand-file-name (format "%04d" year) dir))
+                  (expand-file-name month-dir dir)))
+              (target-file (expand-file-name basename target-subdir)))
+
+            (when (time-less-p file-time cutoff-time)
+              (my/mkdir-and-move file target-file)
+              (setq moved (1+ moved)))))))
+
+    (message "Organized %d daily notes in %s" moved dir)))
+
+
+(provide 'files)

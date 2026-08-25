@@ -60,6 +60,6 @@
 (pg-load "pg-replace.el")
 (pg-load "abbrevs.el")
 (pg-load "smerge-deactivate.el")
-(pg-load "meow-c.el")
+;; (pg-load "meow-c.el") ;; disabled: never got into the modal habit; was eating C-SPC and adding a hook that broke quit handling
 (pg-load "override-shortcuts.el")
 (pg-load "warnings-conf.el")
