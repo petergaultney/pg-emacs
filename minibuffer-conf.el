@@ -6,3 +6,7 @@
     (select-window (active-minibuffer-window))))
 
 (global-set-key (kbd "C-c <") 'switch-to-minibuffer-window)
+
+;; Backtrace on C-g out of a hang, but not on C-g out of a prompt.
+(setq debug-on-quit t)
+(add-to-list 'debug-ignored-errors 'minibuffer-quit)
