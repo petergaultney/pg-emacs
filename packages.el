@@ -111,7 +111,15 @@
 
 (use-package adoc-mode :ensure t)
 
-(use-package visual-fill-column :ensure t)
+(defun my-markdown-soft-wrap ()
+  (setq-local visual-fill-column-width 110)
+  (visual-line-mode)
+  (visual-fill-column-mode))
+
+(use-package
+  visual-fill-column
+  :ensure t
+  :hook (markdown-mode . my-markdown-soft-wrap))
 
 (use-package hjson-mode :ensure (:host github :repo "hjson/hjson-emacs"))
 
