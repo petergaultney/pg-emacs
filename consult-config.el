@@ -244,10 +244,9 @@
   ;; Optionally replace the key help with a completing-read interface
   (setq prefix-help-command #'embark-prefix-help-command)
 
-  ;; Show the Embark target at point via Eldoc.  You may adjust the Eldoc
-  ;; strategy, if you want to see the documentation from multiple providers.
-  (add-hook 'eldoc-documentation-functions #'embark-eldoc-first-target)
-  ;; (setq eldoc-documentation-strategy #'eldoc-documentation-compose-eagerly)
+  ;; Deliberately NOT adding `embark-eldoc-first-target' to
+  ;; `eldoc-documentation-functions': it flashes "Embark on ..." in the echo
+  ;; area while typing, which distracts and slows input.
 
   :config
 
