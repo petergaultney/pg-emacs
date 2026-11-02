@@ -7,9 +7,17 @@ These must be installed separately before Emacs will work correctly:
 ### Python (new-python.el)
 
 ```
-uv tool install basedpyright   # LSP server: types, completions, go-to-def
-uv tool install ruff            # formatter + import sorting (runs on save)
+# From the ds-monorepo worktree root, install its pinned dev tools:
+mise exec -- uv sync --inexact --frozen --group dev
+
+# Existing standalone formatter (used on save):
+uv tool install ruff
 ```
+
+Eglot uses `pyrefly` from the nearest `.venv` or `venv` that provides it, then
+from PATH. Each worktree gets one server; Pyrefly chooses each file's config
+and interpreter. Other projects need their own Pyrefly installation.
+The existing `emacs-lsp-booster` executable must also be on PATH.
 
 (`uv` itself can be installed via `brew install uv` or `curl -LsSf https://astral.sh/uv/install.sh | sh`)
 
